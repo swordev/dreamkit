@@ -1,6 +1,7 @@
 {
   "name": "@dreamkit/prettier-config",
   "private": true,
+  "description": "DreamKit Prettier configuration.",
   "homepage": "https://dreamkit.dev",
   "repository": {
     "type": "git",

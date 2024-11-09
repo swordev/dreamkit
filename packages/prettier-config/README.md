@@ -1,6 +1,6 @@
 # @dreamkit/prettier-config
 
-> 
+> DreamKit Prettier configuration.
 
 [![workflow-badge]](https://github.com/swordev/dreamkit/actions/workflows/ci.yaml) [![npm-badge]](https://www.npmjs.com/package/@dreamkit/prettier-config)
 

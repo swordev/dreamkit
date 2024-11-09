@@ -1,6 +1,6 @@
 # @dreamkit/tsconfig
 
-> 
+> DreamKit TypeScript configuration.
 
 [![workflow-badge]](https://github.com/swordev/dreamkit/actions/workflows/ci.yaml) [![npm-badge]](https://www.npmjs.com/package/@dreamkit/tsconfig)
 

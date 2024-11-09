@@ -1,6 +1,7 @@
 {
   "name": "@dreamkit/tsconfig",
   "private": true,
+  "description": "DreamKit TypeScript configuration.",
   "homepage": "https://dreamkit.dev",
   "repository": {
     "type": "git",
