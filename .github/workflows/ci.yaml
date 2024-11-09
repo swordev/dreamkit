@@ -20,6 +20,7 @@ jobs:
           cache: pnpm
       - run: pnpm install
       - run: pnpm build
+      - run: pnpm build:site
       - run: pnpm test
       - uses: changesets/action@v1
         if: false
