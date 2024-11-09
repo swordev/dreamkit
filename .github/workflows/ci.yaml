@@ -22,8 +22,8 @@ jobs:
       - run: pnpm build
       - run: pnpm build:site
       - run: pnpm test
-      - uses: changesets/action@v1
-        if: false
+      - id: changesets
+        uses: changesets/action@v1
         with:
           commit: "chore: update versions"
           title: Update versions
@@ -31,6 +31,20 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - id: metadata
+        uses: actions/github-script@v7
+        env:
+          PUBLISHED_PACKAGES: ${{ steps.changesets.outputs.publishedPackages }}
+        with:
+          script: |
+            const metadata = require('./.github/workflows/metadata.js')
+            await metadata({ github, context, core })
+      - name: Deploy dreamkit.dev site
+        if: steps.metadata.outputs['@dreamkit/site:published'] == 'true'
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: packages/site/dist
       - name: Deploy next.dreamkit.dev site
         uses: JamesIves/github-pages-deploy-action@v4
         with:
