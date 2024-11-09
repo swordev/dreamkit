@@ -14,7 +14,12 @@ export default defineConfig((pkg, { packages, dir }) => {
     if (!dreamkitPkg) throw new Error("dreamkit package not found");
     const docPackages = [
       dreamkitPkg,
-      ...packages.filter((pkg) => !pkg.manifest.private && pkg !== dreamkitPkg),
+      ...packages.filter(
+        (pkg) =>
+          !pkg.manifest.private &&
+          pkg.manifest.name !== "@dreamkit/site" &&
+          pkg !== dreamkitPkg,
+      ),
     ];
     const packagesTable = markdownTable([
       ["Name", "Version", "Description"],
