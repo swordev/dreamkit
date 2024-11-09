@@ -21,7 +21,6 @@
   "exports": {
     ".": "./lib/index.js",
     "./dev": "./lib/dev.js",
-    "./api-entry": "./lib/api-entry.js",
     "./*": "./lib/*"
   },
   "bin": {
