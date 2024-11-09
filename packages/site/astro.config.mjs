@@ -25,8 +25,8 @@ export default defineConfig({
               link: "/api/input",
             },
             {
-              label: "route",
-              link: "/api/route",
+              label: "$route",
+              link: "/api/$route",
             },
             {
               label: "routePath",
@@ -46,12 +46,8 @@ export default defineConfig({
           label: "Commands",
           items: [
             {
-              label: "generate-routing",
-              link: "/commands/generate-routing",
-            },
-            {
-              label: "fix-route-imports",
-              link: "/commands/fix-route-imports",
+              label: "generate",
+              link: "/commands/generate",
             },
           ],
         },
