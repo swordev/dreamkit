@@ -9,7 +9,7 @@
     "build": "tsc -b tsconfig.build.json --verbose",
     "build:site": "pnpm run --filter @dreamkit/site build",
     "build:solid-start-app": "pnpm run --filter solid-start-app build",
-    "check:format": "prettier --cache .",
+    "check:format": "prettier --cache --check .",
     "check:unused": "knip",
     "clean": "node packages/workspace/src/bin.js clean",
     "dev:site": "pnpm run --filter @dreamkit/site dev",
