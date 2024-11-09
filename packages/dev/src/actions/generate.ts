@@ -45,7 +45,8 @@ export async function generate(server: DreamkitDevServer) {
   } else {
     contents = [
       `// prettier-ignore`,
-      `import { BaseRequestUrl, defineLink, defineRoutePath } from "dreamkit/presets/custom-global.js";`,
+      `import { defineRoutePath } from "dreamkit/presets/common.js";`,
+      `import { defineLink } from "dreamkit/presets/solid.js";`,
       "",
       ...(options.metaLocalExports
         ? [
@@ -56,7 +57,6 @@ export async function generate(server: DreamkitDevServer) {
       createInterface("Routing", typeRoutes, 0),
       "export const routePath = defineRoutePath<Routing>();",
       "export const Link = defineLink<Routing>();",
-      "export class RequestUrl extends BaseRequestUrl<Routing> {}",
     ].join("\n");
   }
 
