@@ -23,6 +23,11 @@
     "update:deps": "ncu -ws --root",
     "watch": "tsc -b tsconfig.build.json -w"
   },
+  "lint-staged": {
+    "*.{json,js,ts,jsx,tsx,html,md}": [
+      "prettier --cache --check --ignore-unknown"
+    ]
+  },
   "prettier": "@dreamkit/prettier-config",
   "devDependencies": {
     "@changesets/changelog-github": "^0.5.0",
@@ -32,6 +37,7 @@
     "@dreamkit/workspace": "workspace:*",
     "husky": "^9.1.6",
     "knip": "^5.36.3",
+    "lint-staged": "^15.2.10",
     "markdown-table": "^3.0.4",
     "npm-check-updates": "^17.1.10",
     "prettier": "^3.3.3",

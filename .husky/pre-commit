@@ -1,1 +1,1 @@
-pnpm check:format
+pnpm exec lint-staged --debug
