@@ -27,7 +27,7 @@ jobs:
         with:
           commit: "chore: update versions"
           title: Update versions
-          publish: pnpm publish -r --no-git-checks
+          publish: pnpm run publish -r --no-git-checks
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
