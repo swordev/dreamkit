@@ -123,6 +123,9 @@ importers:
       esbuild:
         specifier: ^0.24.0
         version: 0.24.0
+      glob:
+        specifier: ^11.0.0
+        version: 11.0.0
       vite-plugin-solid:
         specifier: ^2.10.2
         version: 2.10.2(solid-js@1.9.3)(vite@5.4.10(@types/node@22.9.0)(terser@5.36.0))
@@ -139,9 +142,6 @@ importers:
       '@types/node':
         specifier: ^22.9.0
         version: 22.9.0
-      glob:
-        specifier: ^11.0.0
-        version: 11.0.0
       vinxi:
         specifier: ^0.4.3
         version: 0.4.3(@types/node@22.9.0)(debug@4.3.7)(ioredis@5.4.1)(magicast@0.3.5)(terser@5.36.0)
