@@ -1,0 +1,66 @@
+---
+import { Card, CardGrid } from "@astrojs/starlight/components";
+import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+---
+
+<StarlightPage
+  frontmatter={{
+    title: "dreamkit",
+    description: "A toolkit for building Solid/SolidStart apps.",
+    template: "splash",
+    hero: {
+      tagline: "The Solid.js dev kit you've always dreamed of.",
+      actions: [
+        {
+          text: "Get started",
+          link: "/get-started",
+          icon: "right-arrow",
+        },
+        {
+          text: "Playground",
+          link: "https://stackblitz.com/edit/dreamkit",
+          icon: "external",
+          variant: "minimal",
+        },
+      ],
+    },
+  }}
+>
+  <CardGrid stagger>
+    <Card title="Filosofy" icon="rocket">
+      Typesafe. Single source of truth. Frictionless.
+    </Card>
+    <Card title="Compatibility" icon="random">
+      Compatible with Solid.js and SolidStart.
+    </Card>
+  </CardGrid>
+
+  <h2>Routing</h2>
+
+  <CardGrid>
+    <Card title="Type safe routing" icon="seti:typescript">
+      Define your routes and params and enjoy of the a type safe routing
+      automatically.
+    </Card>
+    <Card title="Route params" icon="setting">
+      Path and search params as single one. Simplify the logic joining both
+      params in a single concept and using it where you wants.
+    </Card>
+    <Card title="Route params validation" icon="approve-check-circle">
+      Validate your route params.
+    </Card>
+
+    <Card title="Route JSON params" icon="seti:json">
+      Use any JSON value in your params and don't worry about serialization.
+    </Card>
+  </CardGrid>
+
+  <h2>Controlled input</h2>
+
+  <CardGrid>
+    <Card title="Type safe routing" icon="seti:typescript">
+      Define your routes and params and enjoy of the a type safe routing
+      automatically.
+    </Card>
+  </CardGrid>
+</StarlightPage>

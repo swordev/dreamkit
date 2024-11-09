@@ -1,0 +1,65 @@
+{
+  "name": "@dreamkit/dev",
+  "version": "0.0.1",
+  "description": "Development tools for DreamKit.",
+  "homepage": "https://dreamkit.dev",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/swordev/dreamkit/tree/main/packages/dev"
+  },
+  "license": "MIT",
+  "author": "Juanra GM",
+  "contributors": [
+    {
+      "name": "Juanra GM",
+      "email": "juanrgm724@gmail.com",
+      "url": "https://github.com/juanrgm"
+    }
+  ],
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": "./lib/index.js",
+    "./bin": "./lib/bin.js"
+  },
+  "bin": {
+    "dk": "./lib/bin.js",
+    "dreamkit": "./lib/bin.js"
+  },
+  "files": [
+    "assets",
+    "lib"
+  ],
+  "dependencies": {
+    "@babel/generator": "^7.26.2",
+    "@babel/parser": "^7.26.2",
+    "@babel/traverse": "^7.25.9",
+    "@babel/types": "^7.26.0",
+    "@dreamkit/app": "workspace:*",
+    "@dreamkit/schema": "workspace:*",
+    "@types/babel__generator": "^7.6.8",
+    "@types/babel__traverse": "^7.20.6",
+    "commander": "^12.1.0",
+    "debug": "^4.3.7",
+    "es-module-lexer": "^1.5.4",
+    "esbuild": "^0.24.0",
+    "vite-plugin-solid": "^2.10.2",
+    "vite-tsconfig-paths": "^5.1.0"
+  },
+  "devDependencies": {
+    "@dreamkit/tsconfig": "workspace:*",
+    "@types/debug": "^4.1.12",
+    "@types/node": "^22.9.0",
+    "glob": "^11.0.0",
+    "vinxi": "^0.4.3",
+    "vite": "^5.4.10"
+  },
+  "peerDependencies": {
+    "@types/node": "^22.7.7",
+    "vinxi": "^0.4.3",
+    "vite": "^5.4.8"
+  },
+  "x-dreamkit": {
+    "profile": "lib"
+  }
+}

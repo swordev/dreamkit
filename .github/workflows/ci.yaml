@@ -1,0 +1,37 @@
+name: CI
+on:
+  push:
+    branches:
+      - main
+env:
+  NODE_VERSION: 22
+  PNPM_VERSION: 9
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+      - run: pnpm install
+      - run: pnpm build
+      - run: pnpm test
+      - uses: changesets/action@v1
+        if: false
+        with:
+          commit: "chore: update versions"
+          title: Update versions
+          publish: pnpm publish -r --no-git-checks
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Deploy next.dreamkit.dev site
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages-next
+          folder: packages/site/dist

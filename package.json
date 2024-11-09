@@ -1,0 +1,41 @@
+{
+  "name": "@dreamkit/root",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "app/*"
+  ],
+  "scripts": {
+    "build": "tsc -b tsconfig.build.json --verbose",
+    "build:site": "pnpm run --filter @dreamkit/site build",
+    "build:solid-start-app": "pnpm run --filter solid-start-app build",
+    "check:format": "prettier --cache .",
+    "check:unused": "knip",
+    "clean": "node packages/workspace/src/bin.js clean",
+    "dev:site": "pnpm run --filter @dreamkit/site dev",
+    "dev:solid-start-app": "pnpm run --filter solid-start-app dev",
+    "format": "prettier --cache --write .",
+    "postinstall": "node packages/workspace/src/bin.js postinstall",
+    "prepare": "husky",
+    "preview": "pnpm run --filter @dreamkit/site preview",
+    "publish": "changeset publish",
+    "test": "vitest --run",
+    "update:deps": "ncu -ws --root",
+    "watch": "tsc -b tsconfig.build.json -w"
+  },
+  "prettier": "@dreamkit/prettier-config",
+  "devDependencies": {
+    "@changesets/changelog-github": "^0.5.0",
+    "@changesets/cli": "^2.27.9",
+    "@dreamkit/dev": "workspace:*",
+    "@dreamkit/prettier-config": "workspace:*",
+    "@dreamkit/workspace": "workspace:*",
+    "husky": "^9.1.6",
+    "knip": "^5.36.3",
+    "markdown-table": "^3.0.4",
+    "npm-check-updates": "^17.1.10",
+    "prettier": "^3.3.3",
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.4"
+  }
+}

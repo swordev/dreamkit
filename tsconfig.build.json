@@ -1,0 +1,12 @@
+{
+  "include": [],
+  "references": [
+    { "path": "./packages/app/tsconfig.build.json" },
+    { "path": "./packages/dev/tsconfig.build.json" },
+    { "path": "./packages/dreamkit/tsconfig.build.json" },
+    { "path": "./packages/kind/tsconfig.build.json" },
+    { "path": "./packages/schema/tsconfig.build.json" },
+    { "path": "./packages/solid/tsconfig.build.json" },
+    { "path": "./packages/utils/tsconfig.build.json" }
+  ]
+}

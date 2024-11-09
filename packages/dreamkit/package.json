@@ -1,0 +1,47 @@
+{
+  "name": "dreamkit",
+  "version": "0.0.1",
+  "description": "Toolkit for building Solid/SolidStart apps.",
+  "homepage": "https://dreamkit.dev",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/swordev/dreamkit/tree/main/packages/dreamkit"
+  },
+  "license": "MIT",
+  "author": "Juanra GM",
+  "contributors": [
+    {
+      "name": "Juanra GM",
+      "email": "juanrgm724@gmail.com",
+      "url": "https://github.com/juanrgm"
+    }
+  ],
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": "./lib/index.js",
+    "./dev": "./lib/dev.js",
+    "./api-entry": "./lib/api-entry.js",
+    "./*": "./lib/*"
+  },
+  "bin": {
+    "dk": "./lib/bin.js",
+    "dreamkit": "./lib/bin.js"
+  },
+  "dependencies": {
+    "@dreamkit/app": "workspace:*",
+    "@dreamkit/dev": "workspace:*",
+    "@dreamkit/schema": "workspace:*",
+    "@dreamkit/solid": "workspace:*"
+  },
+  "devDependencies": {
+    "@dreamkit/tsconfig": "workspace:*",
+    "@solidjs/start": "^1.0.10"
+  },
+  "peerDependencies": {
+    "@solidjs/start": "^1.0.9"
+  },
+  "x-dreamkit": {
+    "profile": "lib"
+  }
+}

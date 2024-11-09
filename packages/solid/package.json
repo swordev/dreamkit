@@ -1,0 +1,51 @@
+{
+  "name": "@dreamkit/solid",
+  "version": "0.0.1",
+  "description": "DreamKit tools for Solid.",
+  "keywords": [
+    "solid",
+    "solidjs",
+    "controlled",
+    "input",
+    "components"
+  ],
+  "homepage": "https://dreamkit.dev",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/swordev/dreamkit/tree/main/packages/solid"
+  },
+  "license": "MIT",
+  "author": "Juanra GM",
+  "contributors": [
+    {
+      "name": "Juanra GM",
+      "email": "juanrgm724@gmail.com",
+      "url": "https://github.com/juanrgm"
+    }
+  ],
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": "./lib/index.js",
+    "./*": "./lib/*"
+  },
+  "dependencies": {
+    "@dreamkit/app": "workspace:*",
+    "@dreamkit/schema": "workspace:*",
+    "@dreamkit/utils": "workspace:*"
+  },
+  "devDependencies": {
+    "@dreamkit/tsconfig": "workspace:*",
+    "@solidjs/meta": "^0.29.4",
+    "@solidjs/router": "^0.15.1",
+    "solid-js": "^1.9.3"
+  },
+  "peerDependencies": {
+    "@solidjs/meta": "^0.29.0",
+    "@solidjs/router": "^0.15.0",
+    "solid-js": "^1.9.0"
+  },
+  "x-dreamkit": {
+    "profile": "lib"
+  }
+}

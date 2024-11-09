@@ -1,0 +1,30 @@
+{
+  "name": "@dreamkit/kind",
+  "version": "0.0.1",
+  "description": "Alternative to instanceof compatible with partial HMR.",
+  "homepage": "https://dreamkit.dev",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/swordev/dreamkit/tree/main/packages/kind"
+  },
+  "license": "MIT",
+  "author": "Juanra GM",
+  "contributors": [
+    {
+      "name": "Juanra GM",
+      "email": "juanrgm724@gmail.com",
+      "url": "https://github.com/juanrgm"
+    }
+  ],
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": "./lib/index.js"
+  },
+  "devDependencies": {
+    "@dreamkit/tsconfig": "workspace:*"
+  },
+  "x-dreamkit": {
+    "profile": "lib"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "name": "@dreamkit/site",
+  "version": "0.0.1",
+  "private": true,
+  "homepage": "https://dreamkit.dev",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/swordev/dreamkit/tree/main/packages/site"
+  },
+  "license": "MIT",
+  "author": "Juanra GM",
+  "contributors": [
+    {
+      "name": "Juanra GM",
+      "email": "juanrgm724@gmail.com",
+      "url": "https://github.com/juanrgm"
+    }
+  ],
+  "sideEffects": false,
+  "type": "module",
+  "scripts": {
+    "astro": "astro",
+    "build": "astro check && astro build",
+    "dev": "astro dev",
+    "preview": "astro preview",
+    "start": "astro dev"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@astrojs/solid-js": "^4.4.2",
+    "@astrojs/starlight": "^0.29.0",
+    "astro": "^4.16.10",
+    "dreamkit": "workspace:*",
+    "solid-js": "^1.9.3",
+    "typescript": "^5.6.3"
+  }
+}

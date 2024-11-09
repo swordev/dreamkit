@@ -1,0 +1,10 @@
+node_modules
+lib
+*.tsbuildinfo
+.astro
+.vinxi
+.output
+dist
+settings.json
+settings.*.json
+!.vscode/settings.json

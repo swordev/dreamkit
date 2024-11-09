@@ -1,0 +1,27 @@
+{
+  "name": "@dreamkit/tsconfig",
+  "private": true,
+  "homepage": "https://dreamkit.dev",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/swordev/dreamkit/tree/main/packages/tsconfig"
+  },
+  "license": "MIT",
+  "author": "Juanra GM",
+  "contributors": [
+    {
+      "name": "Juanra GM",
+      "email": "juanrgm724@gmail.com",
+      "url": "https://github.com/juanrgm"
+    }
+  ],
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": "./lib.json",
+    "./*": "./*"
+  },
+  "files": [
+    "*.json"
+  ]
+}

@@ -1,0 +1,19 @@
+---
+import { Code } from "@astrojs/starlight/components";
+import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+
+interface Props {
+  name: string;
+}
+const props = Astro.props;
+---
+
+<StarlightPage
+  frontmatter={{
+    title: props.name,
+  }}
+  headings={[{ depth: 2, text: "Command", slug: "command" }]}
+>
+  <h2 id="command">Command</h2>
+  <Code lang="sh" code={`npx dk ${props.name}`} />
+</StarlightPage>

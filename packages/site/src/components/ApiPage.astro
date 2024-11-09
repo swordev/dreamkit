@@ -1,0 +1,53 @@
+---
+import { Code } from "@astrojs/starlight/components";
+import ImportCode from "./ImportCode.astro";
+import Example, { getExampleId } from "./Example.astro";
+import type { Props as ExampleProps } from "./Example.astro";
+import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+
+interface Props {
+  name: string;
+  definition: string;
+  examples?: ExampleProps[];
+}
+const props = Astro.props;
+---
+
+<StarlightPage
+  frontmatter={{
+    title: props.name,
+  }}
+  headings={[
+    { depth: 2, text: "Import", slug: "import" },
+    { depth: 2, text: "Definition", slug: "definition" },
+    ...(props.examples
+      ? [
+          { depth: 2, text: "Examples", slug: "examples" },
+          ...props.examples.map((ex) => ({
+            depth: 3,
+            text: ex.title,
+            slug: getExampleId(ex.title),
+          })),
+        ]
+      : []),
+  ]}
+>
+  <h2 id="import">Import</h2>
+
+  <ImportCode name={props.name} />
+
+  <h2 id="definition">Definition</h2>
+
+  <Code  lang="ts" code={props.definition} />
+
+  {
+    props.examples && (
+      <>
+        <h2 id="examples">Examples</h2>
+        {props.examples.map((example) => (
+          <Example {...example} />
+        ))}
+      </>
+    )
+  }
+</StarlightPage>

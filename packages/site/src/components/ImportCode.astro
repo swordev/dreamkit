@@ -1,0 +1,11 @@
+---
+import { Code } from "@astrojs/starlight/components";
+import { packageName } from "../params";
+
+interface Props {
+  name: string;
+}
+const { name } = Astro.props;
+---
+
+<Code lang="ts" code={`import { ${name} } from "${packageName}";`} />

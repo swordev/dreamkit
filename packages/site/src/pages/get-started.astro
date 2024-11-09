@@ -1,0 +1,92 @@
+---
+import { Tabs, TabItem, Code, Steps } from "@astrojs/starlight/components";
+import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+import { packageName, pluginName } from "../params";
+---
+
+<StarlightPage
+  frontmatter={{
+    title: "Get started",
+  }}
+  headings={[
+    { depth: 2, text: "Create project", slug: "create-project" },
+    { depth: 2, text: "Install dependencies", slug: "install-deps" },
+    { depth: 2, text: "Configure", slug: "config" },
+  ]}
+>
+  <h2>Steps</h2>
+  <style is:global>
+    starlight-tabs {
+      margin-top: 1rem;
+    }
+  </style>
+  <Steps>
+    <ol>
+      <li>
+        <span id="create-project">Create your Solid/SolidStart project</span>
+        <Tabs syncKey="package-manager">
+          <TabItem label="npm">
+            <Code lang="sh" code="npm init solid@latest" />
+          </TabItem>
+          <TabItem label="pnpm">
+            <Code lang="sh" code="pnpm create solid" />
+          </TabItem>
+        </Tabs>
+      </li>
+      <li>
+        <span id="install-deps"
+          >Install the <code>{packageName}</code> dependency</span
+        >
+        <Tabs syncKey="package-manager">
+          <TabItem label="npm">
+            <Code lang="sh" code={`npm install ${packageName} --save`} />
+          </TabItem>
+          <TabItem label="pnpm">
+            <Code lang="sh" code={`pnpm add ${packageName}`} />
+          </TabItem>
+        </Tabs>
+      </li>
+
+      <li>
+        <span id="config">Set-up the vite plugin</span>
+        <Tabs syncKey="solid">
+          <TabItem label="Solid">
+            <Code
+              ins={[3, `${pluginName}()`]}
+              title="vite.config.ts"
+              lang="typescript"
+              code={`
+
+import { defineConfig } from "vite";
+import solidPlugin from "vite-plugin-solid";
+import { ${pluginName} } from "${packageName}/dev";
+
+export default defineConfig({
+    plugins: [${pluginName}(), solidPlugin()]
+});
+`}
+            />
+          </TabItem>
+          <TabItem label="SolidStart">
+            <Code
+              ins={[2, `${pluginName}()`]}
+              title="app.config.ts"
+              lang="typescript"
+              code={`
+
+import { defineConfig } from "@solidjs/start/config";
+import { ${pluginName} } from "${packageName}/dev";
+
+export default defineConfig({
+    vite: {
+        plugins: [${pluginName}()],
+    },
+});
+`}
+            />
+          </TabItem>
+        </Tabs>
+      </li>
+    </ol>
+  </Steps>
+</StarlightPage>

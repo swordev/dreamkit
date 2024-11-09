@@ -1,0 +1,9 @@
+{
+  "extends": "@dreamkit/tsconfig/lib.json",
+  "references": [
+    { "path": "../app/tsconfig.build.json" },
+    { "path": "../dev/tsconfig.build.json" },
+    { "path": "../schema/tsconfig.build.json" },
+    { "path": "../solid/tsconfig.build.json" }
+  ]
+}

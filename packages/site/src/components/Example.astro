@@ -1,0 +1,51 @@
+---
+import { Code, LinkButton } from "@astrojs/starlight/components";
+
+export interface Props {
+  title: string;
+  code: string;
+}
+const { title } = Astro.props;
+
+export const getExampleId = (title: string) => {
+  return `example_${title.toLowerCase().replaceAll(" ", "_")}`;
+};
+
+export const parseCode = (code: string) => {
+  let fileName: string | undefined;
+  const lines = code.split("\n").filter((line, index) => {
+    if (!index && line.startsWith("//")) {
+      fileName = line.slice(2);
+      return false;
+    } else if (line.trim() === "// @ts-expect-error") {
+      return false;
+    } else {
+      return true;
+    }
+  });
+  return [lines.join("\n"), fileName] as const;
+};
+
+const [code, fileName] = parseCode(Astro.props.code);
+---
+
+<h3 id={getExampleId(title)}>{title}</h3>
+
+<Code lang="ts" code={code} title={fileName} />
+
+<div style="text-align: right">
+  <LinkButton href="#" style="margin-block:0; font-size: 15px">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      viewBox="0 0 16 16"
+      fill="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="m3.5 9.5l7.04-9l-2.04 6h4l-7.04 9l2.04-6z"></path>
+    </svg>
+  </LinkButton>
+</div>

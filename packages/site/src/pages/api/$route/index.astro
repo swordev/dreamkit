@@ -1,0 +1,26 @@
+---
+import definition from "./_definition?raw";
+import BasicUsageExample from "./_BasicUsageExample?raw";
+import AdvancedExample from "./_AdvancedExample?raw";
+import UseRouteExample from "./_UseRouteExample?raw";
+import ApiPage from "../../../components/ApiPage.astro";
+---
+
+<ApiPage
+  name="$route"
+  definition={definition}
+  examples={[
+    {
+      title: "Basic usage",
+      code: BasicUsageExample,
+    },
+    {
+      title: "Advanced example",
+      code: AdvancedExample,
+    },
+    {
+      title: "Use route config",
+      code: UseRouteExample,
+    },
+  ]}
+/>

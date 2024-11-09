@@ -1,0 +1,16 @@
+---
+import definition from "./_definition?raw";
+import InputTextExample from "./_InputTextExample?raw";
+import ApiPage from "../../../components/ApiPage.astro";
+---
+
+<ApiPage
+  name="Input"
+  definition={definition}
+  examples={[
+    {
+      title: "Controlled text input",
+      code: InputTextExample,
+    },
+  ]}
+/>
