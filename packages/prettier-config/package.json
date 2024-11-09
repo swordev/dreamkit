@@ -1,5 +1,6 @@
 {
   "name": "@dreamkit/prettier-config",
+  "version": "0.0.1",
   "private": true,
   "description": "DreamKit Prettier configuration.",
   "homepage": "https://dreamkit.dev",
