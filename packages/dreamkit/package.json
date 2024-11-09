@@ -27,6 +27,9 @@
     "dk": "./lib/bin.js",
     "dreamkit": "./lib/bin.js"
   },
+  "files": [
+    "lib"
+  ],
   "dependencies": {
     "@dreamkit/app": "workspace:*",
     "@dreamkit/dev": "workspace:*",

@@ -29,6 +29,9 @@
     ".": "./lib/index.js",
     "./*": "./lib/*"
   },
+  "files": [
+    "lib"
+  ],
   "dependencies": {
     "@dreamkit/app": "workspace:*",
     "@dreamkit/schema": "workspace:*",

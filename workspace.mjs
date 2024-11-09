@@ -42,9 +42,12 @@ export default defineConfig((pkg, { packages, dir }) => {
           .replaceAll("{packagesBadges}", packagesBadges),
       },
     };
-  } else if (pkg.name === "@dreamkit/site") {
-    return;
   }
+
+  if (!pkg.files) throw new Error('"files" field is required');
+
+  if (pkg.name === "@dreamkit/site") return;
+
   return {
     files: {
       "README.md": readmePackageTpl

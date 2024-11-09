@@ -19,8 +19,12 @@
   "sideEffects": false,
   "type": "module",
   "exports": {
-    ".": "./lib/index.js"
+    ".": "./lib/index.js",
+    "./*": "./lib/*"
   },
+  "files": [
+    "lib"
+  ],
   "devDependencies": {
     "@dreamkit/tsconfig": "workspace:*"
   },

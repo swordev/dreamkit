@@ -22,6 +22,9 @@
     ".": "./lib/index.js",
     "./*": "./lib/*"
   },
+  "files": [
+    "lib"
+  ],
   "dependencies": {
     "@dreamkit/kind": "workspace:*",
     "@types/json-schema": "^7.0.15"

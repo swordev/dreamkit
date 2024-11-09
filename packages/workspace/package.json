@@ -20,7 +20,8 @@
   "sideEffects": false,
   "type": "module",
   "exports": {
-    ".": "./src/index.js"
+    ".": "./src/index.js",
+    "./*": "./src/*"
   },
   "module": "./src/index.js",
   "bin": "./src/bin.js",
