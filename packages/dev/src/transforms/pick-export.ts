@@ -64,6 +64,12 @@ export function pickExport(ast: ParseResult<t.File>, names: string[]) {
             return stm.declaration;
           }
         }
+      } else if (
+        stm.type === "ExportDefaultDeclaration" &&
+        !names.includes("default")
+      ) {
+        changes++;
+        return;
       }
 
       return stm;
