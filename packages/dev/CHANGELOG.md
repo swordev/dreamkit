@@ -1,5 +1,11 @@
 # @dreamkit/dev
 
+## 0.0.4
+
+### Patch Changes
+
+- [`e5b5f2e`](https://github.com/swordev/dreamkit/commit/e5b5f2ed3ab891ef75633b2a1691cd861c7f16ac) Thanks [@juanrgm](https://github.com/juanrgm)! - Remove unused default export
+
 ## 0.0.3
 
 ### Patch Changes
