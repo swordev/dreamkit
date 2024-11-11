@@ -28,9 +28,7 @@
   "dependencies": {
     "@dreamkit/kind": "workspace:*",
     "@dreamkit/schema": "workspace:*",
-    "@dreamkit/utils": "workspace:*",
-    "@solidjs/router": "^0.15.1",
-    "solid-js": "^1.9.3"
+    "@dreamkit/utils": "workspace:*"
   },
   "devDependencies": {
     "@dreamkit/tsconfig": "workspace:*"
