@@ -1,2 +1,2 @@
-export { createSolidRoute } from "./createSolidRoute.js";
-export { createSolidRouteConfig } from "./createSolidRouteConfig.js";
+export { Link } from "./Link.js";
+export { $route } from "./$route.js";

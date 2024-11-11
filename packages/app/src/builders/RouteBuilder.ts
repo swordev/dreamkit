@@ -1,4 +1,4 @@
-import { kindRoute } from "../utils/kind.js";
+import { isRouteBuilder, kindRoute, kindRouteBuilder } from "../utils/kind.js";
 import { kindOf } from "@dreamkit/kind";
 import {
   InferType,
@@ -23,11 +23,9 @@ export type RouteOptions<T extends RouteData = RouteData> = T & {
   path?: string;
   onParamsError?: { value: InferRouteParams<T> } | { redirect: string };
   component?: (props: any) => any;
+  routeDefinition?: (options: RouteOptions) => any;
   filePath?: string;
-  createComponent?: (
-    options: RouteOptions,
-    component: (props?: any) => any,
-  ) => any;
+  createComponent?: (options: RouteOptions) => any;
 };
 
 export type InferRouteParams<T extends RouteData> = [undefined] extends [
@@ -52,6 +50,9 @@ export type MergeFuncData<
 > = Merge<RouteData, D1, D2>;
 
 export class RouteBuilder<T extends RouteData = RouteData> {
+  static {
+    kindRouteBuilder(this);
+  }
   readonly data: T;
   readonly options: RouteOptions<T>;
   constructor(options: RouteOptions<T>) {
@@ -60,9 +61,9 @@ export class RouteBuilder<T extends RouteData = RouteData> {
       params: options.params,
     } as T;
   }
-  protected clone(options: Partial<RouteOptions> = {}): this {
+  protected clone(input: Partial<RouteOptions> | RouteBuilder = {}): this {
     const prev = this.options;
-    const next = options;
+    const next = isRouteBuilder(input) ? input.options : input;
     return new RouteBuilder({
       ...prev,
       ...next,
@@ -105,15 +106,17 @@ export class RouteBuilder<T extends RouteData = RouteData> {
     );
     return this.clone({ path: value(params) });
   }
+  protected createRouteDefinition(): any {
+    if (!this.options.routeDefinition)
+      throw new Error("routeDefinition is not defined");
+    return this.options.routeDefinition(this.options as RouteOptions);
+  }
   create(component: (props: RouteProps<T>) => any): Route {
     const self = this.clone({ component });
     const result = function (props: any) {
       if (!self.options.createComponent)
         throw new Error("createComponent is not defined");
-      return self.options.createComponent(
-        self.options as RouteOptions,
-        component,
-      );
+      return self.options.createComponent(self.options as RouteOptions);
     };
     kindRoute(result);
     Object.assign(result, {

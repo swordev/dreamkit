@@ -44,7 +44,7 @@ export async function fetchDreamkitDevOptions(options: {
           const ast = transformCode(code, {
             replaceImportSpec: {
               source: "@solidjs/start/config",
-              spec: "defineConfig",
+              spec: ["defineConfig"],
               newSource: dummyDefineConfigSource,
             },
           });

@@ -6,7 +6,7 @@ import * as t from "@babel/types";
 export function replaceImportSpec(
   ast: ParseResult<t.File>,
   options: {
-    spec: string;
+    spec: string[];
     source: string;
     newSource: string;
   },
@@ -20,15 +20,15 @@ export function replaceImportSpec(
           if (
             spec.type === "ImportSpecifier" &&
             spec.imported.type === "Identifier" &&
-            spec.imported.name === options.spec
+            options.spec.includes(spec.imported.name)
           ) {
             changes++;
             ast.program.body.unshift(
               t.importDeclaration(
                 [
                   t.importSpecifier(
-                    t.identifier(options.spec),
-                    t.identifier(options.spec),
+                    t.identifier(spec.imported.name),
+                    t.identifier(spec.imported.name),
                   ),
                 ],
                 t.stringLiteral(options.newSource),
@@ -38,6 +38,10 @@ export function replaceImportSpec(
           }
           return true;
         });
+        if (changes) {
+          if (!node.specifiers.length) path.remove();
+          path.scope.crawl();
+        }
       }
     },
   });

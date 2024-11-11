@@ -37,11 +37,7 @@
     "@dreamkit/solid": "workspace:*"
   },
   "devDependencies": {
-    "@dreamkit/tsconfig": "workspace:*",
-    "@solidjs/start": "^1.0.10"
-  },
-  "peerDependencies": {
-    "@solidjs/start": "^1.0.9"
+    "@dreamkit/tsconfig": "workspace:*"
   },
   "x-dreamkit": {
     "profile": "lib"

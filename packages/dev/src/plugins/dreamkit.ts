@@ -1,5 +1,6 @@
 import { createDreamkitDevServer } from "../adapters/solid-start.js";
 import { DreamkitPluginOptions } from "../options.js";
+import { replaceImportSpec } from "../transforms/replace-import-spec.js";
 import { generateIfChanges } from "../utils/ast.js";
 import { Transform, transformCode } from "../utils/transform.js";
 import { onVinxiApp } from "../utils/vinxi.js";
@@ -28,6 +29,15 @@ export function dreamkitPlugin(inOptions: DreamkitPluginOptions = {}): Plugin {
       const dreamkitPickEntry = searchParams.get("dk-pick-entry");
       const picks = searchParams.getAll("pick");
       const transforms: Transform[] = [];
+
+      if (code.includes("'dreamkit'") || code.includes('"dreamkit"'))
+        transforms.push({
+          replaceImportSpec: {
+            source: "dreamkit",
+            spec: ["Link"],
+            newSource: "dreamkit/adapters/solid.js",
+          },
+        });
 
       if (dreamkitPickEntry) {
         transforms.push({
