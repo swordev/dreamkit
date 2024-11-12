@@ -1,7 +1,7 @@
 import { ObjectTypeProps, s } from "@dreamkit/schema";
 import { createSearchParamsRecord } from "@dreamkit/utils/search-params.js";
 
-export function castRouteParams(
+export function castParams(
   props: ObjectTypeProps,
   pathParams: Record<string, any>,
   searchParams: string,

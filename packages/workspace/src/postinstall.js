@@ -1,5 +1,5 @@
 // @ts-check
-import { readJSONFile, writeJSONFile } from "./utils/fs.js";
+import { readJSONFile, tryReadJSONFile, writeJSONFile } from "./utils/fs.js";
 import { getTSConfigReferences } from "./utils/tsconfig.js";
 import { existsSync } from "fs";
 import { readdir, writeFile } from "fs/promises";
@@ -59,6 +59,9 @@ export async function postinstall(inputFilter) {
     console.info(`- ${pkg.folder}`);
 
     if (config.profile === "lib") {
+      const prevBuildConfig = await tryReadJSONFile(
+        `${pkg.dir}/tsconfig.build.json`,
+      );
       const tsconfigTpl = {
         root: {
           path: `${pkg.dir}/tsconfig.json`,
@@ -71,6 +74,7 @@ export async function postinstall(inputFilter) {
         build: {
           path: `${pkg.dir}/tsconfig.build.json`,
           data: {
+            ...prevBuildConfig,
             extends: "@dreamkit/tsconfig/lib.json",
             references: getTSConfigReferences(pkg.manifest),
           },

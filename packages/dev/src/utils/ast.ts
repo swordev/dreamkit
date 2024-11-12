@@ -1,4 +1,5 @@
 import { generator, parser } from "./babel.js";
+import type { Transform } from "./transform.js";
 import { ParseResult } from "@babel/parser";
 import * as t from "@babel/types";
 import * as lexer from "es-module-lexer";
@@ -95,4 +96,7 @@ export function findExportedNames(ast: ParseFileResult) {
 export async function findExportedNamesFromFile(path: string) {
   const [, exports] = await analyzeModule(path);
   return exports.map((item) => item.n);
+}
+export function defineTransform<T>(transform: Transform<T>): Transform<T> {
+  return transform;
 }

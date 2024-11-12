@@ -1,5 +1,5 @@
 import { createRouteHref } from "@dreamkit/app/utils/routing.js";
-import type { A, AnchorProps } from "@solidjs/router";
+import { A, AnchorProps } from "@solidjs/router";
 import { createComponent, JSXElement, mergeProps, splitProps } from "solid-js";
 
 type PickRequiredProps<T> = {
@@ -19,11 +19,11 @@ export type LinkComponent<T> = <P extends keyof T>(
 ) => JSXElement;
 
 /*#__NO_SIDE_EFFECTS__*/
-export function defineLink<T>(component: typeof A): LinkComponent<T> {
+export function defineLink<T>(): LinkComponent<T> {
   return function Link<P extends keyof T>(inProps: LinkProps<T, P>) {
     const [routeProps, props] = splitProps(inProps, ["href", "params" as any]);
     return createComponent(
-      component,
+      A,
       mergeProps(props, {
         get href() {
           return routeProps.href

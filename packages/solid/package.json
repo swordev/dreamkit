@@ -26,7 +26,10 @@
   "sideEffects": false,
   "type": "module",
   "exports": {
-    ".": "./lib/index.js",
+    ".": {
+      "default": "./lib/index.jsx",
+      "solid": "./lib/index.jsx"
+    },
     "./*": "./lib/*"
   },
   "files": [

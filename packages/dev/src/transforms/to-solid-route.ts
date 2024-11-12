@@ -1,24 +1,14 @@
 import { addFileChanges, getFirstChain } from "../utils/ast.js";
 import { traverse } from "../utils/babel.js";
-import { replaceImportSpec } from "./replace-import-spec.js";
 import { ParseResult } from "@babel/parser";
-import { NodePath } from "@babel/traverse";
 import * as t from "@babel/types";
 
 export function toSolidRoute(ast: ParseResult<t.File>) {
   let changes = 0;
-  let imports: ReturnType<typeof addImports> | undefined;
   let routeImportName: string | undefined;
 
   const routeSpec = "$route";
-  const routeSource = "dreamkit";
-  const routeNewSource = "dreamkit/adapters/solid.js";
-
-  replaceImportSpec(ast, {
-    newSource: routeNewSource,
-    source: routeSource,
-    spec: [routeSpec],
-  });
+  const routeSource = "dreamkit/solid";
 
   traverse(ast, {
     Program(programPath) {
@@ -26,11 +16,11 @@ export function toSolidRoute(ast: ParseResult<t.File>) {
         ImportDeclaration(importPath) {
           importPath.traverse({
             ImportSpecifier(path) {
-              // import { route as ? } from "dreamkit/adapters/solid.js";
+              // import { route as ? } from "dreamkit/solid";
               const isRouteImport =
                 path.node.imported.type === "Identifier" &&
                 path.node.imported.name === routeSpec &&
-                importPath.node.source.value === routeNewSource;
+                importPath.node.source.value === routeSource;
 
               if (isRouteImport) routeImportName = path.node.local.name;
             },
@@ -42,11 +32,10 @@ export function toSolidRoute(ast: ParseResult<t.File>) {
           // import { $route } from "dreamkit";
           // export default route.params({}).create(() => {});
           // [output]
-          // import { $route as _$route } from "dreamkit/adapters/solid.js"
-          // import * as $deps from "dreamkit/adapters/solid-deps.js"
+          // import { $route as _$route } from "dreamkit/solid"
           // const selfRoute = _$route.params({});
           // export const route = selfRoute.createRouteDefinition();
-          // export default delfRoute.clone({deps: $deps}).create(() => {})
+          // export default delfRoute.create(() => {})
           if (
             // route.?.?.?.create()
             dec.type === "CallExpression" &&
@@ -56,7 +45,6 @@ export function toSolidRoute(ast: ParseResult<t.File>) {
             dec.callee.property.name === "create"
           ) {
             changes++;
-            if (!imports) imports = addImports(ast, programPath);
             const selfRoute = programPath.scope.generateUid("selfRoute");
             ast.program.body.splice(
               ast.program.body.indexOf(path.node),
@@ -65,10 +53,9 @@ export function toSolidRoute(ast: ParseResult<t.File>) {
               createSelfRoute(selfRoute, dec.callee.object),
               // export const route = selfRoute.createRouteDefinition();
               createExportRouteDefinition(selfRoute),
-              // export default selfRoute.clone({ deps }).create(() => {})
+              // export default selfRoute.create(() => {})
               createDefaultExportRoute(
                 selfRoute,
-                imports.deps,
                 dec.arguments[0] as t.Expression,
               ),
             );
@@ -79,8 +66,7 @@ export function toSolidRoute(ast: ParseResult<t.File>) {
         // export const route = $route.params({}).path('/path');
         // export default function Users() { useRoute(route); }
         // [output]
-        // import { $route as _$route } from "dreamkit/adapters/solid.js"
-        // import * as $deps from "dreamkit/adapters/solid-deps.js"
+        // import { $route as _$route } from "dreamkit/solid"
         // const selfRoute = _$route.params({}).path('/path');
         // export const route = selfRoute.createRouteDefinition();
         // export default selfRoute.create(function Users() { useRoute(selfRoute); });
@@ -99,8 +85,6 @@ export function toSolidRoute(ast: ParseResult<t.File>) {
               // [output]
               // const _selfRoute = $route.?;
               // export const route = _selfRoute.createRouteDefinition();
-
-              if (!imports) imports = addImports(ast, programPath);
 
               let exportFunction:
                 | t.FunctionDeclaration
@@ -139,7 +123,6 @@ export function toSolidRoute(ast: ParseResult<t.File>) {
                   ? [
                       createDefaultExportRoute(
                         selfRoute,
-                        imports.deps,
                         exportFunction.type === "FunctionDeclaration"
                           ? t.functionExpression(
                               exportFunction.id,
@@ -184,40 +167,11 @@ function createExportRouteDefinition(name: string) {
   );
 }
 
-function createDefaultExportRoute(
-  name: string,
-  depsImportName: string,
-  component: t.Expression,
-) {
+function createDefaultExportRoute(name: string, component: t.Expression) {
   return t.exportDefaultDeclaration(
     t.callExpression(
-      t.memberExpression(
-        t.callExpression(
-          t.memberExpression(t.identifier(name), t.identifier("clone")),
-          [
-            t.objectExpression([
-              t.objectProperty(
-                t.identifier("deps"),
-                t.identifier(depsImportName),
-              ),
-            ]),
-          ],
-        ),
-        t.identifier("create"),
-      ),
+      t.memberExpression(t.identifier(name), t.identifier("create")),
       [component],
     ),
   );
-}
-function addImports(ast: ParseResult<t.File>, program: NodePath<t.Program>) {
-  const deps = program.scope.generateUid("deps");
-  ast.program.body.unshift(
-    t.importDeclaration(
-      [t.importNamespaceSpecifier(t.identifier(deps))],
-      t.stringLiteral("dreamkit/adapters/solid-deps.js"),
-    ),
-  );
-  return {
-    deps,
-  };
 }

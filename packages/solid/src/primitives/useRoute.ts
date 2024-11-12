@@ -1,4 +1,4 @@
-import { useRouteParams } from "../adapters/utils.js";
+import { useRouteParams } from "../utils/routing.js";
 import { RouteBuilder, RouteData, RouteProps } from "@dreamkit/app";
 
 export function useRoute<T extends RouteData>(

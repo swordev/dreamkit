@@ -5,10 +5,17 @@ import {
 } from "./options.js";
 import { generateIfChanges } from "./utils/ast.js";
 import { log } from "./utils/log.js";
-import { resolvePath } from "./utils/path.js";
+import { getExt, resolvePath } from "./utils/path.js";
 import { findFileRoutes } from "./utils/router.js";
 import { VirtualShaking } from "./utils/shaking.js";
-import { createTransformUrl, transformCodeByUrl } from "./utils/transform.js";
+import {
+  createTransformUrl,
+  getUrlTransforms,
+  Transform,
+  transformAndGenerate,
+  transformCodeByUrl,
+  TransformObject,
+} from "./utils/transform.js";
 import { App, isRoute, Route, $route } from "@dreamkit/app";
 import { existsSync } from "fs";
 import { createServer, createViteRuntime, ViteDevServer } from "vite";
@@ -64,7 +71,8 @@ export class DreamkitDevServer {
   async fetch(path: string) {
     //const mod = $server.moduleGraph.getModuleById(shaking.entry);
     //if (mod) $server.moduleGraph.invalidateModule(mod);
-    return await this.runtime!.executeUrl(`${path}?${Date.now()}`);
+    const ext = getExt(path);
+    return await this.runtime!.executeUrl(`${path}?${Date.now()}&ext=${ext}`);
   }
   async fetchDefault<T>(path: string): Promise<T> {
     const result = await this.fetch(path);
@@ -115,8 +123,11 @@ export class DreamkitDevServer {
           enforce: "pre",
           load: (id) => this.entry.tryLoad(id),
           transform(code, id) {
-            const ast = transformCodeByUrl(id, code);
-            return generateIfChanges(ast);
+            return transformAndGenerate(
+              code,
+              { toSolidImport: true },
+              ...getUrlTransforms(id),
+            );
           },
           handleHotUpdate: async ({ file, read, modules }) => {
             return this.entry.tryUpdate(file, read, modules);

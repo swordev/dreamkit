@@ -1,4 +1,6 @@
+export { $route } from "./$route.js";
 export { Input } from "./components/Input.js";
+export { Link } from "./components/Link.js";
 export {
   createControlledValue,
   type ControlledValue,

@@ -1,2 +1,7 @@
-export { Input, createAction, useRoute } from "@dreamkit/solid";
-export { defineLink } from "@dreamkit/solid";
+export {
+  Input,
+  createAction,
+  useRoute,
+  defineLink,
+  type LinkComponent,
+} from "@dreamkit/solid";

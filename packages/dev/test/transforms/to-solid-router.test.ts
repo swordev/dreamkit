@@ -1,6 +1,4 @@
-import { toSolidRoute } from "../../src/transforms/to-solid-route.js";
-import { parseFile } from "../../src/utils/ast.js";
-import { generator } from "../../src/utils/babel.js";
+import { transformAndGenerate } from "../../src/utils/transform.js";
 import { describe, it, expect } from "vitest";
 
 describe("toSolidRouter", () => {
@@ -10,20 +8,18 @@ describe("toSolidRouter", () => {
       .params({ user: s.string() })
       .create(function ({ }) {});
     `;
-    const ast = parseFile(inCode);
-    toSolidRoute(ast);
-    const { code } = generator(ast);
+    const { code } = transformAndGenerate(inCode, {
+      toSolidImport: true,
+      toSolidRoute: true,
+    });
     expect(code).toMatchInlineSnapshot(`
-      "import * as _deps from "dreamkit/adapters/solid-deps.js";
-      import { $route } from "dreamkit/adapters/solid.js";
+      "import { $route } from "dreamkit/solid";
       import { s } from "dreamkit";
       const _selfRoute = $route.params({
         user: s.string()
       });
       export const route = _selfRoute.createRouteDefinition();
-      export default _selfRoute.clone({
-        deps: _deps
-      }).create(function ({}) {});"
+      export default _selfRoute.create(function ({}) {});"
     `);
   });
   it("transform default function", () => {
@@ -32,20 +28,19 @@ describe("toSolidRouter", () => {
       .params({ user: s.string() });
     export default function() { useRoute(route); };
     `;
-    const ast = parseFile(inCode);
-    toSolidRoute(ast);
-    const { code } = generator(ast);
+    const { code } = transformAndGenerate(inCode, {
+      toSolidImport: true,
+      toSolidRoute: true,
+    });
     expect(code).toMatchInlineSnapshot(`
-      "import * as _deps from "dreamkit/adapters/solid-deps.js";
-      import { $route } from "dreamkit/adapters/solid.js";
-      import { s, useRoute } from "dreamkit";
+      "import { useRoute } from "dreamkit/solid";
+      import { $route } from "dreamkit/solid";
+      import { s } from "dreamkit";
       const _selfRoute = $route.params({
         user: s.string()
       });
       export const route = _selfRoute.createRouteDefinition();
-      export default _selfRoute.clone({
-        deps: _deps
-      }).create(function () {
+      export default _selfRoute.create(function () {
         useRoute(_selfRoute);
       });
       ;"
