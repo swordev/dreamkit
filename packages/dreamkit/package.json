@@ -2,6 +2,16 @@
   "name": "dreamkit",
   "version": "0.0.7",
   "description": "Toolkit for building Solid/SolidStart apps.",
+  "keywords": [
+    "solid",
+    "solidjs",
+    "type-safe",
+    "typescript",
+    "routing",
+    "controlled",
+    "app",
+    "framework"
+  ],
   "homepage": "https://dreamkit.dev",
   "repository": {
     "type": "git",
