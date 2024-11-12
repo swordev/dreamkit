@@ -1,0 +1,5 @@
+# https://github.com/prettier/prettier-vscode/issues/1327
+root = true
+
+[*]
+end_of_line = lf
