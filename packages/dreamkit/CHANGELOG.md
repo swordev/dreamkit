@@ -1,5 +1,15 @@
 # dreamkit
 
+## 0.0.7
+
+### Patch Changes
+
+- [`94dabe6`](https://github.com/swordev/dreamkit/commit/94dabe6e524b68b08312b03eaeea11f76202afb7) Thanks [@juanrgm](https://github.com/juanrgm)! - Avoid including @solidjs/router due to SSR issues
+
+- Updated dependencies [[`94dabe6`](https://github.com/swordev/dreamkit/commit/94dabe6e524b68b08312b03eaeea11f76202afb7)]:
+  - @dreamkit/solid@0.0.4
+  - @dreamkit/dev@0.0.6
+
 ## 0.0.6
 
 ### Patch Changes
