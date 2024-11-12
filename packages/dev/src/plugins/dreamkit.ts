@@ -2,11 +2,7 @@ import { DreamkitDevServer } from "../DreamkitDevServer.js";
 import { createDreamkitDevServer } from "../adapters/solid-start.js";
 import { DreamkitPluginOptions } from "../options.js";
 import { tryGenerate } from "../utils/ast.js";
-import {
-  TransformObject,
-  transformAndGenerate,
-  transformCode,
-} from "../utils/transform.js";
+import { TransformObject, transformCode } from "../utils/transform.js";
 import { onVinxiApp } from "../utils/vinxi.js";
 import { Plugin } from "vite";
 
@@ -21,7 +17,7 @@ export function dreamkitPlugin(inOptions: DreamkitPluginOptions = {}): Plugin {
     enforce: "pre",
     ["dreamkitOptions" as any]: inOptions,
     config(config) {
-      isSolidStart = !!config.app;
+      isSolidStart = !!(config as any).app;
       if (!isSolidStart) cleanup();
     },
     configResolved(config) {
