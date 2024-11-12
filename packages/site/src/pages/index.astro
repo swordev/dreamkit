@@ -18,7 +18,7 @@ import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
         },
         {
           text: "Playground",
-          link: "https://stackblitz.com/edit/dreamkit",
+          link: "#playground",
           icon: "external",
           variant: "minimal",
         },
@@ -65,3 +65,13 @@ import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
     </Card>
   </CardGrid>
 </StarlightPage>
+<script>
+  import openProject from "../utils/stackblitz.ts";
+  import code from "./entry/_examples/home-route.tsx?raw";
+
+  const playgroundLink = document.querySelector('a[href="#playground"]')!;
+  playgroundLink.addEventListener("click", (e) => {
+    e.preventDefault();
+    openProject({ appCode: code });
+  });
+</script>

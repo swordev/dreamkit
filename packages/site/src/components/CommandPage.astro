@@ -4,6 +4,7 @@ import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
 
 interface Props {
   name: string;
+  description: string;
 }
 const props = Astro.props;
 ---
@@ -12,8 +13,21 @@ const props = Astro.props;
   frontmatter={{
     title: props.name,
   }}
-  headings={[{ depth: 2, text: "Command", slug: "command" }]}
+  headings={[
+    { depth: 2, text: "Command", slug: "command" },
+    { depth: 2, text: "Description", slug: "description" },
+  ]}
 >
   <h2 id="command">Command</h2>
   <Code lang="sh" code={`npx dk ${props.name}`} />
+
+  <h2 id="description">Description</h2>
+  <p>{props.description}</p>
+  <slot />
 </StarlightPage>
+
+<style>
+  h2:not(#command) {
+    margin-top: 1.5rem !important;
+  }
+</style>

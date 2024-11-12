@@ -32,6 +32,7 @@
     "@astrojs/check": "^0.9.4",
     "@astrojs/solid-js": "^4.4.2",
     "@astrojs/starlight": "^0.29.0",
+    "@stackblitz/sdk": "^1.11.0",
     "astro": "^4.16.10",
     "dreamkit": "workspace:*",
     "solid-js": "^1.9.3",

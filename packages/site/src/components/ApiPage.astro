@@ -1,16 +1,18 @@
 ---
 import { Code } from "@astrojs/starlight/components";
 import ImportCode from "./ImportCode.astro";
-import Example, { getExampleId } from "./Example.astro";
-import type { Props as ExampleProps } from "./Example.astro";
+import Example from "./Example.astro";
 import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+import { type ExampleProps, normalizeExample } from "./../utils/examples.ts";
 
 interface Props {
   name: string;
+  description?: string;
   definition: string;
-  examples?: ExampleProps[];
+  examples?: (ExampleProps | { default: string })[];
 }
 const props = Astro.props;
+const examples = props.examples?.map(normalizeExample);
 ---
 
 <StarlightPage
@@ -18,36 +20,49 @@ const props = Astro.props;
     title: props.name,
   }}
   headings={[
+    { depth: 2, text: "Description", slug: "Description" },
     { depth: 2, text: "Import", slug: "import" },
     { depth: 2, text: "Definition", slug: "definition" },
-    ...(props.examples
+    ...(examples
       ? [
           { depth: 2, text: "Examples", slug: "examples" },
-          ...props.examples.map((ex) => ({
+          ...examples.map((ex) => ({
             depth: 3,
             text: ex.title,
-            slug: getExampleId(ex.title),
+            slug: ex.id,
           })),
         ]
       : []),
   ]}
 >
+  <h2 id="description">Description</h2>
+
+  <p>{props.description}</p>
+
+  <slot />
+
   <h2 id="import">Import</h2>
 
   <ImportCode name={props.name} />
 
   <h2 id="definition">Definition</h2>
 
-  <Code  lang="ts" code={props.definition} />
+  <Code lang="ts" code={props.definition} />
 
   {
-    props.examples && (
+    examples && (
       <>
         <h2 id="examples">Examples</h2>
-        {props.examples.map((example) => (
+        {examples.map((example) => (
           <Example {...example} />
         ))}
       </>
     )
   }
+
+  <style>
+    h2:not(#description) {
+      margin-top: 1.5rem !important;
+    }
+  </style>
 </StarlightPage>

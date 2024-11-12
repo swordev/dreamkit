@@ -1,26 +1,15 @@
 ---
 import definition from "./_definition?raw";
-import BasicUsageExample from "./_BasicUsageExample?raw";
-import AdvancedExample from "./_AdvancedExample?raw";
-import UseRouteExample from "./_UseRouteExample?raw";
 import ApiPage from "../../../components/ApiPage.astro";
 ---
 
 <ApiPage
   name="$route"
+  description="Type-safe route builder."
   definition={definition}
   examples={[
-    {
-      title: "Basic usage",
-      code: BasicUsageExample,
-    },
-    {
-      title: "Advanced example",
-      code: AdvancedExample,
-    },
-    {
-      title: "Use route config",
-      code: UseRouteExample,
-    },
+    await import("./_examples/path-param.tsx?raw"),
+    await import("./_examples/optional-search-param.tsx?raw"),
+    await import("./_examples/synced-search-params.tsx?raw"),
   ]}
 />

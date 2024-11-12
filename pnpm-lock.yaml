@@ -213,6 +213,9 @@ importers:
       '@astrojs/starlight':
         specifier: ^0.29.0
         version: 0.29.0(astro@4.16.10(@types/node@22.9.0)(rollup@4.24.0)(terser@5.36.0)(typescript@5.6.3))
+      '@stackblitz/sdk':
+        specifier: ^1.11.0
+        version: 1.11.0
       astro:
         specifier: ^4.16.10
         version: 4.16.10(@types/node@22.9.0)(rollup@4.24.0)(terser@5.36.0)(typescript@5.6.3)
@@ -267,6 +270,27 @@ importers:
       pkg-types:
         specifier: ^1.2.1
         version: 1.2.1
+
+  templates/solid-start:
+    dependencies:
+      '@solidjs/meta':
+        specifier: ^0.29.4
+        version: 0.29.4(solid-js@1.9.3)
+      '@solidjs/router':
+        specifier: ^0.15.1
+        version: 0.15.1(solid-js@1.9.3)
+      '@solidjs/start':
+        specifier: ^1.0.10
+        version: 1.0.10(solid-js@1.9.3)(vinxi@0.4.3(@types/node@22.9.0)(ioredis@5.4.1)(magicast@0.3.5)(terser@5.36.0))(vite@5.4.10(@types/node@22.9.0)(terser@5.36.0))
+      dreamkit:
+        specifier: workspace:*
+        version: link:../../packages/dreamkit
+      solid-js:
+        specifier: ^1.9.3
+        version: 1.9.3
+      vinxi:
+        specifier: ^0.4.3
+        version: 0.4.3(@types/node@22.9.0)(debug@4.3.7)(ioredis@5.4.1)(magicast@0.3.5)(terser@5.36.0)
 
 packages:
 
@@ -1485,6 +1509,9 @@ packages:
 
   '@solidjs/start@1.0.10':
     resolution: {integrity: sha512-3yg4KraSxc4rXs9dy/3kkqjDhU0JCPsZFLmDl5n6hHRPwtLLac6WUhs2k5VxGzitHaaJM/ZQCfT7i544Mf+4tw==}
+
+  '@stackblitz/sdk@1.11.0':
+    resolution: {integrity: sha512-DFQGANNkEZRzFk1/rDP6TcFdM82ycHE+zfl9C/M/jXlH68jiqHWHFMQURLELoD8koxvu/eW5uhg94NSAZlYrUQ==}
 
   '@trivago/prettier-plugin-sort-imports@4.3.0':
     resolution: {integrity: sha512-r3n0onD3BTOVUNPhR4lhVK4/pABGpbA7bW3eumZnYdKaHkf1qEC+Mag6DPbGNuuh0eG8AaYj+YqmVHSiGslaTQ==}
@@ -6012,6 +6039,8 @@ snapshots:
       - supports-color
       - vinxi
       - vite
+
+  '@stackblitz/sdk@1.11.0': {}
 
   '@trivago/prettier-plugin-sort-imports@4.3.0(@vue/compiler-sfc@3.5.12)(prettier@3.3.3)':
     dependencies:

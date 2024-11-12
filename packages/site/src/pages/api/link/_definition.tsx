@@ -1,6 +1,6 @@
 import type { JSXElement } from "solid-js";
 
-export declare function Link(props: {
+declare function Link(props: {
   href: string;
-  data?: Record<string, any>;
+  params?: Record<string, any>;
 }): JSXElement;

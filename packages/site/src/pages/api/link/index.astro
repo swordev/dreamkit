@@ -1,16 +1,11 @@
 ---
 import definition from "./_definition?raw";
-import BasicUsageExample from "./_BasicUsageExample?raw";
 import ApiPage from "../../../components/ApiPage.astro";
 ---
 
 <ApiPage
   name="Link"
+  description={`Component similar to A (from @solidjs/router) but with strong typing for paths and parameters.`}
   definition={definition}
-  examples={[
-    {
-      title: "Basic usage",
-      code: BasicUsageExample,
-    },
-  ]}
+  examples={[await import("./_examples/basic-usage.tsx?raw")]}
 />

@@ -1,6 +1,7 @@
-import { createAction } from "dreamkit";
+// title: Basic usage
+import { $route, createAction } from "dreamkit";
 
-export default function App() {
+export default $route.path("/").create(() => {
   const start = createAction(
     () =>
       new Promise<number>((resolve) => {
@@ -15,4 +16,4 @@ export default function App() {
       </button>
     </>
   );
-}
+});

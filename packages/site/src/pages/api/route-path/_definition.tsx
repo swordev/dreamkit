@@ -1,1 +1,1 @@
-declare const routePath: (path: string, data?: Record<string, any>) => string;
+declare const routePath: (path: string, params?: Record<string, any>) => string;

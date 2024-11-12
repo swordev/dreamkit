@@ -4,37 +4,23 @@ import { Code, LinkButton } from "@astrojs/starlight/components";
 export interface Props {
   title: string;
   code: string;
+  fileName?: string;
+  id: string;
 }
-const { title } = Astro.props;
-
-export const getExampleId = (title: string) => {
-  return `example_${title.toLowerCase().replaceAll(" ", "_")}`;
-};
-
-export const parseCode = (code: string) => {
-  let fileName: string | undefined;
-  const lines = code.split("\n").filter((line, index) => {
-    if (!index && line.startsWith("//")) {
-      fileName = line.slice(2);
-      return false;
-    } else if (line.trim() === "// @ts-expect-error") {
-      return false;
-    } else {
-      return true;
-    }
-  });
-  return [lines.join("\n"), fileName] as const;
-};
-
-const [code, fileName] = parseCode(Astro.props.code);
+const { props } = Astro;
 ---
 
-<h3 id={getExampleId(title)}>{title}</h3>
+<h3 id={props.id}>{props.title}</h3>
 
-<Code lang="ts" code={code} title={fileName} />
+<Code lang="ts" code={props.code} title={props.fileName} />
 
 <div style="text-align: right">
-  <LinkButton href="#" style="margin-block:0; font-size: 15px">
+  <LinkButton
+    href="#"
+    class="project"
+    style="margin-block:0; font-size: 15px"
+    data-project-code={props.code}
+  >
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="1em"
@@ -49,3 +35,16 @@ const [code, fileName] = parseCode(Astro.props.code);
     </svg>
   </LinkButton>
 </div>
+
+<script>
+  import openProject from "../utils/stackblitz.ts";
+  document.addEventListener("click", (e) => {
+    if (
+      e.target instanceof HTMLElement &&
+      e.target.matches("[data-project-code]")
+    ) {
+      e.preventDefault();
+      openProject({ appCode: e.target.dataset.projectCode });
+    }
+  });
+</script>
