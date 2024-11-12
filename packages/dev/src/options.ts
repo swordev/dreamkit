@@ -11,7 +11,7 @@ export const dreamkitPluginOptions = {
   metaFormat: "global",
   metaRouting: true,
   entry: "./src/dreamkit.tsx",
-  metaGlobalOutput: "./src/dreamkit.d.ts",
+  metaGlobalOutput: "./src/dreamkit-global.d.ts",
   metaLocalOutput: "./src/dreamkit-local.ts",
   metaLocalExports: true,
 } satisfies DreamkitPluginOptions;
