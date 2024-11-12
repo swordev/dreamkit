@@ -1,4 +1,3 @@
-import { addFileChanges } from "../utils/ast.js";
 import { ParseResult } from "@babel/parser";
 import * as t from "@babel/types";
 
@@ -24,5 +23,5 @@ export function noExport(ast: ParseResult<t.File>, names: string[]) {
     }
   }
 
-  return addFileChanges(ast, changes);
+  return changes;
 }

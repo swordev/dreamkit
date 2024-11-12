@@ -22,20 +22,8 @@ export function parseFile(code: string) {
   });
 }
 
-export function addFileChanges(ast: ParseFileResult, value: number) {
-  (ast as any)["__changes"] = ((ast as any)["__changes"] || 0) + value;
-  return value;
-}
-
-export function getFileChanges(ast: ParseFileResult) {
-  return Number((ast as any)["__changes"]) || 0;
-}
-
-export function generateIfChanges(
-  ast: ParseFileResult | undefined,
-  log?: boolean,
-) {
-  if (ast && getFileChanges(ast)) {
+export function tryGenerate(ast: ParseFileResult | undefined, log?: boolean) {
+  if (ast) {
     const generated = generator(ast);
     if (log) console.log(generated);
     return generated;

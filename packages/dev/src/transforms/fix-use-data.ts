@@ -1,4 +1,4 @@
-import { addFileChanges, ParseFileResult } from "../utils/ast.js";
+import { ParseFileResult } from "../utils/ast.js";
 import { traverse } from "../utils/babel.js";
 import * as t from "@babel/types";
 
@@ -48,5 +48,5 @@ export function fixUseData(ast: ParseFileResult) {
       }
     },
   });
-  return addFileChanges(ast, transformed ? 1 : 0);
+  return transformed ? 1 : 0;
 }

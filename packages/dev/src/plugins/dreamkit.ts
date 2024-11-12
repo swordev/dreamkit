@@ -1,13 +1,21 @@
+import { DreamkitDevServer } from "../DreamkitDevServer.js";
 import { createDreamkitDevServer } from "../adapters/solid-start.js";
 import { DreamkitPluginOptions } from "../options.js";
-import { generateIfChanges } from "../utils/ast.js";
-import { TransformObject, transformCode } from "../utils/transform.js";
+import { tryGenerate } from "../utils/ast.js";
+import {
+  TransformObject,
+  transformAndGenerate,
+  transformCode,
+} from "../utils/transform.js";
 import { onVinxiApp } from "../utils/vinxi.js";
 import { Plugin } from "vite";
 
 export function dreamkitPlugin(inOptions: DreamkitPluginOptions = {}): Plugin {
   let isSolidStart = false;
-  const cleanup = onVinxiApp((app) => createDreamkitDevServer(app, inOptions));
+  let server: DreamkitDevServer;
+  const cleanup = onVinxiApp((app) => {
+    server = createDreamkitDevServer(app, inOptions);
+  });
   return {
     name: "dreamkit",
     enforce: "pre",
@@ -46,9 +54,8 @@ export function dreamkitPlugin(inOptions: DreamkitPluginOptions = {}): Plugin {
           pickExport: picks,
         });
       }
-
       const ast = transformCode(code, ...transforms);
-      const result = generateIfChanges(ast);
+      const result = tryGenerate(ast);
       return result;
     },
   };

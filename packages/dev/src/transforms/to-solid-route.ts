@@ -1,5 +1,4 @@
 import {
-  addFileChanges,
   addImports,
   appendChainCall,
   createConst,
@@ -44,7 +43,24 @@ export function toSolidRoute(ast: ParseResult<t.File>) {
           });
         },
         ExportDefaultDeclaration(path) {
-          const dec = path.node.declaration;
+          let dec = path.node.declaration;
+
+          if (
+            // import { $route } from "dreamkit";
+            // const login = $route.create(() => {})
+            // export default login
+            dec.type === "Identifier"
+          ) {
+            const bind = programPath.scope.bindings[dec.name];
+            if (
+              bind.path.node.type === "VariableDeclarator" &&
+              bind.path.node.init
+            ) {
+              dec = bind.path.node.init;
+              path.remove();
+            }
+          }
+
           // [input]
           // import { $route } from "dreamkit";
           // export default route.params({}).create(() => {});
@@ -113,6 +129,7 @@ export function toSolidRoute(ast: ParseResult<t.File>) {
               dec.init &&
               getFirstChain(dec.init)?.identifier === routeImportName
             ) {
+              changes++;
               // [input]
               // export const route = $route.?;
               // [output]
@@ -185,7 +202,7 @@ export function toSolidRoute(ast: ParseResult<t.File>) {
     },
   });
 
-  return addFileChanges(ast, changes);
+  return changes;
 }
 
 function createDepsObject(deps: Record<string, string>) {

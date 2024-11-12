@@ -29,6 +29,12 @@ export class App {
     this.listeners[event].delete(cb);
     return this;
   }
+  getObjectId(value: unknown) {
+    for (const [id, subject] of this.objects) {
+      if (subject === value) return id;
+    }
+    throw new Error("Object not found");
+  }
   async remove(ids: string[]) {
     for (const id of ids) {
       const value = this.objects.get(id);

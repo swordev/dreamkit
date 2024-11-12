@@ -3,7 +3,6 @@ import {
   DreamkitPluginOptions,
   OutDreamkitPluginOptions,
 } from "./options.js";
-import { generateIfChanges } from "./utils/ast.js";
 import { log } from "./utils/log.js";
 import { getExt, resolvePath } from "./utils/path.js";
 import { findFileRoutes } from "./utils/router.js";
@@ -11,10 +10,7 @@ import { VirtualShaking } from "./utils/shaking.js";
 import {
   createTransformUrl,
   getUrlTransforms,
-  Transform,
   transformAndGenerate,
-  transformCodeByUrl,
-  TransformObject,
 } from "./utils/transform.js";
 import { App, isRoute, Route, $route } from "@dreamkit/app";
 import { existsSync } from "fs";

@@ -1,4 +1,3 @@
-import { addFileChanges } from "../utils/ast.js";
 import { deleteDeadCode } from "./delete-dead-code.js";
 import { ParseResult } from "@babel/parser";
 import * as t from "@babel/types";
@@ -76,7 +75,5 @@ export function pickExport(ast: ParseResult<t.File>, names: string[]) {
     })
     .filter((v) => v !== undefined);
 
-  deleteDeadCode(ast);
-
-  return addFileChanges(ast, changes);
+  return changes + deleteDeadCode(ast);
 }

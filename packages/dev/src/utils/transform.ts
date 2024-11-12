@@ -4,7 +4,7 @@ import { pickExport } from "../transforms/pick-export.js";
 import { replaceImportSpec } from "../transforms/replace-import-spec.js";
 import { toSolidLink } from "../transforms/to-solid-link.js";
 import { toSolidRoute } from "../transforms/to-solid-route.js";
-import { generateIfChanges, parseFile, ParseFileResult } from "./ast.js";
+import { tryGenerate, parseFile, ParseFileResult } from "./ast.js";
 
 const $transforms = {
   pickExport,
@@ -39,6 +39,7 @@ export type Transform<T = any> = {
 
 export function transformCode(code: string, ...input: TransformObject[]) {
   let ast: ParseFileResult | undefined;
+  let changes = 0;
   for (const item of input) {
     for (let [name, options] of Object.entries(item)) {
       if (name in $transforms) {
@@ -54,11 +55,11 @@ export function transformCode(code: string, ...input: TransformObject[]) {
           run = $transform;
         }
         ast = ast || parseFile(code);
-        run(ast, options);
+        changes += run(ast, options) || 0;
       }
     }
   }
-  return ast;
+  return changes ? ast : undefined;
 }
 
 export function transformAndGenerate(
@@ -66,7 +67,7 @@ export function transformAndGenerate(
   ...input: TransformObject[]
 ) {
   const ast = transformCode(code, ...input);
-  return generateIfChanges(ast) || { code: undefined, map: undefined };
+  return tryGenerate(ast) || { code: undefined, map: undefined };
 }
 
 export function transformCodeByUrl(id: string, code: string) {

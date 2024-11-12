@@ -1,4 +1,4 @@
-import { addFileChanges, addImports, defineTransform } from "../utils/ast.js";
+import { addImports, defineTransform } from "../utils/ast.js";
 import { traverse } from "../utils/babel.js";
 import { NodePath } from "@babel/traverse";
 import * as t from "@babel/types";
@@ -51,6 +51,6 @@ export const toSolidLink = defineTransform({
         });
       },
     });
-    return addFileChanges(ast, changes);
+    return changes;
   },
 });

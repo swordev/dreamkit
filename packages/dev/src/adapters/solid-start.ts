@@ -4,7 +4,7 @@ import {
 } from "../DreamkitDevServer.js";
 import { generate } from "../actions/generate.js";
 import { DreamkitPluginOptions } from "../options.js";
-import { generateIfChanges } from "../utils/ast.js";
+import { tryGenerate } from "../utils/ast.js";
 import { execute } from "../utils/runtime.js";
 import { createDelayedFunction } from "../utils/timeout.js";
 import { transformCode } from "../utils/transform.js";
@@ -48,8 +48,7 @@ export async function fetchDreamkitDevOptions(options: {
               newSource: dummyDefineConfigSource,
             },
           });
-
-          return generateIfChanges(ast);
+          return tryGenerate(ast);
         }
       },
     },
@@ -79,6 +78,42 @@ export async function fetchDreamkitDevOptions(options: {
   };
 }
 
+function addVinxiEntryRoutes(
+  vinxiApp: App,
+  objectId: string,
+  objectValue: Route,
+  entryPath: string,
+) {
+  for (const config of vinxiApp.config.routers) {
+    if (config.name === "ssr" || config.name === "client") {
+      const routes = config.internals.routes!;
+      const vinxiRoute: VinxiRoute = {
+        _dreamkitEntryId: objectId,
+        page: true,
+        $component: {
+          src: `${entryPath}?dk-pick-entry=${objectId}&pick=default&`,
+          pick: ["default", "$css"],
+        },
+        $$route: {
+          src: `${entryPath}?dk-pick-entry=${objectId}&pick=route&`,
+          pick: ["route"],
+        },
+        path: objectValue.$options.path ?? "",
+        filePath: entryPath,
+      };
+      if (!objectValue.$options.path) {
+        console.warn("Missing route path", { id: objectId });
+        continue;
+      }
+      routes._addRoute(vinxiRoute);
+      routes.dispatchEvent(
+        new CustomEvent("reload", {
+          detail: { route: vinxiRoute, dreamkitRoute: true },
+        }),
+      );
+    }
+  }
+}
 export function createDreamkitDevServer(
   vinxiApp: App,
   inOptions: DreamkitPluginOptions = {},
@@ -94,6 +129,11 @@ export function createDreamkitDevServer(
 
   async function onBuildStart() {
     await server.prepare(false);
+    for (const route of server.app.routes) {
+      const id = server.app.getObjectId(route);
+      if (isEntryRoute(id, route))
+        addVinxiEntryRoutes(vinxiApp, id, route, server.entry.path);
+    }
     for (const router of vinxiApp.config.routers) {
       if (router.name === "ssr" || router.name === "client") {
         const internalRouter = router.internals.routes;
@@ -115,7 +155,38 @@ export function createDreamkitDevServer(
   }
 
   async function onDevStart() {
+    const tryGenerate = createDelayedFunction(() => generate(server), 300);
+    server.app
+      .on("change", (data) => {
+        if (isRoute(data.value)) {
+          tryGenerate();
+        }
+      })
+      .on("add", async ({ id, value }) => {
+        if (isEntryRoute(id, value)) {
+          addVinxiEntryRoutes(vinxiApp, id, value, server.entry.path);
+        }
+      })
+      .on("remove", ({ id, value }) => {
+        if (isEntryRoute(id, value)) {
+          for (const config of vinxiApp.config.routers) {
+            if (config.name === "ssr" || config.name === "client") {
+              const routes = config.internals.routes!;
+              routes.routes = routes.routes.filter(
+                (r) => r._dreamkitEntryId !== id,
+              );
+              routes.dispatchEvent(
+                new CustomEvent("reload", {
+                  detail: { dreamkitRoute: true },
+                }),
+              );
+            }
+          }
+        }
+      });
+
     await server.prepare(true);
+
     for (const router of vinxiApp.config.routers) {
       const internalRouter = router.internals.routes;
       if (internalRouter) {
@@ -152,63 +223,6 @@ export function createDreamkitDevServer(
         });
       }
     }
-
-    const tryGenerate = createDelayedFunction(() => generate(server), 300);
-
-    server.app
-      .on("change", (data) => {
-        if (isRoute(data.value)) {
-          tryGenerate();
-        }
-      })
-      .on("add", async ({ id, value }) => {
-        if (isEntryRoute(id, value)) {
-          for (const config of vinxiApp.config.routers) {
-            if (config.name === "ssr" || config.name === "client") {
-              const routes = config.internals.routes!;
-              const vinxiRoute: VinxiRoute = {
-                _dreamkitEntryId: id,
-                page: true,
-                $component: {
-                  src: `${server.entry.path}?dk-pick-entry=${id}&pick=default&`,
-                  pick: ["default", "$css"],
-                },
-                $$route: {
-                  src: `${server.entry.path}?dk-pick-entry=${id}&pick=route&`,
-                  pick: ["route"],
-                },
-                path: value.$options.path ?? "",
-                filePath: server.entry.path,
-              };
-              if (!value.$options.path) {
-                console.warn("Missing route path", { id });
-                continue;
-              }
-              routes._addRoute(vinxiRoute);
-              routes.dispatchEvent(
-                new CustomEvent("reload", {
-                  detail: { route: vinxiRoute, dreamkitRoute: true },
-                }),
-              );
-            }
-          }
-        }
-      })
-      .on("remove", ({ id, value }) => {
-        if (isEntryRoute(id, value)) {
-          for (const config of vinxiApp.config.routers) {
-            if (config.name === "ssr" || config.name === "client") {
-              const routes = config.internals.routes!;
-              routes.routes = routes.routes.filter((r) => r._id !== id);
-              routes.dispatchEvent(
-                new CustomEvent("reload", {
-                  detail: { dreamkitRoute: true },
-                }),
-              );
-            }
-          }
-        }
-      });
   }
 
   vinxiApp.hooks.hook("app:build:router:start", onBuildStart);
@@ -216,4 +230,6 @@ export function createDreamkitDevServer(
   vinxiApp.hooks.hook("app:build:nitro:start", onBuildStart);
   vinxiApp.hooks.hook("app:build:nitro:end", onBuildEnd);
   vinxiApp.hooks.hook("app:dev:start", onDevStart);
+
+  return server;
 }

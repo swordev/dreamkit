@@ -67,6 +67,8 @@ export function deleteDeadCode(ast: ParseFileResult) {
       },
     });
   } while (removals > 0);
+
+  return removals;
 }
 
 function isReferenced(ident: NodePath<t.Identifier>): boolean {

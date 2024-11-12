@@ -1,4 +1,3 @@
-import { addFileChanges } from "../utils/ast.js";
 import { traverse } from "../utils/babel.js";
 import { ParseResult } from "@babel/parser";
 import * as t from "@babel/types";
@@ -45,5 +44,5 @@ export function replaceImportSpec(
       }
     },
   });
-  return addFileChanges(ast, changes);
+  return changes;
 }

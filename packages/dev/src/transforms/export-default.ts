@@ -1,4 +1,3 @@
-import { addFileChanges } from "../utils/ast.js";
 import { ParseResult } from "@babel/parser";
 import * as t from "@babel/types";
 
@@ -12,5 +11,5 @@ export function exportDefault(ast: ParseResult<t.File>, name: string) {
     changes++;
   }
 
-  return addFileChanges(ast, changes);
+  return changes;
 }
