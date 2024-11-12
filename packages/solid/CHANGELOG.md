@@ -1,5 +1,11 @@
 # @dreamkit/solid
 
+## 0.0.4
+
+### Patch Changes
+
+- [`94dabe6`](https://github.com/swordev/dreamkit/commit/94dabe6e524b68b08312b03eaeea11f76202afb7) Thanks [@juanrgm](https://github.com/juanrgm)! - Avoid including @solidjs/router due to SSR issues
+
 ## 0.0.3
 
 ### Patch Changes
