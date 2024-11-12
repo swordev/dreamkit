@@ -1,5 +1,4 @@
 {
-  "compilerOptions": { "jsx": "preserve" },
   "extends": "@dreamkit/tsconfig/lib.json",
   "references": [
     { "path": "../app/tsconfig.build.json" },

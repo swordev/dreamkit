@@ -21,7 +21,6 @@
   "exports": {
     ".": "./lib/index.js",
     "./dev": "./lib/dev.js",
-    "./solid": "./lib/entries/solid.js",
     "./*": "./lib/*"
   },
   "bin": {

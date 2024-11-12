@@ -2,7 +2,7 @@ import { exportDefault } from "../transforms/export-default.js";
 import { noExport } from "../transforms/no-export.js";
 import { pickExport } from "../transforms/pick-export.js";
 import { replaceImportSpec } from "../transforms/replace-import-spec.js";
-import { toSolidImport } from "../transforms/to-solid-import.js";
+import { toSolidLink } from "../transforms/to-solid-link.js";
 import { toSolidRoute } from "../transforms/to-solid-route.js";
 import { generateIfChanges, parseFile, ParseFileResult } from "./ast.js";
 
@@ -12,7 +12,7 @@ const $transforms = {
   noExport,
   replaceImportSpec,
   toSolidRoute,
-  toSolidImport,
+  toSolidLink,
 };
 
 export type TransformObject = {

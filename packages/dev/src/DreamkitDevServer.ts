@@ -125,7 +125,7 @@ export class DreamkitDevServer {
           transform(code, id) {
             return transformAndGenerate(
               code,
-              { toSolidImport: true },
+              { toSolidLink: true },
               ...getUrlTransforms(id),
             );
           },

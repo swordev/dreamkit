@@ -1,8 +1,14 @@
+import { RouteDepsContext } from "./contexts/RouteDeps.js";
 import { useRouteParams } from "./utils/routing.js";
 import { $route as $baseRoute } from "@dreamkit/app";
 import { ObjectType, Type } from "@dreamkit/schema";
 import { Title } from "@solidjs/meta";
-import { type RouteDefinition, useNavigate } from "@solidjs/router";
+import type {
+  RouteDefinition,
+  useLocation,
+  useNavigate,
+  useParams,
+} from "@solidjs/router";
 import { createComponent } from "solid-js";
 
 export const $route = /*#__PURE__*/ $baseRoute["clone"]({
@@ -29,38 +35,51 @@ export const $route = /*#__PURE__*/ $baseRoute["clone"]({
     return def;
   },
   createComponent: (options) => {
-    let result: [any, any];
-    const props = options.params?.props || {};
-    try {
-      result = useRouteParams(props);
-    } catch (error) {
-      const onParamsError = options.onParamsError;
-      if (!onParamsError) throw error;
-      if ("value" in onParamsError) {
-        result = useRouteParams(props, onParamsError.value);
-      } else if ("redirect" in onParamsError) {
-        const nav = useNavigate();
-        nav(onParamsError.redirect);
-        return;
-      } else {
-        throw error;
+    const deps = (options as any).deps as any as {
+      useLocation: typeof useLocation;
+      useNavigate: typeof useNavigate;
+      useParams: typeof useParams;
+    };
+    return createComponent(RouteDepsContext.Provider, {
+      value: deps,
+      get children() {
+        return createComponent(Root, {});
+      },
+    });
+    function Root() {
+      let result: [any, any];
+      const props = options.params?.props || {};
+      try {
+        result = useRouteParams(props);
+      } catch (error) {
+        const onParamsError = options.onParamsError;
+        if (!onParamsError) throw error;
+        if ("value" in onParamsError) {
+          result = useRouteParams(props, onParamsError.value);
+        } else if ("redirect" in onParamsError) {
+          const nav = deps.useNavigate();
+          nav(onParamsError.redirect);
+          return;
+        } else {
+          throw error;
+        }
       }
+      const [params, setParams] = result;
+      return [
+        ...(options.title
+          ? [
+              createComponent(Title, {
+                get children() {
+                  return options.title;
+                },
+              }),
+            ]
+          : []),
+        createComponent(options.component!, {
+          params,
+          setParams,
+        } as any),
+      ];
     }
-    const [params, setParams] = result;
-    return [
-      ...(options.title
-        ? [
-            createComponent(Title, {
-              get children() {
-                return options.title;
-              },
-            }),
-          ]
-        : []),
-      createComponent(options.component!, {
-        params,
-        setParams,
-      } as any),
-    ];
   },
 });

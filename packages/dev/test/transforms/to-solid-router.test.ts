@@ -9,13 +9,19 @@ describe("toSolidRouter", () => {
       .create(function ({ }) {});
     `;
     const { code } = transformAndGenerate(inCode, {
-      toSolidImport: true,
       toSolidRoute: true,
     });
     expect(code).toMatchInlineSnapshot(`
-      "import { $route } from "dreamkit/solid";
+      "import { useLocation as _useLocation, useNavigate as _useNavigate, useParams as _useParams } from "@solidjs/router";
+      import { $route } from "dreamkit/adapters/solid.js";
       import { s } from "dreamkit";
-      const _selfRoute = $route.params({
+      const _selfRoute = $route.clone({
+        deps: {
+          useLocation: _useLocation,
+          useNavigate: _useNavigate,
+          useParams: _useParams
+        }
+      }).params({
         user: s.string()
       });
       export const route = _selfRoute.createRouteDefinition();
@@ -29,14 +35,19 @@ describe("toSolidRouter", () => {
     export default function() { useRoute(route); };
     `;
     const { code } = transformAndGenerate(inCode, {
-      toSolidImport: true,
       toSolidRoute: true,
     });
     expect(code).toMatchInlineSnapshot(`
-      "import { useRoute } from "dreamkit/solid";
-      import { $route } from "dreamkit/solid";
-      import { s } from "dreamkit";
-      const _selfRoute = $route.params({
+      "import { useLocation as _useLocation, useNavigate as _useNavigate, useParams as _useParams } from "@solidjs/router";
+      import { $route } from "dreamkit/adapters/solid.js";
+      import { s, useRoute } from "dreamkit";
+      const _selfRoute = $route.clone({
+        deps: {
+          useLocation: _useLocation,
+          useNavigate: _useNavigate,
+          useParams: _useParams
+        }
+      }).params({
         user: s.string()
       });
       export const route = _selfRoute.createRouteDefinition();

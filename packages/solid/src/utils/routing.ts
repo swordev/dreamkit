@@ -1,10 +1,11 @@
+import { useRouteDeps } from "../contexts/RouteDeps.js";
 import { castParams } from "./params.js";
 import { ObjectTypeProps, InferObjectProps, s } from "@dreamkit/schema";
 import {
   createJsonSearchParams,
   prettySearchParams,
 } from "@dreamkit/utils/search-params.js";
-import { useLocation, useParams, type NavigateOptions } from "@solidjs/router";
+import type { NavigateOptions } from "@solidjs/router";
 import { onCleanup } from "solid-js";
 import { createStore } from "solid-js/store";
 import { isServer } from "solid-js/web";
@@ -12,6 +13,7 @@ import { isServer } from "solid-js/web";
 export function usePathParams<P extends ObjectTypeProps>(
   props: P,
 ): InferObjectProps<P> {
+  const { useParams } = useRouteDeps();
   const params = useParams() as any;
   return s.object(props).cast(params) as any;
 }
@@ -25,6 +27,7 @@ export function useRouteParams<P extends ObjectTypeProps>(
   props: P,
   initialParams?: InferObjectProps<P>,
 ): [InferObjectProps<P>, (params: P) => void] {
+  const { useLocation } = useRouteDeps();
   const routeParams = usePathParams(props);
   const location = useLocation();
   if (!initialParams)

@@ -27,7 +27,7 @@ export function dreamkitPlugin(inOptions: DreamkitPluginOptions = {}): Plugin {
       const searchParams = new URLSearchParams(searchString);
       const dreamkitPickEntry = searchParams.get("dk-pick-entry");
       const picks = searchParams.getAll("pick");
-      const transforms: TransformObject[] = [{ toSolidImport: true }];
+      const transforms: TransformObject[] = [{ toSolidLink: true }];
 
       if (dreamkitPickEntry) {
         transforms.push({
