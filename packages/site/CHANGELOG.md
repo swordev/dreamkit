@@ -1,5 +1,14 @@
 # @dreamkit/site
 
+## 0.0.10
+
+### Patch Changes
+
+- [`924830a`](https://github.com/swordev/dreamkit/commit/924830ab5acad80ec0e809caadf2ad7d1f0879c7) Thanks [@juanrgm](https://github.com/juanrgm)! - Fix playground buttons
+
+- Updated dependencies []:
+  - dreamkit@0.0.10
+
 ## 0.0.9
 
 ### Patch Changes

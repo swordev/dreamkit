@@ -1,5 +1,11 @@
 # @dreamkit/dev
 
+## 0.0.9
+
+### Patch Changes
+
+- [`9b5c908`](https://github.com/swordev/dreamkit/commit/9b5c908bb16c60093aa7be45ba1f3a7bbdeb1901) Thanks [@juanrgm](https://github.com/juanrgm)! - Remove object on reload routes
+
 ## 0.0.8
 
 ### Patch Changes
