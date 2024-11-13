@@ -1,0 +1,4 @@
+{
+  "extends": "@dreamkit/tsconfig",
+  "references": [{ "path": "../kind/tsconfig.build.json" }]
+}

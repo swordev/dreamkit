@@ -19,18 +19,20 @@ If you want to support the project, you have the possibility to do so [here](htt
 | [dreamkit](./packages/dreamkit)       | [![npm-badge-0]](https://www.npmjs.com/package/dreamkit)         | Toolkit for building Solid/SolidStart apps.            |
 | [@dreamkit/app](./packages/app)       | [![npm-badge-1]](https://www.npmjs.com/package/@dreamkit/app)    | Set of utils to create applications.                   |
 | [@dreamkit/dev](./packages/dev)       | [![npm-badge-2]](https://www.npmjs.com/package/@dreamkit/dev)    | Development tools for DreamKit.                        |
-| [@dreamkit/kind](./packages/kind)     | [![npm-badge-3]](https://www.npmjs.com/package/@dreamkit/kind)   | Alternative to instanceof compatible with partial HMR. |
-| [@dreamkit/schema](./packages/schema) | [![npm-badge-4]](https://www.npmjs.com/package/@dreamkit/schema) | Validation and management of typed schemas.            |
-| [@dreamkit/solid](./packages/solid)   | [![npm-badge-5]](https://www.npmjs.com/package/@dreamkit/solid)  | DreamKit tools for Solid.                              |
-| [@dreamkit/utils](./packages/utils)   | [![npm-badge-6]](https://www.npmjs.com/package/@dreamkit/utils)  | A collection of utilities for DreamKit.                |
+| [@dreamkit/ioc](./packages/ioc)       | [![npm-badge-3]](https://www.npmjs.com/package/@dreamkit/ioc)    | A simple and lightweight IoC container for TypeScript. |
+| [@dreamkit/kind](./packages/kind)     | [![npm-badge-4]](https://www.npmjs.com/package/@dreamkit/kind)   | Alternative to instanceof compatible with partial HMR. |
+| [@dreamkit/schema](./packages/schema) | [![npm-badge-5]](https://www.npmjs.com/package/@dreamkit/schema) | Validation and management of typed schemas.            |
+| [@dreamkit/solid](./packages/solid)   | [![npm-badge-6]](https://www.npmjs.com/package/@dreamkit/solid)  | DreamKit tools for Solid.                              |
+| [@dreamkit/utils](./packages/utils)   | [![npm-badge-7]](https://www.npmjs.com/package/@dreamkit/utils)  | A collection of utilities for DreamKit.                |
 
 [npm-badge-0]: https://img.shields.io/npm/v/dreamkit
 [npm-badge-1]: https://img.shields.io/npm/v/@dreamkit/app
 [npm-badge-2]: https://img.shields.io/npm/v/@dreamkit/dev
-[npm-badge-3]: https://img.shields.io/npm/v/@dreamkit/kind
-[npm-badge-4]: https://img.shields.io/npm/v/@dreamkit/schema
-[npm-badge-5]: https://img.shields.io/npm/v/@dreamkit/solid
-[npm-badge-6]: https://img.shields.io/npm/v/@dreamkit/utils
+[npm-badge-3]: https://img.shields.io/npm/v/@dreamkit/ioc
+[npm-badge-4]: https://img.shields.io/npm/v/@dreamkit/kind
+[npm-badge-5]: https://img.shields.io/npm/v/@dreamkit/schema
+[npm-badge-6]: https://img.shields.io/npm/v/@dreamkit/solid
+[npm-badge-7]: https://img.shields.io/npm/v/@dreamkit/utils
 
 ## Installation
 

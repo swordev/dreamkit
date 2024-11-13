@@ -1,0 +1,42 @@
+{
+  "name": "@dreamkit/ioc",
+  "version": "0.0.1",
+  "description": "A simple and lightweight IoC container for TypeScript.",
+  "keywords": [
+    "ioc",
+    "dependency injection",
+    "dependency",
+    "injection",
+    "container",
+    "typescript"
+  ],
+  "homepage": "https://dreamkit.dev",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/swordev/dreamkit/tree/main/packages/ioc"
+  },
+  "license": "MIT",
+  "author": "Juanra GM",
+  "contributors": [
+    {
+      "name": "Juanra GM",
+      "email": "juanrgm724@gmail.com",
+      "url": "https://github.com/juanrgm"
+    }
+  ],
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": "./lib/index.js",
+    "./*": "./lib/*"
+  },
+  "files": [
+    "lib"
+  ],
+  "dependencies": {
+    "@dreamkit/kind": "workspace:*"
+  },
+  "devDependencies": {
+    "@dreamkit/tsconfig": "workspace:*"
+  }
+}
