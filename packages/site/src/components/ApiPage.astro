@@ -7,6 +7,7 @@ import { type ExampleProps, normalizeExample } from "./../utils/examples.ts";
 
 interface Props {
   name: string;
+  imports?: string[];
   description?: string;
   definition: string;
   examples?: (ExampleProps | { default: string })[];
@@ -43,7 +44,7 @@ const examples = props.examples?.map(normalizeExample);
 
   <h2 id="import">Import</h2>
 
-  <ImportCode name={props.name} />
+  <ImportCode name={props.imports || props.name} />
 
   <h2 id="definition">Definition</h2>
 

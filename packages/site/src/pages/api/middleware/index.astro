@@ -1,0 +1,16 @@
+---
+import definition from "./_definition?raw";
+import ApiPage from "../../../components/ApiPage.astro";
+---
+
+<ApiPage
+  name="MiddlewareClass"
+  description="Middleware class builder."
+  definition={definition}
+  examples={[await import("./_examples/basic-usage.tsx?raw")]}
+>
+  <p>
+    Middlewares are classes that can be exported in the dreamkit entry and allow
+    to intervene in requests.
+  </p>
+</ApiPage>

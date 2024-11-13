@@ -3,9 +3,14 @@ import { Code } from "@astrojs/starlight/components";
 import { packageName } from "../params";
 
 interface Props {
-  name: string;
+  name: string | string[];
 }
 const { name } = Astro.props;
 ---
 
-<Code lang="ts" code={`import { ${name} } from "${packageName}";`} />
+<Code
+  lang="ts"
+  code={Array.isArray(name) && name.length > 1
+    ? `import {\n${name.map((value) => `  ${value}`).join(",\n")}\n} from "${packageName}";`
+    : `import { ${name} } from "${packageName}";`}
+/>

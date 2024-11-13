@@ -98,6 +98,22 @@ export default defineConfig({
               label: "Input",
               link: "/api/input",
             },
+            {
+              label: "Schema",
+              link: "/api/schema",
+            },
+            {
+              label: "Ioc",
+              link: "/api/ioc",
+            },
+            {
+              label: "Service",
+              link: "/api/service",
+            },
+            {
+              label: "Middleware",
+              link: "/api/middleware",
+            },
           ],
         },
         {

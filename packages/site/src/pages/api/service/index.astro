@@ -1,0 +1,20 @@
+---
+import definition from "./_definition?raw";
+import ApiPage from "../../../components/ApiPage.astro";
+---
+
+<ApiPage
+  name="ServiceClass"
+  description="Service class builder."
+  definition={definition}
+  examples={[await import("./_examples/basic-usage.tsx?raw")]}
+>
+  <p>
+    Services are classes that can be exported in the dreamkit entry and allow
+    you to initialize configurations that remain alive throughout the lifecycle
+    of the application.
+  </p>
+  <p>
+    If you edit a service in development mode, that service will be restarted.
+  </p>
+</ApiPage>

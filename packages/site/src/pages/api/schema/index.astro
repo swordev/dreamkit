@@ -1,0 +1,12 @@
+---
+import definition from "./_definition?raw";
+import ApiPage from "../../../components/ApiPage.astro";
+---
+
+<ApiPage
+  name="Schema"
+  imports={["s"]}
+  description="Schema type builder."
+  definition={definition}
+  examples={[await import("./_examples/validate.tsx?raw")]}
+/>
