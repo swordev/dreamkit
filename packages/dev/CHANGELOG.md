@@ -1,5 +1,18 @@
 # @dreamkit/dev
 
+## 0.0.7
+
+### Patch Changes
+
+- [`78cd2c1`](https://github.com/swordev/dreamkit/commit/78cd2c1bba7c6862968099123f7f5bb3bc95b059) Thanks [@juanrgm](https://github.com/juanrgm)! - Fix routing definitions
+
+- [`057e3ca`](https://github.com/swordev/dreamkit/commit/057e3ca1ecac36c94d66a3322bac8fde972fbd50) Thanks [@juanrgm](https://github.com/juanrgm)! - Fix dreamkit entry objects
+
+- [`91df630`](https://github.com/swordev/dreamkit/commit/91df6307e728d61cfbb8d1eeba23abf81584d0c2) Thanks [@juanrgm](https://github.com/juanrgm)! - Update deps
+
+- Updated dependencies [[`057e3ca`](https://github.com/swordev/dreamkit/commit/057e3ca1ecac36c94d66a3322bac8fde972fbd50)]:
+  - @dreamkit/app@0.0.3
+
 ## 0.0.6
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @dreamkit/app
 
+## 0.0.3
+
+### Patch Changes
+
+- [`057e3ca`](https://github.com/swordev/dreamkit/commit/057e3ca1ecac36c94d66a3322bac8fde972fbd50) Thanks [@juanrgm](https://github.com/juanrgm)! - Fix dreamkit entry objects
+
 ## 0.0.2
 
 ### Patch Changes
