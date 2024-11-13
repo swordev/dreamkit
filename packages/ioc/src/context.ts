@@ -124,7 +124,8 @@ export class IocContext {
           ? paramConfig.options.key
           : paramConfig.options.value
       ) as IocRegistryKey;
-      const configurable = !!Object.keys(paramConfig.configurable || {}).length;
+      const configurable = !!Object.keys(paramConfig.options.configurable || {})
+        .length;
       if (configurable) {
         (params as any)[name] = (
           configurableParams: Record<string, unknown>,
