@@ -1,0 +1,1 @@
+import{o as e}from"./stackblitz.Cf9Oavkp.js";import"./hoisted.BlAAbcCc.js";document.addEventListener("click",t=>{t.target instanceof HTMLElement&&t.target.matches("[data-project-code]")&&(t.preventDefault(),e({appCode:t.target.dataset.projectCode}))});
