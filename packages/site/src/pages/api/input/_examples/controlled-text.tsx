@@ -4,5 +4,7 @@ import { createSignal } from "solid-js";
 
 export default $route.path("/").create(() => {
   const [name, setName] = createSignal("");
-  return <Input value={name()} onChange={setName} />;
+  return (
+    <Input value={name()} onChange={(value) => setName(value.toUpperCase())} />
+  );
 });

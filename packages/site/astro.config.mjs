@@ -103,7 +103,7 @@ export default defineConfig({
               link: "/api/schema",
             },
             {
-              label: "Ioc",
+              label: "ioc",
               link: "/api/ioc",
             },
             {
