@@ -1,6 +1,6 @@
+export { RequestUrl } from "./RequestUrl.js";
 export { isRoute, isApp } from "./utils/kind.js";
 export { App } from "./App.js";
-export { $route } from "./$route.js";
 export {
   RouteBuilder,
   type RouteOptions,
@@ -9,3 +9,16 @@ export {
   type RouteProps,
 } from "./builders/RouteBuilder.js";
 export { defineRoutePath, routePath } from "./routePath.js";
+// objects
+export { $route } from "./objects/$route.js";
+export {
+  Middleware,
+  MiddlewareClass,
+  isMiddleware,
+} from "./objects/middleware.js";
+export {
+  Service,
+  ServiceClass,
+  type ServiceStop,
+  isService,
+} from "./objects/service.js";

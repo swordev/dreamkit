@@ -1,6 +1,19 @@
 import { normalize } from "path";
-import type { Internals } from "vinxi";
-import type { App } from "vinxi";
+import type { InputOptionsWithPlugins, Plugin } from "rollup";
+import type { App, Internals } from "vinxi";
+import type { Router } from "vinxi/http";
+
+export type VinxiApp = Omit<App, "getRouter"> & {
+  config: {
+    server?: App["config"]["server"] & {
+      plugins?: string[];
+      rollupConfig?: InputOptionsWithPlugins;
+    };
+  };
+  getRouter(name: string): Router & {
+    middleware?: string;
+  };
+};
 
 export type VinxiRoute = {
   _dreamkitEntryId?: string;
@@ -28,7 +41,11 @@ export type BaseFileSystemRouter = Omit<
   buildRoutesPromise: Promise<any> | undefined;
 };
 
-export function onVinxiApp(cb: (app: App) => void) {
+export function isVinxiBuild() {
+  return process.argv.slice(2).includes("build");
+}
+
+export function onVinxiApp(cb: (app: VinxiApp) => void) {
   Object.defineProperty(globalThis, "app", {
     configurable: true,
     set(value) {
@@ -45,6 +62,19 @@ export function onVinxiApp(cb: (app: App) => void) {
       value: (globalThis as any).app,
     });
   };
+}
+
+export function addVinxiPlugin(vinxiApp: VinxiApp, path: string) {
+  if (!vinxiApp.config.server.plugins) vinxiApp.config.server.plugins = [];
+  vinxiApp.config.server.plugins.push(path);
+}
+
+export function addVinxiRollupPlugin(vinxiApp: VinxiApp, plugin: Plugin) {
+  if (!vinxiApp.config.server.rollupConfig)
+    vinxiApp.config.server.rollupConfig = { plugins: [] };
+  if (!vinxiApp.config.server.rollupConfig.plugins)
+    vinxiApp.config.server.rollupConfig.plugins = [];
+  vinxiApp.config.server.rollupConfig.plugins.push(plugin);
 }
 
 export function onChangeVinxiRoutes(

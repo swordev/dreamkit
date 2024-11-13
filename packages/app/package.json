@@ -26,12 +26,15 @@
     "lib"
   ],
   "dependencies": {
+    "@dreamkit/ioc": "workspace:*",
     "@dreamkit/kind": "workspace:*",
     "@dreamkit/schema": "workspace:*",
-    "@dreamkit/utils": "workspace:*"
+    "@dreamkit/utils": "workspace:*",
+    "debug": "^4.3.7"
   },
   "devDependencies": {
-    "@dreamkit/tsconfig": "workspace:*"
+    "@dreamkit/tsconfig": "workspace:*",
+    "@types/debug": "^4.1.12"
   },
   "x-dreamkit": {
     "profile": "lib"

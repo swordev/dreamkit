@@ -44,6 +44,7 @@
     "es-module-lexer": "^1.5.4",
     "esbuild": "^0.24.0",
     "glob": "^11.0.0",
+    "rollup": "^4.26.0",
     "vite-plugin-solid": "^2.10.2",
     "vite-tsconfig-paths": "^5.1.2"
   },

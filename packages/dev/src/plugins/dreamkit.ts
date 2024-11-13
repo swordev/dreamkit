@@ -3,14 +3,15 @@ import { createDreamkitDevServer } from "../adapters/solid-start/dev-server.js";
 import { DreamkitPluginOptions } from "../options.js";
 import { tryGenerate } from "../utils/ast.js";
 import { TransformObject, transformCode } from "../utils/transform.js";
-import { onVinxiApp } from "../utils/vinxi.js";
+import { isVinxiBuild, onVinxiApp } from "../utils/vinxi.js";
 import { Plugin } from "vite";
 
 export function dreamkitPlugin(inOptions: DreamkitPluginOptions = {}): Plugin {
   let isSolidStart = false;
   let server: DreamkitDevServer;
-  const cleanup = onVinxiApp((app) => {
+  const cleanup = onVinxiApp(async (app) => {
     server = createDreamkitDevServer(app, inOptions);
+    if (!isVinxiBuild()) await server.start();
   });
   return {
     name: "dreamkit",

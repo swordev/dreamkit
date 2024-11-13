@@ -30,6 +30,7 @@ export type DreamkitDevOptions = OutDreamkitPluginOptions &
   DreamkitDevExternalOptions;
 
 export class DreamkitDevServer {
+  static instanceKey = "dk:dev-server";
   readonly app: App;
   readonly entry: VirtualShaking;
   protected runtimeServer: ViteDevServer | undefined;
@@ -63,6 +64,14 @@ export class DreamkitDevServer {
         await this.app.add(add);
       },
     });
+  }
+  static instance(): DreamkitDevServer {
+    const value = (globalThis as any)[DreamkitDevServer.instanceKey];
+    if (!value) throw new Error("DreamkitDevServer instance not found");
+    return value;
+  }
+  static saveInstance(instance: DreamkitDevServer) {
+    (globalThis as any)[DreamkitDevServer.instanceKey] = instance;
   }
   async fetch(path: string) {
     //const mod = $server.moduleGraph.getModuleById(shaking.entry);
@@ -144,8 +153,12 @@ export class DreamkitDevServer {
 
     await this.app.add(objects);
   }
+  async start() {
+    await this.app.start();
+  }
 
   async stop() {
+    if (this.app.started) await this.app.stop();
     await this.runtimeServer?.close();
     await this.runtime?.destroy();
   }

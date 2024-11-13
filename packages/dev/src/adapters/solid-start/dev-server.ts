@@ -9,13 +9,18 @@ import { execute } from "../../utils/runtime.js";
 import { createDelayedFunction } from "../../utils/timeout.js";
 import { transformCode } from "../../utils/transform.js";
 import {
+  addVinxiPlugin,
+  addVinxiRollupPlugin,
   BaseFileSystemRouter,
+  isVinxiBuild,
   onChangeVinxiRoutes,
+  VinxiApp,
   VinxiRoute,
 } from "../../utils/vinxi.js";
-import { isRoute, Route, $route } from "@dreamkit/app";
-import { join, resolve } from "path";
-import { App } from "vinxi";
+import { isRoute, Route, $route, App } from "@dreamkit/app";
+import { existsSync } from "fs";
+import { join, normalize, relative, resolve } from "path";
+import { fileURLToPath } from "url";
 import { Plugin } from "vite";
 
 const isEntryRoute = (id: string, value: unknown): value is Route =>
@@ -91,7 +96,7 @@ export async function fetchDreamkitDevOptions(options: {
 }
 
 function addVinxiEntryRoutes(
-  vinxiApp: App,
+  vinxiApp: VinxiApp,
   objectId: string,
   objectValue: Route,
   entryPath: string,
@@ -126,18 +131,27 @@ function addVinxiEntryRoutes(
     }
   }
 }
+
 export function createDreamkitDevServer(
-  vinxiApp: App,
+  vinxiApp: VinxiApp,
   inOptions: DreamkitPluginOptions = {},
 ) {
-  const ssrRouter = vinxiApp.config.routers.find(
+  const ssrFileRouter = vinxiApp.config.routers.find(
     (config) => config.name === "ssr",
   )!.internals.routes as BaseFileSystemRouter;
   const server = new DreamkitDevServer({
     root: resolve(vinxiApp.config.root ?? "."),
-    routeDir: ssrRouter.config.dir,
+    routeDir: ssrFileRouter.config.dir,
     ...inOptions,
   });
+
+  DreamkitDevServer.saveInstance(server);
+  App.saveInstance(server.app);
+
+  const selfPath = (file: string, rel?: boolean) => {
+    const path = fileURLToPath(new URL(`./${file}`, import.meta.url));
+    return normalize(rel ? relative(server.options.root, path) : path);
+  };
 
   async function onBuildStart() {
     await server.prepare(false);
@@ -235,6 +249,31 @@ export function createDreamkitDevServer(
         });
       }
     }
+  }
+
+  const ssrRouter = vinxiApp.getRouter("ssr");
+  ssrRouter.middleware = selfPath("middleware.js", true);
+
+  if (isVinxiBuild()) {
+    const dreamkitEntryId = "dk:entry";
+    const dreamkitEntry = join(
+      server.options.root,
+      "src/dreamkit.tsx",
+    ).replaceAll("\\", "/");
+    const existsDreamkitEntry = existsSync(dreamkitEntry);
+    addVinxiPlugin(vinxiApp, selfPath("prod-server.js"));
+    addVinxiRollupPlugin(vinxiApp, {
+      name: "dk:entry",
+      resolveId(id) {
+        if (id === dreamkitEntryId) {
+          return existsDreamkitEntry ? dreamkitEntry : `\0${dreamkitEntryId}`;
+        }
+      },
+      load(id) {
+        if (!existsDreamkitEntry && id === `\0${dreamkitEntryId}`)
+          return { code: "export {}" };
+      },
+    });
   }
 
   vinxiApp.hooks.hook("app:build:router:start", onBuildStart);
