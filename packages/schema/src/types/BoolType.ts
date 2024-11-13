@@ -6,7 +6,7 @@ const type = "bool" as const;
 
 export class MinimalBoolType<
   F extends $.TypeFlag.Options = {},
-> extends $.MinimalType<string, F, typeof type> {
+> extends $.MinimalType<boolean, F, typeof type> {
   override readonly type = type;
 }
 
@@ -44,12 +44,15 @@ export class BoolType<F extends $.TypeFlag.Options = {}> extends $.Type<
       super.onValidate(value, context),
     );
     if (!val.next()) return val.errors;
-    if (typeof value === "boolean") return val.addTypeError();
+    if (typeof value !== "boolean") return val.addTypeError();
     return val.errors;
   }
   protected override onJsonSchema(): $.JSONSchema7 {
     return {
       type: ["boolean", ...(this.options.nullable ? ["null" as const] : [])],
     };
+  }
+  protected override onRegex(): RegExp {
+    return new RegExp(`^(true|false|1|0)$`);
   }
 }

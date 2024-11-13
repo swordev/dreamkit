@@ -8,7 +8,7 @@ export type NumberTypeOptions = $.TypeOptions<{
 
 export class MinimalNumberType<
   F extends $.TypeFlag.Options = {},
-> extends $.MinimalType<string, F, "number"> {
+> extends $.MinimalType<number, F, "number"> {
   override readonly type = "number" as const;
 }
 
@@ -63,6 +63,19 @@ export class NumberType<F extends $.TypeFlag.Options = {}> extends $.Type<
       minimum: this.options.min,
       maximum: this.options.max,
     };
+  }
+  protected override onRegex(): RegExp {
+    let regex = "";
+    if (this.options.min === undefined || this.options.min < 0) {
+      const optionalNegative =
+        this.options.max === undefined || this.options.max >= 0;
+      regex += "\\-";
+      if (optionalNegative) regex += "?";
+    }
+    regex += "\\d+";
+    if (!this.options.integer) regex += "(?:\\.\\d+)?";
+
+    return new RegExp(`^${regex}$`);
   }
   min(value: number) {
     return this.clone({ min: value });
