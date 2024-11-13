@@ -1,3 +1,4 @@
+import { AnyType } from "./types/AnyType.js";
 import { ArrayType, type ArrayTypeItems } from "./types/ArrayType.js";
 import { BoolType } from "./types/BoolType.js";
 import { FileType } from "./types/FileType.js";
@@ -19,6 +20,9 @@ export class Schema {
       ...this.options,
       title: value,
     }) as any;
+  }
+  any() {
+    return new AnyType(this.typeOptions);
   }
   array<I extends ArrayTypeItems>(items: I): ArrayType<I> {
     return new ArrayType<I>(items, this.typeOptions);

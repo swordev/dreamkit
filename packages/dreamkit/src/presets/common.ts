@@ -4,25 +4,29 @@ export {
   type InferObjectProps,
   // ArrayType
   ArrayType,
-  ArrayTypeItems,
-  MinimalArrayType,
+  type ArrayTypeItems,
+  type MinimalArrayType,
   // BoolType
   BoolType,
-  MinimalBoolType,
+  type MinimalBoolType,
   // NumberType
   NumberType,
-  MinimalNumberType,
+  type MinimalNumberType,
   // ObjectType
   ObjectType,
-  ObjectTypeProps,
-  MinimalObjectType,
+  type ObjectTypeProps,
+  type MinimalObjectType,
   // StringType
   StringType,
-  MinimalStringType,
+  type MinimalStringType,
   // FileType
   FileType,
-  FileTypeOptions,
-  MinimalFileType,
+  type FileTypeOptions,
+  type MinimalFileType,
+  // AnyType
+  AnyType,
+  type AnyTypeOptions,
+  type MinimalAnyType,
   // Type
   MinimalType,
   Type,

@@ -18,4 +18,9 @@ export {
   type MinimalFileType,
 } from "./FileType.js";
 export { MinimalType } from "./MinimalType.js";
+export {
+  AnyType,
+  type AnyTypeOptions,
+  type MinimalAnyType,
+} from "./AnyType.js";
 export { Type } from "./Type.js";
