@@ -39,12 +39,17 @@ const { props } = Astro;
 <script>
   import openProject from "../utils/stackblitz.ts";
   document.addEventListener("click", (e) => {
-    if (
-      e.target instanceof HTMLElement &&
-      e.target.matches("[data-project-code]")
-    ) {
+    const element =
+      e.target instanceof HTMLElement
+        ? e.target.matches("[data-project-code]")
+          ? e.target
+          : undefined
+        : e.target instanceof Element
+          ? (e.target.closest("[data-project-code]") as HTMLElement)
+          : undefined;
+    if (element) {
       e.preventDefault();
-      openProject({ appCode: e.target.dataset.projectCode });
+      openProject({ appCode: element.dataset.projectCode });
     }
   });
 </script>
