@@ -15,6 +15,10 @@ export type TypeOptions<O = {}> = TypeFlag.Options & {
   title?: string;
 } & O;
 
+export type Context = {
+  path: string[];
+};
+
 export abstract class Type<
   D = any,
   F extends TypeFlag.Options = {},
@@ -24,6 +28,7 @@ export abstract class Type<
   static {
     kindSchema(this, "Type");
   }
+  protected context: Context | undefined;
   constructor(readonly options: O = {} as any) {
     super();
     (this as any).flags = {} as F;
@@ -55,6 +60,9 @@ export abstract class Type<
   protected onCast(input: unknown): unknown {
     return input;
   }
+  protected onRegex(): RegExp {
+    return /^.+$/;
+  }
   protected clone<R = this>(options: Partial<O> = {} as any): R {
     const newOptions: Record<string, any> = { ...this.options };
     for (const key in options) {
@@ -66,6 +74,11 @@ export abstract class Type<
       }
     }
     return this.onClone(newOptions as any) as any;
+  }
+  protected withContext(context: Context): this {
+    const self = this.clone();
+    self["context"] = context;
+    return self;
   }
   title(value: string | undefined): this {
     return this.clone({ title: value } as any);
@@ -84,7 +97,13 @@ export abstract class Type<
     return this.clone({ nullable: undefined, optional: undefined } as any);
   }
   validate(input: unknown, context?: TypeContext): TypeAssertErrorData<any>[] {
-    return this.onValidate(input, context || new TypeContext({ input }));
+    return this.onValidate(
+      input,
+      context || new TypeContext({ ...this.context, input }),
+    );
+  }
+  test(value: unknown): boolean {
+    return !this.validate(value).length;
   }
   assert(value: unknown): asserts value is TypeDef<this> {
     const errors = this.validate(value);
@@ -111,6 +130,9 @@ export abstract class Type<
       if (this.options.optional) return undefined;
     }
     return this.onCast(input);
+  }
+  regex(): RegExp {
+    return this.onRegex();
   }
   toJsonSchema(): JSONSchema7 {
     return this.onJsonSchema();
