@@ -1,5 +1,15 @@
 # @dreamkit/dev
 
+## 0.0.10
+
+### Patch Changes
+
+- [`36efbf5`](https://github.com/swordev/dreamkit/commit/36efbf581979abdeae0d6529ca2277ce033469ea) Thanks [@juanrgm](https://github.com/juanrgm)! - Add service and middleware
+
+- Updated dependencies [[`38b7195`](https://github.com/swordev/dreamkit/commit/38b7195b9da5a2b4329576fc808dba9cd8219326), [`36efbf5`](https://github.com/swordev/dreamkit/commit/36efbf581979abdeae0d6529ca2277ce033469ea)]:
+  - @dreamkit/schema@0.0.3
+  - @dreamkit/app@0.0.4
+
 ## 0.0.9
 
 ### Patch Changes

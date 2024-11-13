@@ -1,5 +1,11 @@
 # @dreamkit/utils
 
+## 0.0.3
+
+### Patch Changes
+
+- [`36efbf5`](https://github.com/swordev/dreamkit/commit/36efbf581979abdeae0d6529ca2277ce033469ea) Thanks [@juanrgm](https://github.com/juanrgm)! - Add service and middleware
+
 ## 0.0.2
 
 ### Patch Changes

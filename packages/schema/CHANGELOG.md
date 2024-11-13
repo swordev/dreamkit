@@ -1,5 +1,11 @@
 # @dreamkit/schema
 
+## 0.0.3
+
+### Patch Changes
+
+- [`38b7195`](https://github.com/swordev/dreamkit/commit/38b7195b9da5a2b4329576fc808dba9cd8219326) Thanks [@juanrgm](https://github.com/juanrgm)! - Add exports
+
 ## 0.0.2
 
 ### Patch Changes
