@@ -1,5 +1,14 @@
 # @dreamkit/site
 
+## 0.0.9
+
+### Patch Changes
+
+- [`af06375`](https://github.com/swordev/dreamkit/commit/af0637554c6579dbf31667a8e47807242ece5baf) Thanks [@juanrgm](https://github.com/juanrgm)! - Fix playground
+
+- Updated dependencies []:
+  - dreamkit@0.0.9
+
 ## 0.0.8
 
 ### Patch Changes
