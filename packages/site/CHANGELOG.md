@@ -1,5 +1,16 @@
 # @dreamkit/site
 
+## 0.0.8
+
+### Patch Changes
+
+- [`959e107`](https://github.com/swordev/dreamkit/commit/959e107e9c2f515ef5e4fdbe295ea32b515736f7) Thanks [@juanrgm](https://github.com/juanrgm)! - Add banner
+
+- [`cfbe2d8`](https://github.com/swordev/dreamkit/commit/cfbe2d867f360cdf896c047ed9ddc750131435ca) Thanks [@juanrgm](https://github.com/juanrgm)! - Update docs and allow playgrounds
+
+- Updated dependencies []:
+  - dreamkit@0.0.8
+
 ## 0.0.7
 
 ### Patch Changes
