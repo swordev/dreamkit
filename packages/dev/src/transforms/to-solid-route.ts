@@ -53,6 +53,7 @@ export function toSolidRoute(ast: ParseResult<t.File>) {
           ) {
             const bind = programPath.scope.bindings[dec.name];
             if (
+              bind &&
               bind.path.node.type === "VariableDeclarator" &&
               bind.path.node.init
             ) {
