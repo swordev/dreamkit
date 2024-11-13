@@ -21,6 +21,18 @@ import { Plugin } from "vite";
 const isEntryRoute = (id: string, value: unknown): value is Route =>
   !id.startsWith("/") && isRoute(value);
 
+// StackBlitz Polyfill
+
+class $CustomEvent extends Event {
+  public detail: any;
+  constructor(message: string, data?: { detail: any }) {
+    super(message);
+    this.detail = data?.detail;
+  }
+}
+
+const CustomEvent = globalThis.CustomEvent ?? $CustomEvent;
+
 export async function fetchDreamkitDevOptions(options: {
   root: string;
 }): Promise<DreamkitDevInOptions> {
