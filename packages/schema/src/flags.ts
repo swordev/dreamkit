@@ -1,3 +1,5 @@
+import { checkSomeObjectProp } from "@dreamkit/utils/object.js";
+
 export namespace TypeFlag {
   export enum Name {
     Nullable = "nullable",
@@ -34,6 +36,36 @@ export namespace TypeFlag {
   export type Optional<F> = TypeFlag.Merge<F, Object[Name.Optional]> & {};
   export type Nullish<F> = TypeFlag.Merge<F, Object[Name.Nullish]> & {};
   export type Required<F> = TypeFlag.Merge<F, Object[Name.Required]> & {};
+
+  export type CheckTypeFlags<
+    F1 extends TypeFlag.Query | undefined,
+    F2 extends TypeFlag.Options,
+  > = [F1] extends [undefined]
+    ? true
+    : keyof {
+        [K in keyof F1 as [F1[K]] extends [true]
+          ? K extends keyof F2
+            ? [F2[K]] extends [undefined]
+              ? never
+              : K
+            : never
+          : [F1[K]] extends [false]
+            ? K extends keyof F2
+              ? never
+              : K
+            : never]: true;
+      };
 }
 
 export const flagValues = Object.values(TypeFlag.Name);
+
+export function checkTypeFlags(
+  query: TypeFlag.Query,
+  propFlags: TypeFlag.Options,
+  nextPk?: any,
+) {
+  return checkSomeObjectProp(
+    query,
+    nextPk === true ? { ...propFlags, pk: true } : propFlags,
+  );
+}

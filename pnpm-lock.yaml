@@ -219,6 +219,9 @@ importers:
       '@dreamkit/kind':
         specifier: workspace:*
         version: link:../kind
+      '@dreamkit/utils':
+        specifier: workspace:*
+        version: link:../utils
       '@types/json-schema':
         specifier: ^7.0.15
         version: 7.0.15

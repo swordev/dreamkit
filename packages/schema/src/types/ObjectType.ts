@@ -1,6 +1,19 @@
+import { checkTypeFlags } from "../flags.js";
 import { InferType } from "../infer.js";
 import { isPlainObject } from "../utils/object.js";
+import type {
+  AssignInput,
+  AssignObjectType,
+  ConvertObjectType,
+  ConvertType,
+  DeepMergeFlags,
+  DeepProjectObjectType,
+  ObjectTypeMask,
+} from "./../utils/object-type.js";
 import * as $ from "./utils.js";
+import { kindOf } from "@dreamkit/kind";
+import { createProxy } from "@dreamkit/utils/proxy.js";
+import { Any } from "@dreamkit/utils/ts.js";
 
 export type ObjectTypeProps = Record<string, $.MinimalType>;
 export type ObjectTypeOptions<P extends ObjectTypeProps = ObjectTypeProps> =
@@ -18,6 +31,22 @@ export type ResolveOptionalFlag<T extends ObjectTypeProps> = {
     ? never
     : K]: InferType<T[K]>;
 };
+
+export type FieldObjectValue<T extends $.MinimalType> =
+  T extends MinimalObjectType ? FieldObject<T> : () => T;
+
+export type FieldObject<T extends MinimalObjectType> = {
+  [K in keyof T["props"]]: FieldObjectValue<T["props"][K]>;
+};
+
+export type FlatObjectKeys<
+  T extends Record<string, unknown>,
+  K = keyof T,
+> = K extends string
+  ? T[K] extends Record<string, unknown>
+    ? `${K}.${FlatObjectKeys<T[K]>}`
+    : `${K}`
+  : never;
 
 export class MinimalObjectType<
   P extends ObjectTypeProps = ObjectTypeProps,
@@ -60,11 +89,42 @@ export class ObjectType<
   declare optional: () => ObjectType<P, $.TypeFlag.Optional<F>>;
   declare nullish: () => ObjectType<P, $.TypeFlag.Nullish<F>>;
   declare required: () => ObjectType<P, $.TypeFlag.Required<F>>;
+  readonly prop: FieldObject<ObjectType<P, F>>;
   constructor(props: P, options: Omit<ObjectTypeOptions, "props"> = {}) {
     super({ ...options, props: { ...props } });
+    this.prop = createProxy((path) =>
+      this.findPropOrFail(path.join(".") as any)["withContext"]({ path }),
+    );
   }
   get props(): P {
     return this.options.props as P;
+  }
+  findProp(
+    name: unknown extends Any<$.TypeDef<this>>
+      ? string
+      : FlatObjectKeys<$.TypeDef<this>>,
+  ): $.Type | undefined {
+    if (!name.length) return this;
+    const path = name.split(".");
+    let ref: $.Type = this;
+    for (const level of path) {
+      //if (kindOf(ref, ArrayType)) ref = ref.items;
+      if (kindOf(ref, ObjectType)) {
+        ref = ref.props[level] as any as $.Type;
+      } else {
+        return;
+      }
+    }
+    return ref;
+  }
+  findPropOrFail(
+    name: unknown extends Any<$.TypeDef<this>>
+      ? string
+      : FlatObjectKeys<$.TypeDef<this>>,
+  ): $.Type {
+    const prop = this.findProp(name);
+    if (!prop) throw new Error(`Property not found: ${name}`);
+    return prop;
   }
   static create(options: ObjectTypeOptions): any {
     const { props, ...otherOptions } = options;
@@ -82,21 +142,22 @@ export class ObjectType<
     );
 
     if (!val.next()) return val.errors;
-    if (isPlainObject(value)) {
-      for (const name in this.options.props) {
-        const propType = this.options.props[name] as any as $.Type;
-        const propValue = value[name];
-        val.errors.push(...propType.validate(propValue, context.clone(name)));
-      }
-      for (const name in value) {
-        if (!this.options.props[name])
-          val.errors.push({
-            path: [...context.path, name],
-            code: "additionalProperty",
-            value: value,
-          });
-      }
+    if (!isPlainObject(value)) return val.addTypeError();
+
+    for (const name in this.options.props) {
+      const propType = this.options.props[name] as any as $.Type;
+      const propValue = value[name];
+      val.errors.push(...propType.validate(propValue, context.clone(name)));
     }
+    for (const name in value) {
+      if (!this.options.props[name])
+        val.errors.push({
+          path: [...context.path, name],
+          code: "additionalProperty",
+          value: value,
+        });
+    }
+
     return val.errors;
   }
   protected override onCast(value: unknown) {
@@ -137,5 +198,161 @@ export class ObjectType<
         {} as Record<string, $.JSONSchema7>,
       ),
     };
+  }
+  pick<Input extends ObjectTypeMask<P>>(
+    input: Input,
+  ): DeepProjectObjectType<this, Input> {
+    return this.clone({
+      props: Object.entries(this.options.props).reduce(
+        (props, [name, prop]) => {
+          if (input[name]) {
+            props[name] = kindOf(prop, ObjectType)
+              ? input[name] === true
+                ? prop
+                : prop.pick(input[name] as any)
+              : prop;
+          }
+          return props;
+        },
+        {} as ObjectTypeProps,
+      ) as P,
+    });
+  }
+  omit<Input extends ObjectTypeMask<P>>(
+    input: Input,
+  ): DeepProjectObjectType<this, Input, false> {
+    return this.clone({
+      props: Object.entries(this.options.props).reduce(
+        (props, [name, prop]) => {
+          if (!input[name]) {
+            props[name] = prop;
+          } else if (kindOf(prop, ObjectType)) {
+            if (input[name] && input[name] !== true) {
+              props[name] = prop.omit(input[name] as any);
+            }
+          }
+          return props;
+        },
+        {} as ObjectTypeProps,
+      ) as P,
+    });
+  }
+  assign<TAssign extends AssignInput>(
+    props: TAssign,
+    mergeObjectTypes: true,
+  ): AssignObjectType<this, TAssign, true>;
+  assign<TAssign extends AssignInput>(
+    props: TAssign,
+  ): AssignObjectType<this, TAssign>;
+  assign(props: AssignInput, merge = false): any {
+    if (!isPlainObject(props))
+      throw new Error(`Assign props is not plain object: ${props}`);
+    return this.clone({
+      props: Object.entries(props).reduce(
+        (props, [name, assignProp]) => {
+          if (merge && kindOf(assignProp, ObjectType))
+            assignProp = assignProp["props"];
+          props[name] = kindOf(assignProp, $.MinimalType)
+            ? assignProp
+            : kindOf(props[name], ObjectType)
+              ? ((props[name] as ObjectType).assign(
+                  assignProp as AssignInput,
+                  merge as true,
+                ) as any)
+              : new ObjectType({}, {}).assign(assignProp as any, merge as true);
+          return props;
+        },
+        { ...this.props } as ObjectTypeProps,
+      ) as P,
+    });
+  }
+
+  require(): ObjectType<
+    {
+      [K in keyof P]: ConvertType<P[K], $.TypeFlag.Name.Required>;
+    },
+    F
+  >;
+  require<
+    Mask extends {
+      [k in keyof P]?: true;
+    },
+  >(mask: Mask): ConvertObjectType<this, Mask, $.TypeFlag.Name.Required>;
+  require(mask?: Record<string, boolean>): any {
+    return this.clone({
+      props: Object.entries(this.options.props).reduce(
+        (props, [name, prop]) => {
+          props[name] =
+            !mask || mask[name]
+              ? (prop as any as $.Type)["clone"]({
+                  optional: undefined,
+                  nullable: undefined,
+                })
+              : prop;
+          return props;
+        },
+        {} as ObjectTypeProps,
+      ) as P,
+    });
+  }
+  deepPartial(): DeepMergeFlags<this, $.TypeFlag.Name.Optional>;
+  deepPartial<Q extends $.TypeFlag.Query>(
+    query: Q,
+  ): DeepMergeFlags<this, $.TypeFlag.Name.Optional, Q, false>;
+  deepPartial(
+    self: true,
+  ): DeepMergeFlags<this, $.TypeFlag.Name.Optional, undefined, true>;
+  deepPartial(input?: any): any {
+    const self = input === true;
+    const query = input && input !== true ? input : undefined;
+    return (self ? this.optional() : this)["clone"]({
+      props: Object.entries(this.options.props).reduce(
+        (props, [name, prop]) => {
+          props[name] = kindOf(prop, ObjectType)
+            ? prop.deepPartial(true)
+            : !query || checkTypeFlags(query, prop.flags)
+              ? (prop as $.Type).optional()
+              : prop;
+          return props;
+        },
+        {} as ObjectTypeProps,
+      ) as P,
+    });
+  }
+  deepRequired(): ObjectType<
+    DeepMergeFlags<this, $.TypeFlag.Name.Required>["props"],
+    F
+  >;
+  deepRequired(self: true): DeepMergeFlags<this, $.TypeFlag.Name.Required>;
+  deepRequired(self?: boolean): any {
+    return (self ? this.required() : this)["clone"]({
+      props: Object.entries(this.options.props).reduce(
+        (props, [name, prop]) => {
+          props[name] = kindOf(prop, ObjectType)
+            ? prop.deepRequired(true)
+            : (prop as $.Type).required();
+          return props;
+        },
+        {} as ObjectTypeProps,
+      ) as P,
+    });
+  }
+  deepNullish(): ObjectType<
+    DeepMergeFlags<this, $.TypeFlag.Name.Nullable>["props"],
+    F
+  >;
+  deepNullish(self: true): DeepMergeFlags<this, $.TypeFlag.Name.Nullable>;
+  deepNullish(self?: boolean): any {
+    return (self ? this.nullish() : this)["clone"]({
+      props: Object.entries(this.options.props).reduce(
+        (props, [name, prop]) => {
+          props[name] = kindOf(prop, ObjectType)
+            ? prop.deepNullish(true)
+            : (prop as $.Type).nullish();
+          return props;
+        },
+        {} as ObjectTypeProps,
+      ) as P,
+    });
   }
 }

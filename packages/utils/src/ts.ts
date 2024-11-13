@@ -1,3 +1,5 @@
+export type Obj = Record<string, any>;
+
 export type ExpandObject<T> = { [K in keyof T]: T[K] } & {};
 
 export type Merge<
@@ -8,4 +10,7 @@ export type Merge<
 
 export type Constructor<T = any> = { new (...args: any[]): T };
 
+export type If<V, C1, C2 = C1> = [V] extends [true] ? C1 : C2;
+
+export type Any<T> = T & string;
 export {};

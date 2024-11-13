@@ -27,6 +27,7 @@
   ],
   "dependencies": {
     "@dreamkit/kind": "workspace:*",
+    "@dreamkit/utils": "workspace:*",
     "@types/json-schema": "^7.0.15"
   },
   "devDependencies": {
