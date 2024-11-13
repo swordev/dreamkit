@@ -12,5 +12,10 @@ export {
   type InferObjectProps,
 } from "./ObjectType.js";
 export { StringType, type MinimalStringType } from "./StringType.js";
+export {
+  FileType,
+  type FileTypeOptions,
+  type MinimalFileType,
+} from "./FileType.js";
 export { MinimalType } from "./MinimalType.js";
 export { Type } from "./Type.js";

@@ -169,6 +169,9 @@ importers:
       '@dreamkit/dev':
         specifier: workspace:*
         version: link:../dev
+      '@dreamkit/ioc':
+        specifier: workspace:*
+        version: link:../ioc
       '@dreamkit/schema':
         specifier: workspace:*
         version: link:../schema
