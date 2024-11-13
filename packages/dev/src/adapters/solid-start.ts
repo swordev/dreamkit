@@ -209,10 +209,10 @@ export function createDreamkitDevServer(
             (router.name === "ssr" || router.name === "client");
           if (!isVinxiRouterPage) return;
           const id = vinxiRoute.path;
-          if (action === "remove") {
-            if (router.name === "ssr" && server.app.objects.has(id))
-              await server.app.remove([id]);
-          } else if (action === "add" || action === "update") {
+          if (router.name === "ssr" && server.app.objects.has(id))
+            await server.app.remove([id]);
+
+          if (action === "add" || action === "update") {
             const routeObject = await server.fetchDefault(vinxiRoute.filePath);
             if (isRoute(routeObject))
               vinxiRoute.$$route = {
