@@ -1,6 +1,6 @@
 import { DreamkitDevServer } from "./DreamkitDevServer.js";
 import { generate } from "./actions/generate.js";
-import { fetchDreamkitDevOptions } from "./adapters/solid-start.js";
+import { fetchDreamkitDevOptions } from "./adapters/solid-start/dev-server.js";
 import { createCommand } from "commander";
 import { relative, resolve } from "path";
 

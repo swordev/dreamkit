@@ -1,5 +1,5 @@
 import { DreamkitDevServer } from "../DreamkitDevServer.js";
-import { createDreamkitDevServer } from "../adapters/solid-start.js";
+import { createDreamkitDevServer } from "../adapters/solid-start/dev-server.js";
 import { DreamkitPluginOptions } from "../options.js";
 import { tryGenerate } from "../utils/ast.js";
 import { TransformObject, transformCode } from "../utils/transform.js";
