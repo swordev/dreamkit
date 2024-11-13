@@ -6,6 +6,9 @@ import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
 <StarlightPage
   frontmatter={{
     title: "dreamkit",
+    banner: {
+      content: `<a href="https://hack.solidjs.com">SolidHack 2024</a>: Visit the next version <a href="https://next.dreamkit.dev">here</a>.`,
+    },
     description: "A toolkit for building Solid/SolidStart apps.",
     template: "splash",
     hero: {
@@ -65,6 +68,11 @@ import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
     </Card>
   </CardGrid>
 </StarlightPage>
+<script is:inline>
+  if (location.hostname.startsWith("next.")) {
+    document.querySelector(".sl-banner")?.remove();
+  }
+</script>
 <script>
   import openProject from "../utils/stackblitz.ts";
   import code from "./entry/_examples/home-route.tsx?raw";
@@ -75,3 +83,10 @@ import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
     openProject({ appCode: code });
   });
 </script>
+
+<style is:global>
+  .hero {
+    grid-template-columns: 1fr !important;
+    justify-items: center !important;
+  }
+</style>
