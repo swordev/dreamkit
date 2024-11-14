@@ -1,0 +1,5 @@
+{
+  "compilerOptions": { "noEmit": true },
+  "extends": "./tsconfig.build.json",
+  "include": ["src", "test"]
+}
