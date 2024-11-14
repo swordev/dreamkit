@@ -5,6 +5,7 @@ import type {
   FuncOptions,
   FuncParams,
   FuncSelf,
+  FuncTitle,
   InferFuncParams,
   MergeFuncData,
 } from "./types.js";
@@ -36,8 +37,10 @@ export class FuncBuilder<T extends FuncData = FuncData> {
   protected clone(options: Partial<FuncOptions> = {}): this {
     return new FuncBuilder(cloneFuncOptions(this.options, options)) as any;
   }
-  title(value: string | undefined): this {
-    return this.clone({ title: value }) as this;
+  title<TTitle extends FuncTitle>(
+    value: TTitle,
+  ): FuncBuilder<MergeFuncData<T, { title: TTitle }>> {
+    return this.clone({ title: value }) as any;
   }
   register(key: IocRegistryKey, value: IocRegistryValue): this {
     return this.clone({ register: [[key, value]] }) as this;
@@ -83,6 +86,7 @@ export class FuncBuilder<T extends FuncData = FuncData> {
       return $cb(params);
     });
     const meta: FuncMeta = {
+      title: $this.options.title,
       get params() {
         return $this.options.params?.props as any;
       },

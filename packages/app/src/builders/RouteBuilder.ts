@@ -48,7 +48,7 @@ export type RouteProps<T extends RouteData = RouteData> = {
   params: InferRouteParams<T>;
   api: {
     [K in keyof T["api"]]: T["api"][K] extends Func<infer TData, infer TResult>
-      ? Func<{ params: TData["params"] }, Promise<Awaited<TResult>>>
+      ? Func<Omit<TData, "self">, Promise<Awaited<TResult>>>
       : never;
   };
 };

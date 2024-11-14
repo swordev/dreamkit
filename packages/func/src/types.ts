@@ -17,17 +17,19 @@ import type {
 
 export type FuncParams = MinimalObjectType | undefined;
 export type FuncSelf = IocParamsUserConfig | undefined;
+export type FuncTitle = string | undefined;
 
 export type FuncData<
   TParams extends FuncParams = FuncParams,
   TSelf extends FuncSelf = FuncSelf,
+  TTitle extends FuncTitle = FuncTitle,
 > = {
   params?: TParams;
   self?: TSelf;
+  title?: TTitle;
 };
 
 export type FuncOptions<T extends FuncData = FuncData> = T & {
-  title?: string;
   register?: IocRegistryData;
   context?: (options: FuncOptions) => IocContext;
 };
@@ -54,6 +56,7 @@ export type ResolveParamsType<A extends FuncParams | ObjectTypeProps> =
 export type FuncMeta<T extends FuncData = FuncData, R = any> = {
   readonly params: TryPick<TryPick<T, "params">, "props">;
   readonly $self: TryPick<T, "self", {}>;
+  readonly title: TryPick<T, "title">;
   $clone: () => Func;
   $options: FuncOptions<T>;
   bind: IocBind<
