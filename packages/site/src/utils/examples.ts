@@ -1,6 +1,9 @@
 export interface ExampleProps {
   title?: string;
-  code: string;
+  code: string | { default: string };
+  playground?: boolean;
+  pkgDependencies?: Record<string, string>;
+  pkgDevDependencies?: Record<string, string>;
 }
 
 export const getExampleId = (title: string) => {
@@ -9,7 +12,9 @@ export const getExampleId = (title: string) => {
 
 export const parseExample = (example: ExampleProps, index: number) => {
   let params: { title?: string; fileName?: string } = {};
-  const lines = example.code.split("\n").filter((line, index) => {
+  const code =
+    typeof example.code === "string" ? example.code : example.code.default;
+  const lines = code.split("\n").filter((line, index) => {
     if (!index && line.startsWith("//")) {
       const [inKey, ...values] = line.slice(2).split(":");
       const key = inKey.trim();
@@ -26,6 +31,7 @@ export const parseExample = (example: ExampleProps, index: number) => {
   });
   const title = example.title ?? params.title ?? `Example ${index + 1}`;
   return {
+    ...example,
     code: lines.join("\n"),
     title,
     id: getExampleId(title),

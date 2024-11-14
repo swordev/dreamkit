@@ -1,13 +1,16 @@
 ---
 import { Code, LinkButton } from "@astrojs/starlight/components";
 
-export interface Props {
+export type Props = {
   title: string | false;
   code: string;
   fileName?: string;
   id: string;
   playground?: boolean;
-}
+  pkgDependencies?: Record<string, string>;
+  pkgDevDependencies?: Record<string, string>;
+};
+
 const { props } = Astro;
 ---
 
@@ -23,6 +26,10 @@ const { props } = Astro;
         class="project"
         style="margin-block:0; font-size: 15px"
         data-project-code={props.code}
+        data-project-pkg-dependencies={JSON.stringify(props.pkgDependencies)}
+        data-project-pkg-dev-dependencies={JSON.stringify(
+          props.pkgDevDependencies
+        )}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -55,7 +62,17 @@ const { props } = Astro;
           : undefined;
     if (element) {
       e.preventDefault();
-      openProject({ appCode: element.dataset.projectCode });
+      const pkgDependencies = element.dataset.projectPkgDependencies
+        ? JSON.parse(element.dataset.projectPkgDependencies)
+        : {};
+      const pkgDevDependencies = element.dataset.projectPkgDevDependencies
+        ? JSON.parse(element.dataset.projectPkgDevDependencies)
+        : {};
+      openProject({
+        appCode: element.dataset.projectCode,
+        pkgDependencies,
+        pkgDevDependencies,
+      });
     }
   });
 </script>
