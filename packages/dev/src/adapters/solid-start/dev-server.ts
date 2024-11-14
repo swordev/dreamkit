@@ -119,7 +119,7 @@ function addVinxiEntryRoutes(
         filePath: entryPath,
       };
       if (!objectValue.$options.path) {
-        console.warn("Missing route path", { id: objectId });
+        console.warn("Missing route path at dreamkit entry", { id: objectId });
         continue;
       }
       routes._addRoute(vinxiRoute);
@@ -181,7 +181,19 @@ export function createDreamkitDevServer(
   }
 
   async function onDevStart() {
-    const tryGenerate = createDelayedFunction(() => generate(server), 300);
+    const tryGenerate = createDelayedFunction(async () => {
+      const paths = new Set<string>();
+      server.app.routes.forEach(async (route) => {
+        const path = route.$options.path;
+        if (path) {
+          if (paths.has(path)) {
+            console.warn("Duplicated route path", { path });
+          }
+          paths.add(path);
+        }
+      });
+      await generate(server);
+    }, 300);
     server.app
       .on("change", (data) => {
         if (isRoute(data.value)) {

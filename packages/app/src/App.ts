@@ -26,7 +26,9 @@ export class App {
     >(),
   };
   constructor() {
-    this.context = context.fork();
+    this.context = context.fork().register(App, {
+      value: this,
+    });
   }
   static instance(): App {
     const value = (globalThis as any)[App.instanceKey];
@@ -127,14 +129,18 @@ export class App {
     }
   }
 
-  async request(request: Request): Promise<Response | undefined> {
+  createRequestContext(request: Request) {
     const url = new RequestUrl(request.url, "http://localhost");
-    log("request", url.pathname);
-    const context = this.context
+    return this.context
       .fork()
       .register(Request, { value: request })
       .register(Headers, { value: request.headers })
       .register(RequestUrl, { value: url });
+  }
+
+  async request(request: Request): Promise<Response | undefined> {
+    const context = this.createRequestContext(request);
+    log("request", context.resolve(RequestUrl).pathname);
     for (const middleware of this.middlewares) {
       const $md = context.resolve(middleware);
       const response = await $md.onRequest();

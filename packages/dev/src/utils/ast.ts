@@ -30,6 +30,63 @@ export function tryGenerate(ast: ParseFileResult | undefined, log?: boolean) {
   }
 }
 
+export type Chain = {
+  rootName: string;
+  calls: { name: string; arguments: any[] }[];
+};
+
+export function parseCallsChain(input: t.CallExpression): Chain {
+  let ref: t.Node = input;
+  let rootName!: string;
+  let calls: { name: string; arguments: any[] }[] = [];
+  while (true) {
+    if (ref.callee.type === "MemberExpression") {
+      if (ref.callee.property.type !== "Identifier")
+        throw new Error("Invalid chain");
+      calls.push({
+        name: ref.callee.property.name,
+        arguments: ref.arguments,
+      });
+      if (ref.callee.object.type === "Identifier") {
+        rootName = ref.callee.object.name;
+        break;
+      } else if (ref.callee.object.type === "CallExpression") {
+        ref = ref.callee.object;
+      } else {
+        break;
+      }
+    }
+  }
+
+  return { rootName, calls: calls.reverse() };
+}
+
+export function createCallChains(chain: Chain) {
+  let ref: t.Expression = t.identifier(chain.rootName);
+  for (const call of chain.calls) {
+    ref = t.callExpression(
+      t.memberExpression(ref, t.identifier(call.name)),
+      call.arguments,
+    );
+  }
+  return ref;
+}
+
+export function removeChainCalls(input: t.CallExpression, names: string[]) {
+  const root = t.cloneNode(input);
+  let ref: t.Node = root;
+  while (ref.type === "CallExpression") {
+    ref = t.callExpression(ref.callee, ref.arguments);
+    if (ref.callee.type === "MemberExpression") {
+      if (ref.callee.property.type === "Identifier") {
+        if (names.includes(ref.callee.property.name)) continue;
+      }
+      ref = ref.callee.object;
+    }
+  }
+  return root;
+}
+
 export function getFirstChain(ref: t.Node) {
   let lastMember:
     | {

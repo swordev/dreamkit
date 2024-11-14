@@ -4,6 +4,7 @@ import { pickExport } from "../transforms/pick-export.js";
 import { replaceImportSpec } from "../transforms/replace-import-spec.js";
 import { toSolidLink } from "../transforms/to-solid-link.js";
 import { toSolidRoute } from "../transforms/to-solid-route.js";
+import { toSolidServerAction } from "../transforms/to-solid-server-action.js";
 import { tryGenerate, parseFile, ParseFileResult } from "./ast.js";
 
 const $transforms = {
@@ -13,6 +14,7 @@ const $transforms = {
   replaceImportSpec,
   toSolidRoute,
   toSolidLink,
+  toSolidServerAction,
 };
 
 export type TransformObject = {

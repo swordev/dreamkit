@@ -26,6 +26,7 @@
     "lib"
   ],
   "dependencies": {
+    "@dreamkit/func": "workspace:*",
     "@dreamkit/ioc": "workspace:*",
     "@dreamkit/kind": "workspace:*",
     "@dreamkit/schema": "workspace:*",

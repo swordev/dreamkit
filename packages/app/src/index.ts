@@ -1,5 +1,6 @@
 export { RequestUrl } from "./RequestUrl.js";
 export { isRoute, isApp } from "./utils/kind.js";
+export { isApi } from "./builders/ApiBuilder.js";
 export { App } from "./App.js";
 export {
   RouteBuilder,
@@ -11,6 +12,7 @@ export {
 export { defineRoutePath, routePath } from "./routePath.js";
 // objects
 export { $route } from "./objects/$route.js";
+export { $api } from "./objects/$api.js";
 export {
   Middleware,
   MiddlewareClass,

@@ -1,1 +1,1 @@
-export { $route, Link } from "@dreamkit/solid";
+export { $route, Link, $serverApi } from "@dreamkit/solid";

@@ -46,6 +46,9 @@ export {
   defineRoutePath,
   type Route,
   isRoute,
+  // api
+  $api,
+  isApi,
   // middleware
   Middleware,
   MiddlewareClass,

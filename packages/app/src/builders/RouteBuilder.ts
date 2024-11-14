@@ -1,4 +1,5 @@
 import { isRouteBuilder, kindRoute, kindRouteBuilder } from "../utils/kind.js";
+import { Func } from "@dreamkit/func";
 import { kindOf } from "@dreamkit/kind";
 import {
   InferType,
@@ -14,8 +15,14 @@ export type RoutePathParams<P extends string | number | symbol> = {
 };
 
 export type RouteParams = MinimalObjectType | undefined;
-export type RouteData<TParams extends RouteParams = RouteParams> = {
+export type RouteApi = { [key: string]: (...args: any[]) => any };
+
+export type RouteData<
+  TParams extends RouteParams = RouteParams,
+  TApi extends RouteApi = RouteApi,
+> = {
   params?: TParams;
+  api?: TApi;
 };
 
 export type RouteOptions<T extends RouteData = RouteData> = T & {
@@ -39,6 +46,11 @@ export type RouteProps<T extends RouteData = RouteData> = {
     ? never
     : (params: InferRouteParams<T>) => void;
   params: InferRouteParams<T>;
+  api: {
+    [K in keyof T["api"]]: T["api"][K] extends Func<infer TData, infer TResult>
+      ? Func<{ params: TData["params"] }, Promise<Awaited<TResult>>>
+      : never;
+  };
 };
 export type Route<T extends RouteData = RouteData> = ((props: any) => any) & {
   $options: RouteOptions<T>;
@@ -77,6 +89,11 @@ export class RouteBuilder<T extends RouteData = RouteData> {
   }
   title(value: string | undefined) {
     return this.clone({ title: value });
+  }
+  api<TApi extends RouteApi>(
+    api: TApi,
+  ): RouteBuilder<MergeFuncData<T, { api: T["api"] & TApi }>> {
+    return this.clone({ api }) as any;
   }
   params<TParams extends RouteParams>(
     type: TParams,

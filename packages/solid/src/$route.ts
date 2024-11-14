@@ -78,6 +78,7 @@ export const $route = /*#__PURE__*/ $baseRoute["clone"]({
         createComponent(options.component!, {
           params,
           setParams,
+          api: options.api,
         } as any),
       ];
     }
