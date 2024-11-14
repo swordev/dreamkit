@@ -122,7 +122,9 @@ export async function analyzeModule(path: string) {
 export function findExportedNames(ast: ParseFileResult) {
   return ast.program.body
     .map((stm) => {
-      if (stm.type === "ExportNamedDeclaration" && stm.declaration) {
+      if (stm.type === "ExportDefaultDeclaration") {
+        return "default";
+      } else if (stm.type === "ExportNamedDeclaration" && stm.declaration) {
         if (stm.declaration.type === "VariableDeclaration") {
           const [dec] = stm.declaration.declarations;
           if (dec.id.type === "Identifier") return dec.id.name;
