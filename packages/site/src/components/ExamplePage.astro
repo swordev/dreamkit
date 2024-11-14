@@ -1,0 +1,41 @@
+---
+import Example from "./Example.astro";
+import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+import { type ExampleProps, normalizeExample } from "./../utils/examples.ts";
+import { Aside } from "@astrojs/starlight/components";
+
+interface Props {
+  title: string;
+  example: ExampleProps | { default: string };
+  description: string;
+  wip?: boolean;
+}
+const props = Astro.props;
+const example = normalizeExample(props.example);
+---
+
+<StarlightPage
+  frontmatter={{
+    title: props.title,
+  }}
+>
+  <h2 id="description">Description</h2>
+
+  <p>{props.description}</p>
+
+  {
+    props.wip && (
+      <Aside type="caution">This example is a work in progress.</Aside>
+    )
+  }
+
+  <h2 id="import">Code</h2>
+
+  <Example {...example} title={false} playground={!props.wip} />
+
+  <style>
+    h2:not(#description) {
+      margin-top: 1.5rem !important;
+    }
+  </style>
+</StarlightPage>

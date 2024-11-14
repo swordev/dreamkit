@@ -1,0 +1,14 @@
+---
+import definition from "./_definition?raw";
+import ApiPage from "../../../components/ApiPage.astro";
+---
+
+<ApiPage
+  name="$api"
+  description="API builder."
+  definition={definition}
+  examples={[
+    await import("./_examples/simple-server-exec.tsx?raw"),
+    await import("./_examples/params-validation.tsx?raw"),
+  ]}
+/>

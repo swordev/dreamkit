@@ -91,6 +91,10 @@ export default defineConfig({
               link: "/api/link",
             },
             {
+              label: "$api",
+              link: "/api/$api",
+            },
+            {
               label: "createAction",
               link: "/api/create-action",
             },
@@ -122,6 +126,25 @@ export default defineConfig({
             {
               label: "generate",
               link: "/commands/generate",
+            },
+          ],
+        },
+        {
+          label: "Examples",
+          items: [
+            {
+              label: "SQLite",
+              link: "/examples/sqlite",
+            },
+            {
+              label: "Upload file",
+              link: "/examples/upload-file",
+              badge: "WIP",
+            },
+            {
+              label: "Track progress",
+              link: "/examples/track-progress",
+              badge: "WIP",
             },
           ],
         },

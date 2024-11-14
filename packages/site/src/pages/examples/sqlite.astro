@@ -1,0 +1,9 @@
+---
+import ExamplePage from "../../components/ExamplePage.astro";
+---
+
+<ExamplePage
+  title="SQlite"
+  description="Initialize a SQLite database and perform a select."
+  example={await import("./sqlite.code.tsx?raw")}
+/>

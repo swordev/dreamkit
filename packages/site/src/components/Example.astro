@@ -2,39 +2,45 @@
 import { Code, LinkButton } from "@astrojs/starlight/components";
 
 export interface Props {
-  title: string;
+  title: string | false;
   code: string;
   fileName?: string;
   id: string;
+  playground?: boolean;
 }
 const { props } = Astro;
 ---
 
-<h3 id={props.id}>{props.title}</h3>
+{props.title !== false && <h3 id={props.id}>{props.title}</h3>}
 
 <Code lang="ts" code={props.code} title={props.fileName} />
 
-<div style="text-align: right">
-  <LinkButton
-    href="#"
-    class="project"
-    style="margin-block:0; font-size: 15px"
-    data-project-code={props.code}
-  >
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="1em"
-      height="1em"
-      viewBox="0 0 16 16"
-      fill="currentColor"
-    >
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        d="m3.5 9.5l7.04-9l-2.04 6h4l-7.04 9l2.04-6z"></path>
-    </svg>
-  </LinkButton>
-</div>
+{
+  (props.playground ?? true) && (
+    <div style="text-align: right">
+      <LinkButton
+        href="#"
+        class="project"
+        style="margin-block:0; font-size: 15px"
+        data-project-code={props.code}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="1em"
+          height="1em"
+          viewBox="0 0 16 16"
+          fill="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="m3.5 9.5l7.04-9l-2.04 6h4l-7.04 9l2.04-6z"
+          />
+        </svg>
+      </LinkButton>
+    </div>
+  )
+}
 
 <script>
   import openProject from "../utils/stackblitz.ts";
