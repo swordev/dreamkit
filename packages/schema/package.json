@@ -1,6 +1,6 @@
 {
   "name": "@dreamkit/schema",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Validation and management of typed schemas.",
   "homepage": "https://dreamkit.dev",
   "repository": {

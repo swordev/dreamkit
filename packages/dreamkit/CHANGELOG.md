@@ -1,5 +1,17 @@
 # dreamkit
 
+## 0.0.12
+
+### Patch Changes
+
+- [`deb1bef`](https://github.com/swordev/dreamkit/commit/deb1bef614929920ead046fc04b81f7f1500feea) Thanks [@juanrgm](https://github.com/juanrgm)! - Add API builder
+
+- Updated dependencies [[`427aaba`](https://github.com/swordev/dreamkit/commit/427aaba0bf3fe003589c57a415f7d96e9790ae06), [`deb1bef`](https://github.com/swordev/dreamkit/commit/deb1bef614929920ead046fc04b81f7f1500feea), [`d058a44`](https://github.com/swordev/dreamkit/commit/d058a44f05200cb1eae3a707510bcb497203cb8d)]:
+  - @dreamkit/dev@0.0.11
+  - @dreamkit/solid@0.0.7
+  - @dreamkit/app@0.0.5
+  - @dreamkit/schema@0.0.4
+
 ## 0.0.11
 
 ### Patch Changes

@@ -1,5 +1,14 @@
 # @dreamkit/schema
 
+## 0.0.4
+
+### Patch Changes
+
+- [`d058a44`](https://github.com/swordev/dreamkit/commit/d058a44f05200cb1eae3a707510bcb497203cb8d) Thanks [@juanrgm](https://github.com/juanrgm)! - Add object methods
+
+- Updated dependencies [[`d058a44`](https://github.com/swordev/dreamkit/commit/d058a44f05200cb1eae3a707510bcb497203cb8d)]:
+  - @dreamkit/utils@0.0.4
+
 ## 0.0.3
 
 ### Patch Changes
