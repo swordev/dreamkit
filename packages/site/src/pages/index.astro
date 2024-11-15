@@ -7,7 +7,7 @@ import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
   frontmatter={{
     title: "dreamkit",
     banner: {
-      content: `<a href="https://hack.solidjs.com">SolidHack 2024</a>: Visit the next version <a href="https://next.dreamkit.dev">here</a>.`,
+      content: `Support the project at <a href="https://hack.solidjs.com">SolidHack 2024</a> | Next version <a href="https://next.dreamkit.dev">here</a>.`,
     },
     description: "A toolkit for building Solid/SolidStart apps.",
     template: "splash",
@@ -34,7 +34,7 @@ import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
       Typesafe. Single source of truth. Frictionless.
     </Card>
     <Card title="Compatibility" icon="random">
-      Compatible with Solid.js and SolidStart.
+      Compatible with SolidStart and Solid.js (WIP).
     </Card>
   </CardGrid>
 
@@ -57,15 +57,62 @@ import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
     </Card>
   </CardGrid>
 
-  <h2>Controlled</h2>
+  <h2>Controlled components</h2>
 
   <CardGrid>
-    <Card title="Controlled components" icon="seti:pipeline">
-      Use real controlled input components.
+    <Card title="Signals" icon="seti:pipeline">
+      Use real controlled input components with your Solid.js sigals.
     </Card>
     <Card title="Type safe" icon="seti:typescript">
       Safe typing based on input type.
     </Card>
+  </CardGrid>
+
+  <h2>IoC</h2>
+
+  <CardGrid>
+    <Card title="Inversion of Control">
+      Use the IoC container to manage your services and dependencies with total
+      control.
+    </Card>
+    <Card title="Safe testing" icon="seti:typescript">
+      Inject dependencies manually but with strong typing to check your code.
+    </Card>
+  </CardGrid>
+
+  <h2>Schema</h2>
+
+  <CardGrid>
+    <Card title="Single source of truth">
+      Define your schema and use it in everywhere (services, middlewares, api,
+      routes).
+    </Card>
+    <Card title="Any shape" icon="seti:typescript">
+      Shape your objects by making deep changes of any kind (pick, omit,
+      partial, require, nullish, assign).
+    </Card>
+  </CardGrid>
+
+  <h2>API</h2>
+
+  <CardGrid>
+    <Card title="Server and client united"
+      >With the user experience that the API builder offers you, you will
+      believe that client and server are just one.</Card
+    >
+    <Card title="Type safe with validation" icon="seti:typescript">
+      Input validation on both the client (before request) and the server with
+      type safe.
+    </Card>
+  </CardGrid>
+
+  <h2>Backend</h2>
+
+  <CardGrid>
+    <Card title="Service"
+      >Control the complete lifecycle of your application.</Card
+    >
+    <Card title="Middlewares">Handle requests with secure typing.</Card>
   </CardGrid>
 </StarlightPage>
 <script is:inline>

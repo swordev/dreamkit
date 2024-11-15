@@ -3,6 +3,7 @@ import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
 import Example from "../components/Example.astro";
 import homeRouteExample from "./entry/_examples/home-route.tsx?raw";
 import { normalizeExample } from "../utils/examples.ts";
+import { TabItem, Tabs } from "@astrojs/starlight/components";
 ---
 
 <StarlightPage
@@ -12,8 +13,8 @@ import { normalizeExample } from "../utils/examples.ts";
   headings={[{ depth: 2, text: "Example", slug: "example" }]}
 >
   <p>
-    The dreamkit entry allows you to programmatically define routes in a single
-    file.
+    The dreamkit entry allows you to programmatically define services,
+    middlewares, api functions and routes in a single file.
   </p>
 
   <p>
@@ -25,13 +26,24 @@ import { normalizeExample } from "../utils/examples.ts";
 
   <p>
     All examples shown in the documentation make use of this mechanic to more
-    easily illustrate the code.
+    easily illustrate the code. And remember, the entry is optional and you can
+    use the file routing system also.
   </p>
 
-  <Example
-    {...normalizeExample({ default: homeRouteExample })}
-    fileName="/src/dreamkit.tsx"
-    id="example"
-    title="Example"
-  />
+  <Tabs>
+    <TabItem label="DreamKit entry">
+      <Example
+        {...normalizeExample({ default: homeRouteExample })}
+        fileName="/src/dreamkit.tsx"
+        title={false}
+      />
+    </TabItem>
+    <TabItem label="File system routing">
+      <Example
+        {...normalizeExample({ default: homeRouteExample })}
+        fileName="/src/routes/index.tsx"
+        title={false}
+      />
+    </TabItem>
+  </Tabs>
 </StarlightPage>

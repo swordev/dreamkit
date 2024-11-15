@@ -1,4 +1,4 @@
-// title: Optional
+// title: Optional parameter
 import { context, IocClass, iocParam, ServiceClass } from "dreamkit";
 
 class StringModel {

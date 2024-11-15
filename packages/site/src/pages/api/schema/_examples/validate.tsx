@@ -1,4 +1,4 @@
-// title: Validate
+// title: String validation
 import { $route, Input, s } from "dreamkit";
 import { createSignal } from "solid-js";
 

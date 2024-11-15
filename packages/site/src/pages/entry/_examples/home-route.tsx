@@ -1,5 +1,5 @@
 import { $route } from "dreamkit";
 
-export const homeRoute = $route.path("/").create(() => {
-  return <>hello world</>;
+export default $route.path("/").create(() => {
+  return <>Hello World</>;
 });

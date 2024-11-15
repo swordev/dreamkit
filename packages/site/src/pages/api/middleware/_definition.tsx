@@ -1,5 +1,5 @@
 declare const MiddlewareClass: {
-  (self: object): {
+  (iocParams: object): {
     new (): {
       onRequest(): Response | undefined;
     };

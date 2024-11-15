@@ -7,7 +7,6 @@ export function buildProjectOptions(
   options: Partial<Project> & {
     pkgDependencies?: Record<string, string>;
     pkgDevDependencies?: Record<string, string>;
-    appCode?: string;
   },
 ) {
   const files = {
@@ -35,19 +34,30 @@ export function buildProjectOptions(
     title: "Dreamkit Example",
     description: "Example",
     ...(options || {}),
-    files: {
-      ...files,
-      "src/dreamkit.tsx": options.appCode ?? "",
-    },
+    files: files,
   } as Project;
 }
 
 export default function openProject(
-  project: Parameters<typeof buildProjectOptions>[0] = {},
+  project: Parameters<typeof buildProjectOptions>[0] & {
+    appFile?: string;
+    appCode: string;
+  },
   options: OpenOptions = {},
 ) {
-  sdk.openProject(buildProjectOptions(project), {
-    openFile: ["src/dreamkit.tsx"],
-    ...(options || {}),
-  });
+  let appFile = project.appFile ?? "src/dreamkit.tsx";
+  if (appFile.startsWith("/")) appFile = appFile.slice(1);
+  sdk.openProject(
+    buildProjectOptions({
+      ...project,
+      files: {
+        ...project.files,
+        [appFile]: project.appCode,
+      },
+    }),
+    {
+      openFile: [appFile],
+      ...(options || {}),
+    },
+  );
 }

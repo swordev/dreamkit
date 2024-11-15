@@ -25,6 +25,7 @@ const { props } = Astro;
         href="#"
         class="project"
         style="margin-block:0; font-size: 15px"
+        data-project-file-name={props.fileName}
         data-project-code={props.code}
         data-project-pkg-dependencies={JSON.stringify(props.pkgDependencies)}
         data-project-pkg-dev-dependencies={JSON.stringify(
@@ -69,9 +70,10 @@ const { props } = Astro;
         ? JSON.parse(element.dataset.projectPkgDevDependencies)
         : {};
       openProject({
-        appCode: element.dataset.projectCode,
         pkgDependencies,
         pkgDevDependencies,
+        appFile: element.dataset.projectFileName,
+        appCode: element.dataset.projectCode ?? "",
       });
     }
   });

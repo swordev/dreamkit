@@ -1,7 +1,7 @@
 declare const ServiceClass: {
-  (self: object): {
+  (iocParams: object): {
     new (): {
-      onStart(): undefined | (() => any);
+      onStart(): (() => any) | undefined;
       onStop(): any;
     };
   };
