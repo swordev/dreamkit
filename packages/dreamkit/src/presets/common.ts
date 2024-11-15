@@ -59,3 +59,4 @@ export {
   ServiceStop,
   isService,
 } from "@dreamkit/app";
+export { kind, kindOf, is, createKind } from "@dreamkit/kind";
