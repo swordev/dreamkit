@@ -1,5 +1,11 @@
 # @dreamkit/site
 
+## 0.0.15
+
+### Patch Changes
+
+- [`f590b5c`](https://github.com/swordev/dreamkit/commit/f590b5c11c0e139d807ae80b4d3cd27975ff48b0) Thanks [@juanrgm](https://github.com/juanrgm)! - Fix preview image
+
 ## 0.0.14
 
 ### Patch Changes
