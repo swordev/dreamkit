@@ -1,5 +1,14 @@
 # dreamkit
 
+## 0.0.13
+
+### Patch Changes
+
+- [`2f5d9ed`](https://github.com/swordev/dreamkit/commit/2f5d9ed235ad40d38843b4b541698c2c7ad610ef) Thanks [@juanrgm](https://github.com/juanrgm)! - Export kind package
+
+- Updated dependencies [[`6962c25`](https://github.com/swordev/dreamkit/commit/6962c25bed9c502c6db76816e8b76204e27e0e9c), [`83f07ac`](https://github.com/swordev/dreamkit/commit/83f07acd0d91e0e482c88b18f3b21457a6881571)]:
+  - @dreamkit/dev@0.0.12
+
 ## 0.0.12
 
 ### Patch Changes

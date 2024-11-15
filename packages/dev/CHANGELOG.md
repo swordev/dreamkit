@@ -1,5 +1,13 @@
 # @dreamkit/dev
 
+## 0.0.12
+
+### Patch Changes
+
+- [`6962c25`](https://github.com/swordev/dreamkit/commit/6962c25bed9c502c6db76816e8b76204e27e0e9c) Thanks [@juanrgm](https://github.com/juanrgm)! - Fix dreamkit entry
+
+- [`83f07ac`](https://github.com/swordev/dreamkit/commit/83f07acd0d91e0e482c88b18f3b21457a6881571) Thanks [@juanrgm](https://github.com/juanrgm)! - Fix solid server action transform
+
 ## 0.0.11
 
 ### Patch Changes
