@@ -66,6 +66,15 @@ export default defineConfig({
       social: {
         github: "https://github.com/swordev/dreamkit",
       },
+      head: [
+        {
+          tag: "meta",
+          attrs: {
+            property: "og:image",
+            content: "https://dreamkit.dev/assets/preview.png",
+          },
+        },
+      ],
       sidebar: [
         {
           label: "Get started",
