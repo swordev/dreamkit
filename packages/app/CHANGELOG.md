@@ -1,5 +1,11 @@
 # @dreamkit/app
 
+## 0.0.6
+
+### Patch Changes
+
+- [`629d0bd`](https://github.com/swordev/dreamkit/commit/629d0bdfed0a253c225f87faec836f53da8a5c69) Thanks [@juanrgm](https://github.com/juanrgm)! - Fix path matching
+
 ## 0.0.5
 
 ### Patch Changes

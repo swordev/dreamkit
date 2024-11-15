@@ -1,5 +1,14 @@
 # dreamkit
 
+## 0.0.14
+
+### Patch Changes
+
+- Updated dependencies [[`629d0bd`](https://github.com/swordev/dreamkit/commit/629d0bdfed0a253c225f87faec836f53da8a5c69)]:
+  - @dreamkit/app@0.0.6
+  - @dreamkit/dev@0.0.13
+  - @dreamkit/solid@0.0.8
+
 ## 0.0.13
 
 ### Patch Changes
