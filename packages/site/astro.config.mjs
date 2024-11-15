@@ -146,8 +146,8 @@ export default defineConfig({
               link: "/examples/sqlite",
             },
             {
-              label: "User session",
-              link: "/examples/session",
+              label: "Settings",
+              link: "/examples/settings",
               badge: "WIP",
             },
             {
