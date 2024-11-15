@@ -7,6 +7,7 @@ import {
   ObjectType,
   ObjectTypeProps,
   s,
+  type Type,
 } from "@dreamkit/schema";
 import type { Merge } from "@dreamkit/utils/ts.js";
 
@@ -119,7 +120,14 @@ export class RouteBuilder<T extends RouteData = RouteData> {
     if (typeof value === "string") return this.clone({ path: value }) as this;
     const params: any = new Proxy(
       {},
-      { get: (_, prop) => `:${prop as string}` },
+      {
+        get: (_, prop: string) => {
+          const optional = (
+            this.options.params?.props?.[prop as string] as Type
+          ).options.optional;
+          return `:${prop}${optional ? "?" : ""}`;
+        },
+      },
     );
     return this.clone({ path: value(params) });
   }
