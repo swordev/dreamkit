@@ -1,5 +1,11 @@
 # @dreamkit/site
 
+## 0.0.17
+
+### Patch Changes
+
+- [`93b56c3`](https://github.com/swordev/dreamkit/commit/93b56c3052c4f278d75d77e632b459a92d53e197) Thanks [@juanrgm](https://github.com/juanrgm)! - Add settings example
+
 ## 0.0.16
 
 ### Patch Changes
