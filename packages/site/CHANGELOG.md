@@ -1,5 +1,11 @@
 # @dreamkit/site
 
+## 0.0.16
+
+### Patch Changes
+
+- [`98b7f4f`](https://github.com/swordev/dreamkit/commit/98b7f4f04c2040674ea773afd96c11c581f50cef) Thanks [@juanrgm](https://github.com/juanrgm)! - Update examples and docs
+
 ## 0.0.15
 
 ### Patch Changes
