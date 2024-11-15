@@ -1,0 +1,20 @@
+{
+  "changesets": [],
+  "initialVersions": {
+    "@dreamkit/app": "0.0.6",
+    "@dreamkit/dev": "0.0.13",
+    "dreamkit": "0.0.14",
+    "@dreamkit/func": "0.0.2",
+    "@dreamkit/ioc": "0.0.1",
+    "@dreamkit/kind": "0.0.2",
+    "@dreamkit/prettier-config": "0.0.1",
+    "@dreamkit/schema": "0.0.4",
+    "@dreamkit/site": "0.0.17",
+    "@dreamkit/solid": "0.0.8",
+    "@dreamkit/tsconfig": "0.0.1",
+    "@dreamkit/utils": "0.0.4",
+    "@dreamkit/workspace": "0.0.3"
+  },
+  "mode": "pre",
+  "tag": "next"
+}
