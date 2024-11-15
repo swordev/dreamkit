@@ -34,6 +34,30 @@ export const toSolidServerAction = defineTransform({
             if (path.node.loc) clientApiLoc.push(path.node.loc);
           });
           programPath.traverse({
+            VariableDeclaration(path) {
+              const [dec] = path.node.declarations;
+              const init = dec.init;
+              if (
+                path.parent.type === "Program" &&
+                dec.id.type === "Identifier" &&
+                init?.type === "CallExpression"
+              ) {
+                const first = getFirstChain(init);
+                if (clientApiLoc.includes(first?.value.object.loc!)) {
+                  changes++;
+                  const replaced = createServerAction(
+                    programPath,
+                    dec.id.name,
+                    init,
+                    false,
+                  );
+                  const index = programPath.node.body.findIndex(
+                    (node) => node === path.node,
+                  );
+                  programPath.node.body.splice(index, 1, ...replaced);
+                }
+              }
+            },
             ExportNamedDeclaration(path) {
               if (path.node.declaration) {
                 if (path.node.declaration.type === "VariableDeclaration") {

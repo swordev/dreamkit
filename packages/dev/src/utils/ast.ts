@@ -22,10 +22,19 @@ export function parseFile(code: string) {
   });
 }
 
-export function tryGenerate(ast: ParseFileResult | undefined, log?: boolean) {
+export function tryGenerate(
+  ast: ParseFileResult | undefined,
+  log?: boolean | string,
+) {
   if (ast) {
     const generated = generator(ast);
-    if (log) console.log(generated);
+    if (log) {
+      if (typeof log === "string") {
+        console.log({ id: log, ...generated });
+      } else {
+        console.log(generated);
+      }
+    }
     return generated;
   }
 }
