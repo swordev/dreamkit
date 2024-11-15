@@ -1,21 +1,42 @@
 // title: Predefined params
-import { createAction, Input } from "dreamkit";
+import { $api, $route, createAction, Input, s } from "dreamkit";
 import { createEffect, createSignal } from "solid-js";
 
-function remove(key: string) {
-  console.log("key removed", key);
-}
+const remove = $api
+  .title("Remove")
+  .params({
+    key: s.title("Key").string(),
+  })
+  .create(({ key }) => {
+    console.log("Received", { key });
+  });
 
-export default function App() {
-  const [id, setKey] = createSignal("");
-  const $remove = createAction(remove).with(() => id());
-  createEffect(() => $remove.state === "success" && $remove.clear());
-  return (
-    <>
-      <Input value={id} onChange={setKey} />
-      <button onClick={$remove} disabled={$remove.running}>
-        Remove
-      </button>
-    </>
-  );
-}
+export default $route
+  .path("/")
+  .api({ remove })
+  .create(({ api }) => {
+    const [key, setKey] = createSignal("");
+    const remove = createAction(api.remove).with(() => ({ key: key() }));
+    createEffect(() => {
+      if (remove.state === "success") {
+        setKey("");
+        remove.clear();
+      }
+    });
+    return (
+      <>
+        <p>
+          <Input
+            placeholder={api.remove.params.key.options.title}
+            value={key}
+            onChange={setKey}
+          />
+        </p>
+        <button
+          onClick={remove}
+          disabled={remove.running}
+          children={api.remove.title}
+        />
+      </>
+    );
+  });

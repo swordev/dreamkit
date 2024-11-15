@@ -4,10 +4,11 @@ import { $route, Link, s } from "dreamkit";
 export const homeRoute = $route.path("/").create(() => (
   <>
     {/* @ts-expect-error */}
-    <Link href="/section">section</Link>
+    <Link href="/section">link without params</Link>
+    <br />
     {/* @ts-expect-error */}
     <Link href="/section" params={{ name: "test" }}>
-      section with params
+      link with params
     </Link>
   </>
 ));
@@ -15,10 +16,4 @@ export const homeRoute = $route.path("/").create(() => (
 export const sectionRoute = $route
   .path("/section")
   .params({ name: s.string().optional() })
-  .create(({ params }) => {
-    return (
-      <ul>
-        <li>name: {params.name}</li>
-      </ul>
-    );
-  });
+  .create(({ params }) => <>name: {params.name}</>);

@@ -47,7 +47,7 @@ export const fetchUsers = $api
 export const prueba = $route
   .api({ fetchUsers })
   .params(fetchUsers.params)
-  .path("/users2")
+  .path("/users")
   .create(({ api, params, setParams }) => {
     const [users] = createResource(() => ({ ...params }), api.fetchUsers);
     return (

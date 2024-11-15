@@ -1,58 +1,34 @@
 // title: Synced search params
-import { type InferObjectProps, Input, $route, s } from "dreamkit";
-import { createResource, For } from "solid-js";
-
-const users = Array.from({ length: 10 }).map((_, i) => ({
-  id: i + 1,
-  name: `User ${i + 1}`,
-  country: { code: ["US", "ES"][i % 2] },
-}));
-
-const params = {
-  id: s.number().optional(),
-  name: s.string().optional(),
-  country: s
-    .object({
-      code: s.string().optional(),
-    })
-    .optional(),
-};
-
-function fetchUsers(input: InferObjectProps<typeof params>) {
-  const name =
-    typeof input.name === "string" ? input.name.toLowerCase() : undefined;
-  return users.filter((user) => {
-    if (input.id !== undefined && user.id !== input.id) return false;
-    if (name && !user.name.toLowerCase().includes(name)) return false;
-    if (
-      input.country?.code !== undefined &&
-      user.country.code !== input.country.code
-    )
-      return false;
-    return true;
-  });
-}
+import { Input, $route, s } from "dreamkit";
 
 export default $route
   .path("/")
-  .params(params)
-  .onParamsError({ value: { id: 1 } })
+  .params(
+    s
+      .object({
+        name: s.string(),
+        country: s.object({
+          code: s.string(),
+        }),
+      })
+      .deepPartial(),
+  )
   .create(({ params, setParams }) => {
-    const [users] = createResource(
-      () => ({ ...params, country: { ...params.country } }),
-      fetchUsers,
-    );
-
     return (
-      <div>
-        <form>
+      <>
+        <i>Look at the address bar of your browser.</i>
+        <p>
           <Input
+            placeholder="name"
             value={params.name ?? ""}
             onChange={(name) =>
               setParams({ ...params, name: name || undefined })
             }
           />
+        </p>
+        <p>
           <Input
+            placeholder="country code"
             value={params.country?.code ?? ""}
             onChange={(code) =>
               setParams({
@@ -61,16 +37,7 @@ export default $route
               })
             }
           />
-        </form>
-        <ul>
-          <For each={users()} fallback={<li>No results</li>}>
-            {(user) => (
-              <li>
-                {user.id}. {user.name} ({user.country.code})
-              </li>
-            )}
-          </For>
-        </ul>
-      </div>
+        </p>
+      </>
     );
   });

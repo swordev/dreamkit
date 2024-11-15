@@ -4,11 +4,12 @@ import { $route, Link, s } from "dreamkit";
 export const homeRoute = $route.path("/").create(() => (
   <>
     {/* @ts-expect-error */}
-    <Link href="/user" params={{ id: 1 }}>
+    <Link href="/user/:id" params={{ id: 1 }}>
       user 1
     </Link>
+    <br />
     {/* @ts-expect-error */}
-    <Link href="/user" params={{ id: 2 }}>
+    <Link href="/user/:id" params={{ id: 2 }}>
       user 2
     </Link>
   </>

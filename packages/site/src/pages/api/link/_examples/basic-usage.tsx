@@ -1,12 +1,12 @@
 // title: Basic usage
 import { $route, Link, s } from "dreamkit";
 
-export const otherRoute = $route
-  .path("/other")
-  .params({ value: s.string() })
+export const sectionRoute = $route
+  .path("/section")
+  .params({ name: s.string() })
   .create(({ params }) => (
     <>
-      <p>{params.value}</p>
+      <p>section: {params.name}</p>
       {/* @ts-expect-error */}
       <Link href="/">Go to home</Link>
     </>
@@ -15,8 +15,8 @@ export const otherRoute = $route
 export default $route.path("/").create(() => (
   <>
     {/* @ts-expect-error */}
-    <Link href="/other" params={{ value: 1 }}>
-      Go to other
+    <Link href="/section" params={{ name: "one" }}>
+      Go to section one
     </Link>
   </>
 ));

@@ -1,33 +1,31 @@
 // title: Basic usage
-import { context, IocClass, ServiceClass } from "dreamkit";
+import { $route, context, IocClass } from "dreamkit";
 
-class Child extends IocClass({}) {
-  process(value: string) {
-    return value;
+abstract class ThirdModel {
+  abstract fetch(): string;
+}
+
+class MyModel extends IocClass({ ThirdModel }) {
+  fetch() {
+    return this.thirdModel.fetch();
   }
 }
 
-class CustomChild extends Child {
-  override process(value: string): string {
-    return value.toUpperCase();
+export default $route.path("/").create(() => {
+  class ThirdModelImpl extends ThirdModel {
+    override fetch() {
+      return "resolved";
+    }
   }
-}
-
-class Parent extends IocClass({ Child }) {
-  process(value: string) {
-    return this.child.process(value);
-  }
-}
-
-export class TestService extends ServiceClass({ Parent }) {
-  onStart() {
-    const value0 = this.parent.process("hello");
-    const value1 = new Parent({ child: new Child() }).process("hello");
-    const value2 = context
-      .fork()
-      .register(Child, { useClass: CustomChild })
-      .resolve(Parent)
-      .process("world");
-    console.log([value0, value1, value2]); // ["hello", "WORLD"]
-  }
-}
+  const manualModel = new MyModel({ thirdModel: new ThirdModelImpl() });
+  const autoModel = context
+    .fork()
+    .register(ThirdModel, { value: new ThirdModelImpl() })
+    .resolve(MyModel);
+  return (
+    <>
+      <p>{manualModel.fetch()}</p>
+      <p>{autoModel.fetch()}</p>
+    </>
+  );
+});

@@ -1,28 +1,39 @@
 // title: Optional
-import { IocClass, iocParam, ServiceClass } from "dreamkit";
+import { context, IocClass, iocParam, ServiceClass } from "dreamkit";
 
-class Child extends IocClass({}) {
-  process(value: string) {
-    return value;
+class StringModel {
+  toUpperCase(value: string) {
+    return value.toUpperCase();
   }
 }
 
-class Parent extends IocClass({ child: iocParam(Child).optional() }) {
-  process(value: string) {
-    return this.child?.process(value);
+class MyModel extends IocClass({
+  string: iocParam(StringModel).optional(),
+}) {
+  toUpperCase(value: string) {
+    return this.string?.toUpperCase(value);
   }
 }
 
-export class TestService extends ServiceClass({}) {
+export class MyService extends ServiceClass({}) {
   onStart() {
-    const value1 = new Parent({}).process("hello");
-    const value2 = new Parent({
-      child: {
-        process(value) {
+    const model1 = new MyModel({});
+    const model2 = new MyModel({
+      string: {
+        toUpperCase(value) {
           return value.toUpperCase();
         },
       },
-    }).process("world");
-    console.log([value1, value2]); // [undefined, "WORLD"]
+    });
+    const model3 = context
+      .fork()
+      .register(StringModel, { useFactory: () => new StringModel() })
+      .resolve(MyModel);
+
+    console.log({
+      model1: model1.toUpperCase("text"), // undefined
+      model2: model2.toUpperCase("text"), // "TEXT"
+      model3: model3.toUpperCase("text"), // "TEXT"
+    });
   }
 }

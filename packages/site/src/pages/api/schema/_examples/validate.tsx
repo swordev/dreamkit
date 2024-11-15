@@ -1,19 +1,18 @@
 // title: Validate
-import { $route, s, type InferType } from "dreamkit";
+import { $route, Input, s } from "dreamkit";
+import { createSignal } from "solid-js";
 
-const type = s.object({
-  name: s.string().min(3),
-  enabled: s.bool(),
-});
+const type = s.string().min(3).max(5);
 
 export default $route.path("/").create(() => {
-  const value: InferType<typeof type> = {
-    name: "ab",
-    enabled: true,
-  };
+  const [name, setName] = createSignal("");
   return (
     <>
-      <p>validate: {JSON.stringify(type.validate(value), null, 2)}</p>
+      <Input value={name} onChange={setName} />
+      <p>
+        {"errors: "}
+        {JSON.stringify(type.validate(name()), null, 2)}
+      </p>
     </>
   );
 });
