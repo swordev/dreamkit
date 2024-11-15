@@ -21,6 +21,8 @@ export const parseExample = (example: ExampleProps, index: number) => {
       const value = values.join(":").trim();
       (params as any)[key] = value;
       return false;
+    } else if (line.trim() === "// @ts-nocheck") {
+      return false;
     } else if (line.trim() === "// @ts-expect-error") {
       return false;
     } else if (line.trim() === "{/* @ts-expect-error */}") {
