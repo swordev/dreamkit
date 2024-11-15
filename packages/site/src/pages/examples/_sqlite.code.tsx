@@ -8,8 +8,7 @@ import {
   s,
   ServiceClass,
 } from "dreamkit";
-import { For } from "solid-js";
-import { createResource } from "solid-js";
+import { createResource, For } from "solid-js";
 
 const userSchema = s.object({
   id: s.number().integer().min(1),

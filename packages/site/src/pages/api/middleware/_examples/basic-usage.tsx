@@ -29,6 +29,7 @@ export const sectionRoute = $route.path("/section").create(() => {
       <button onClick={() => location.reload()}>
         Click here to reload and call to the middleware
       </button>
+      <br />
       <a href="/ping" target="_blank">
         Go to ping
       </a>

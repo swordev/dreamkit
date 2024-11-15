@@ -25,7 +25,7 @@ const schemas: Record<string, ObjectType<{}>> = {
   omitName: object.omit({ profile: { name: true } }),
 };
 
-export default $route.path("/schema").create(() => {
+export default $route.path("/").create(() => {
   const [schema, setSchema] = createSignal("pickOnlyId");
   const [json, setJson] = createSignal(JSON.stringify({ id: 1 }, null, 2));
   const errors = () => {

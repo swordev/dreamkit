@@ -50,23 +50,6 @@ import { packageName, pluginName } from "../params";
       <li>
         <span id="config">Set-up the vite plugin</span>
         <Tabs syncKey="solid">
-          <TabItem label="Solid">
-            <Code
-              ins={[3, `${pluginName}()`]}
-              title="vite.config.ts"
-              lang="typescript"
-              code={`
-
-import { defineConfig } from "vite";
-import solidPlugin from "vite-plugin-solid";
-import { ${pluginName} } from "${packageName}/dev";
-
-export default defineConfig({
-    plugins: [${pluginName}(), solidPlugin()]
-});
-`}
-            />
-          </TabItem>
           <TabItem label="SolidStart">
             <Code
               ins={[2, `${pluginName}()`]}
@@ -83,6 +66,23 @@ export default defineConfig({
     },
 });
 `}
+            />
+          </TabItem>
+          <TabItem label="Solid (WIP)">
+            <Code
+              ins={[3, `${pluginName}()`]}
+              title="vite.config.ts"
+              lang="typescript"
+              code={`
+  
+  import { defineConfig } from "vite";
+  import solidPlugin from "vite-plugin-solid";
+  import { ${pluginName} } from "${packageName}/dev";
+  
+  export default defineConfig({
+    plugins: [${pluginName}(), solidPlugin()]
+  });
+  `}
             />
           </TabItem>
         </Tabs>
