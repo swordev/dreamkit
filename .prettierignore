@@ -3,3 +3,4 @@
 packages/*/dist
 packages/*/lib
 pnpm-lock.yaml
+.changeset/pre.json
