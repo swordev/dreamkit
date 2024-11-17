@@ -1,4 +1,4 @@
-import { $api, s } from "dreamkit";
+import { $api, $route, createAction, s } from "dreamkit";
 import { createSignal } from "solid-js";
 // @ts-expect-error
 import { setTimeout } from "timers/promise";
@@ -16,10 +16,11 @@ const start = $api
 
 export default $route.path("/").create(() => {
   const [progress, onProgress] = createSignal(0);
+  // @ts-expect-error
   const action = createAction(start).with({ onProgress });
   return (
     <div>
-      <button onClick={action} disabled={action.loading}>
+      <button onClick={action} disabled={action.running}>
         start
       </button>
       <p>Progress: {progress()}%</p>
