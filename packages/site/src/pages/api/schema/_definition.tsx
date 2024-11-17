@@ -8,12 +8,14 @@ import type {
   Type,
 } from "dreamkit";
 
-declare const s: {
-  title(value: string): typeof s;
-  object(props: Record<string, Type>): ObjectType;
-  array(type: Type): ArrayType;
-  string(): StringType;
-  number(): NumberType;
-  bool(): BoolType;
-  file(): FileType;
-};
+declare module "dreamkit/definitions" {
+  const s: {
+    title(value: string): typeof s;
+    object(props: Record<string, Type>): ObjectType;
+    array(type: Type): ArrayType;
+    string(): StringType;
+    number(): NumberType;
+    bool(): BoolType;
+    file(): FileType;
+  };
+}

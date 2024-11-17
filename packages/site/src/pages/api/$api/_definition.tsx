@@ -1,5 +1,7 @@
-declare const $api: {
-  params: (value: object) => typeof $api;
-  self: (value: object) => typeof $api;
-  create: (this: object, params: object) => any;
-};
+declare module "dreamkit/definitions" {
+  const $api: {
+    params: (value: object) => typeof $api;
+    self: (value: object) => typeof $api;
+    create: (this: object, params: object) => any;
+  };
+}

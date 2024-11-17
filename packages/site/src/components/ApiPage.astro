@@ -14,6 +14,30 @@ interface Props {
 }
 const props = Astro.props;
 const examples = props.examples?.map(normalizeExample);
+const definition = normalizeDeclare(props.definition);
+
+function normalizeDeclare(value: string) {
+  const pattern = 'declare module "dreamkit/definitions" {';
+  let declaring = false;
+  return value
+    .split("\n")
+    .map((line) => {
+      if (line === pattern) {
+        declaring = true;
+        return null;
+      } else if (declaring) {
+        if (line === "}\n") {
+          declaring = false;
+          return null;
+        } else return line.startsWith("  ") ? line.slice(2) : line;
+      } else {
+        return line;
+      }
+    })
+    .filter((v) => typeof v === "string")
+    .join("\n")
+    .replace(/}\n$/, "");
+}
 ---
 
 <StarlightPage
@@ -48,7 +72,7 @@ const examples = props.examples?.map(normalizeExample);
 
   <h2 id="definition">Definition</h2>
 
-  <Code lang="ts" code={props.definition} />
+  <Code lang="ts" code={definition} />
 
   {
     examples && (
