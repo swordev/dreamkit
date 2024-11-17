@@ -17,23 +17,41 @@ export type RoutePathParams<P extends string | number | symbol> = {
 
 export type RouteParams = MinimalObjectType | undefined;
 export type RouteApi = { [key: string]: (...args: any[]) => any };
+export type ResolveRouteApi<T extends RouteData> = keyof T["api"] extends never
+  ? never
+  : {
+      [K in keyof T["api"]]: T["api"][K] extends Func<
+        infer TData,
+        infer TResult
+      >
+        ? Func<Omit<TData, "self">, Promise<Awaited<TResult>>>
+        : never;
+    };
 
+export type RoutePreloadData<T extends RouteData> = {
+  intent: string;
+  params: InferRouteParams<T>;
+  api: ResolveRouteApi<T>;
+};
 export type RouteData<
   TParams extends RouteParams = RouteParams,
   TApi extends RouteApi = RouteApi,
+  TData extends unknown = unknown,
 > = {
   params?: TParams;
   api?: TApi;
+  _data?: TData;
 };
 
 export type RouteOptions<T extends RouteData = RouteData> = T & {
   title?: string;
   path?: string;
   onParamsError?: { value: InferRouteParams<T> } | { redirect: string };
+  preload?: (data: RoutePreloadData<T>) => any;
   component?: (props: any) => any;
   routeDefinition?: (options: RouteOptions) => any;
+  createComponent?: (options: RouteOptions, props: any) => any;
   filePath?: string;
-  createComponent?: (options: RouteOptions) => any;
 };
 
 export type InferRouteParams<T extends RouteData> = [undefined] extends [
@@ -47,11 +65,8 @@ export type RouteProps<T extends RouteData = RouteData> = {
     ? never
     : (params: InferRouteParams<T>) => void;
   params: InferRouteParams<T>;
-  api: {
-    [K in keyof T["api"]]: T["api"][K] extends Func<infer TData, infer TResult>
-      ? Func<Omit<TData, "self">, Promise<Awaited<TResult>>>
-      : never;
-  };
+  api: ResolveRouteApi<T>;
+  data: T["_data"];
 };
 export type Route<T extends RouteData = RouteData> = ((props: any) => any) & {
   $options: RouteOptions<T>;
@@ -131,6 +146,11 @@ export class RouteBuilder<T extends RouteData = RouteData> {
     );
     return this.clone({ path: value(params) });
   }
+  preload<TData>(
+    cb: (data: RoutePreloadData<T>) => TData,
+  ): RouteBuilder<MergeFuncData<T, { _data: TData }>> {
+    return this.clone({ preload: cb as any }) as any;
+  }
   protected createRouteDefinition(): any {
     if (!this.options.routeDefinition)
       throw new Error("routeDefinition is not defined");
@@ -141,7 +161,7 @@ export class RouteBuilder<T extends RouteData = RouteData> {
     const result = function (props: any) {
       if (!self.options.createComponent)
         throw new Error("createComponent is not defined");
-      return self.options.createComponent(self.options as RouteOptions);
+      return self.options.createComponent(self.options as RouteOptions, props);
     };
     kindRoute(result);
     Object.assign(result, {

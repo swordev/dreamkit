@@ -213,10 +213,16 @@ export function prependChainCall(
 }
 
 export function addImports<T extends string>(
-  program: NodePath<t.Program>,
+  program: NodePath<t.Program> & {
+    __imports?: Record<string, Record<string, string>>;
+  },
   specifiers: T[],
   source: string,
 ): { [K in T]: string } {
+  const cacheKey = [...[...specifiers].sort(), source].join("|");
+  if (!program.__imports) program.__imports = {};
+  if (program.__imports?.[cacheKey])
+    return program.__imports?.[cacheKey] as any;
   const id = specifiers.map((name) => program.scope.generateUid(name));
   program.node.body.unshift(
     t.importDeclaration(
@@ -227,11 +233,13 @@ export function addImports<T extends string>(
       t.stringLiteral(source),
     ),
   );
-  return specifiers.reduce(
+  const result = specifiers.reduce(
     (result, name, index) => {
       result[name] = id[index];
       return result;
     },
     {} as Record<(typeof specifiers)[number], string>,
   );
+  program.__imports[cacheKey] = result;
+  return result;
 }

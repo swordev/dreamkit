@@ -105,6 +105,45 @@ function createServerAction(
   const chain = parseCallsChain(call);
 
   const serverMethods = ["self", "create"];
+  const cache = chain.calls.find((call) => call.name === "cache");
+  let cacheImport = cache
+    ? addImports(program, ["query"], "@solidjs/router")
+    : undefined;
+
+  const serverCallback = t.arrowFunctionExpression(
+    [t.identifier("params")],
+    t.blockStatement(
+      [
+        // const serverApi = $serverApi.clone(baseFetchData.options).self({}).create(() => {})
+        createConst(
+          serverApi,
+          createCallChains({
+            ...chain,
+            calls: [
+              {
+                name: "clone",
+                arguments: [
+                  t.memberExpression(
+                    t.identifier(commonApi),
+                    t.identifier("options"),
+                  ),
+                ],
+              },
+              ...chain.calls.filter(({ name }) => serverMethods.includes(name)),
+            ],
+          }),
+        ),
+        // return await serverApi(params);
+        t.returnStatement(
+          t.awaitExpression(
+            t.callExpression(t.identifier(serverApi), [t.identifier("params")]),
+          ),
+        ),
+      ],
+      [t.directive(t.directiveLiteral("use server"))],
+    ),
+    true,
+  );
   return [
     // const baseFetchData = $api.params({});
     createConst(
@@ -117,45 +156,12 @@ function createServerAction(
     t.variableDeclaration("let", [
       t.variableDeclarator(
         t.identifier(name),
-        t.arrowFunctionExpression(
-          [t.identifier("params")],
-          t.blockStatement(
-            [
-              // const serverApi = $serverApi.clone(baseFetchData.options).self({}).create(() => {})
-              createConst(
-                serverApi,
-
-                createCallChains({
-                  ...chain,
-                  calls: [
-                    {
-                      name: "clone",
-                      arguments: [
-                        t.memberExpression(
-                          t.identifier(commonApi),
-                          t.identifier("options"),
-                        ),
-                      ],
-                    },
-                    ...chain.calls.filter(({ name }) =>
-                      serverMethods.includes(name),
-                    ),
-                  ],
-                }),
-              ),
-              // return await serverApi(params);
-              t.returnStatement(
-                t.awaitExpression(
-                  t.callExpression(t.identifier(serverApi), [
-                    t.identifier("params"),
-                  ]),
-                ),
-              ),
-            ],
-            [t.directive(t.directiveLiteral("use server"))],
-          ),
-          true,
-        ),
+        cacheImport
+          ? t.callExpression(t.identifier(cacheImport.query), [
+              serverCallback,
+              ...(cache?.arguments.length ? [cache.arguments[0]] : []),
+            ])
+          : serverCallback,
       ),
     ]),
     // const originalFetchData = fetchData;

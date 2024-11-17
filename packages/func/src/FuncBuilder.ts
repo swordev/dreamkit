@@ -59,6 +59,9 @@ export class FuncBuilder<T extends FuncData = FuncData> {
   params(params: any): FuncBuilder<any> {
     return this.clone({ params });
   }
+  cache(key?: string): this {
+    return this.clone({ cache: { key } });
+  }
   protected onCreate(func: Func): Func {
     kindFunc(func);
     return func;
