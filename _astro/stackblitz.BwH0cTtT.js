@@ -120,6 +120,7 @@ export default defineConfig({
 });
 `,"package.json":`{
   "name": "solid-start-template",
+  "version": "0.0.1",
   "private": true,
   "type": "module",
   "scripts": {
