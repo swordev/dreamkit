@@ -239,7 +239,7 @@ export function createDreamkitDevServer(
             await server.app.remove([id]);
 
           if (action === "add" || action === "update") {
-            const routeObject = await server.fetchDefault(vinxiRoute.filePath);
+            const routeObject = await server.fetchRoute(vinxiRoute.filePath);
             if (isRoute(routeObject))
               vinxiRoute.$$route = {
                 pick: ["route"],
