@@ -76,17 +76,21 @@ export class DreamkitDevServer {
   async fetch(path: string) {
     //const mod = $server.moduleGraph.getModuleById(shaking.entry);
     //if (mod) $server.moduleGraph.invalidateModule(mod);
-    const ext = getExt(path);
-    return await this.runtime!.executeUrl(`${path}?${Date.now()}&ext=${ext}`);
+    try {
+      const ext = getExt(path);
+      return await this.runtime!.executeUrl(`${path}?${Date.now()}&ext=${ext}`);
+    } catch (error) {
+      console.error(error);
+      return undefined;
+    }
   }
   async fetchDefault<T>(path: string): Promise<T> {
     const result = await this.fetch(path);
-    return result.default;
+    return result?.default;
   }
   async fetchRoute(path: string): Promise<Route> {
     const url = createTransformUrl(path, { toSolidRoute: true });
-    const result = await this.fetch(url);
-    return result.default;
+    return await this.fetchDefault(url);
   }
   async findRouteObjects() {
     const files = await findFileRoutes(this.options.routeDir);
