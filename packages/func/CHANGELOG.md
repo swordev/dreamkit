@@ -1,5 +1,11 @@
 # @dreamkit/func
 
+## 0.0.3-next.0
+
+### Patch Changes
+
+- [`87968e4`](https://github.com/swordev/dreamkit/commit/87968e47363c1e1941450dbf995ee60537e90f19) Thanks [@juanrgm](https://github.com/juanrgm)! - Add `preload` and `cache`
+
 ## 0.0.2
 
 ### Patch Changes

@@ -1,5 +1,14 @@
 # @dreamkit/solid
 
+## 0.0.9-next.0
+
+### Patch Changes
+
+- [`87968e4`](https://github.com/swordev/dreamkit/commit/87968e47363c1e1941450dbf995ee60537e90f19) Thanks [@juanrgm](https://github.com/juanrgm)! - Add `preload` and `cache`
+
+- Updated dependencies [[`87968e4`](https://github.com/swordev/dreamkit/commit/87968e47363c1e1941450dbf995ee60537e90f19)]:
+  - @dreamkit/app@0.0.7-next.0
+
 ## 0.0.8
 
 ### Patch Changes
