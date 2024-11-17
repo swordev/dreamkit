@@ -43,10 +43,10 @@ export const fetchUsers = $api
       .all(filter.name ?? "");
   });
 
-export const prueba = $route
+export default $route
   .api({ fetchUsers })
   .params(fetchUsers.params)
-  .path("/users")
+  .path("/")
   .create(({ api, params, setParams }) => {
     const [users] = createResource(() => ({ ...params }), api.fetchUsers);
     return (
