@@ -2,6 +2,16 @@
 import { Tabs, TabItem, Code, Steps } from "@astrojs/starlight/components";
 import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
 import { packageName, pluginName } from "../params";
+// @ts-expect-error
+import templateFiles from "solid-start-template";
+
+const dreamkitVersion = JSON.parse(templateFiles["package.json"]).dependencies[
+  "dreamkit"
+];
+
+const installVersion = dreamkitVersion.includes("next")
+  ? `@${dreamkitVersion}`
+  : ``;
 ---
 
 <StarlightPage
@@ -39,10 +49,13 @@ import { packageName, pluginName } from "../params";
         >
         <Tabs syncKey="package-manager">
           <TabItem label="npm">
-            <Code lang="sh" code={`npm install ${packageName} --save`} />
+            <Code
+              lang="sh"
+              code={`npm install ${packageName}${installVersion} --save`}
+            />
           </TabItem>
           <TabItem label="pnpm">
-            <Code lang="sh" code={`pnpm add ${packageName}`} />
+            <Code lang="sh" code={`pnpm add ${packageName}${installVersion}`} />
           </TabItem>
         </Tabs>
       </li>
