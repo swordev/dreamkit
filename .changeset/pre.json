@@ -1,5 +1,11 @@
 {
-  "changesets": [],
+  "changesets": [
+    "happy-tools-rescue",
+    "mighty-hotels-thank",
+    "slimy-suits-smash",
+    "tender-mayflies-remember",
+    "twenty-fireants-sniff"
+  ],
   "initialVersions": {
     "@dreamkit/app": "0.0.6",
     "@dreamkit/dev": "0.0.13",
@@ -10,7 +16,11 @@
     "@dreamkit/schema": "0.0.4",
     "@dreamkit/site": "0.0.17",
     "@dreamkit/solid": "0.0.8",
-    "@dreamkit/utils": "0.0.4"
+    "@dreamkit/utils": "0.0.4",
+    "solid-start-app": "0.0.1",
+    "@dreamkit/prettier-config": "0.0.1",
+    "@dreamkit/tsconfig": "0.0.1",
+    "@dreamkit/workspace": "0.0.3"
   },
   "mode": "pre",
   "tag": "next"

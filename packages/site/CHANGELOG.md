@@ -1,5 +1,20 @@
 # @dreamkit/site
 
+## 0.0.18-next.0
+
+### Patch Changes
+
+- [#17](https://github.com/swordev/dreamkit/pull/17) [`becde50`](https://github.com/swordev/dreamkit/commit/becde502d95187f836b78946b334848334c2ffc8) Thanks [@github-actions](https://github.com/apps/github-actions)! - Show SolidHack banner in the next version
+
+- [`87968e4`](https://github.com/swordev/dreamkit/commit/87968e47363c1e1941450dbf995ee60537e90f19) Thanks [@juanrgm](https://github.com/juanrgm)! - Add `preload` and `cache`
+
+- [`b72f96c`](https://github.com/swordev/dreamkit/commit/b72f96c91e09c25e32020b3eb087aea1e39eedbd) Thanks [@juanrgm](https://github.com/juanrgm)! - Avoid declaring conflicts
+
+- [#17](https://github.com/swordev/dreamkit/pull/17) [`114a337`](https://github.com/swordev/dreamkit/commit/114a337d43492c7022fa1e5c925d1a3da7894ebb) Thanks [@github-actions](https://github.com/apps/github-actions)! - Fix SQLite example
+
+- Updated dependencies []:
+  - dreamkit@0.0.15-next.0
+
 ## 0.0.17
 
 ### Patch Changes
