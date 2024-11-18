@@ -5,17 +5,19 @@ export const route = $route.params({
   id: s.number().optional(),
 });
 
-export default function User() {
+export default function Home() {
   const { params } = useRoute(route);
   return (
-    <ul>
+    <>
       {/* @ts-ignore */}
-      <Link href="/" id={{ id: 1 }}>
+      <Link href="/" params={{ id: 1 }}>
         id: 1
       </Link>
+      <br />
       {/* @ts-ignore */}
       <Link href="/">id: undefined</Link>
-      <li>id: {params.id}</li>
-    </ul>
+      <br />
+      <div>id: {params.id}</div>
+    </>
   );
 }

@@ -1,9 +1,9 @@
-import { useRouteParams } from "../utils/routing.js";
+import { useRouteDeps } from "../contexts/RouteDeps.js";
 import { RouteBuilder, RouteData, RouteProps } from "@dreamkit/app";
 
 export function useRoute<T extends RouteData>(
-  route: RouteBuilder<T>,
+  _route: RouteBuilder<T>,
 ): RouteProps<T> {
-  const [params, setParams] = useRouteParams(route.options.params?.props || {});
-  return { params, setParams } as any;
+  const { props } = useRouteDeps();
+  return props as any;
 }

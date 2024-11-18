@@ -54,6 +54,7 @@ export const $route = /*#__PURE__*/ $baseRoute["clone"]({
       useLocation: typeof useLocation;
       useNavigate: typeof useNavigate;
       useParams: typeof useParams;
+      props: any;
     };
     return createComponent(RouteDepsContext.Provider, {
       value: deps,
@@ -90,12 +91,15 @@ export const $route = /*#__PURE__*/ $baseRoute["clone"]({
               }),
             ]
           : []),
-        createComponent(options.component!, {
-          params,
-          setParams,
-          api: options.api,
-          data: props.data,
-        } as any),
+        createComponent(
+          options.component!,
+          (deps.props = {
+            params,
+            setParams,
+            api: options.api,
+            data: props.data,
+          } as any),
+        ),
       ];
     }
   },

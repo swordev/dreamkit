@@ -1,3 +1,4 @@
+import type { RouteProps } from "@dreamkit/app";
 import type { useLocation, useNavigate, useParams } from "@solidjs/router";
 import { createContext, useContext } from "solid-js";
 
@@ -5,6 +6,7 @@ export const RouteDepsContext = createContext<{
   useNavigate: typeof useNavigate;
   useLocation: typeof useLocation;
   useParams: typeof useParams;
+  props: RouteProps;
 }>();
 
 export const useRouteDeps = function () {
