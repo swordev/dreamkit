@@ -1,13 +1,13 @@
+import type { TryPick } from "@dreamkit/utils/ts.js";
 import { batch, createSignal, untrack } from "solid-js";
 
 export type ActionState = "idle" | "running" | "success" | "error";
 
-export type ActionResult<T extends (...args: any[]) => any> = {
+export type BaseActionResult<
+  T extends (...args: any[]) => any,
+  T2 extends (...args: any[]) => any = T,
+> = {
   (...args: Parameters<T>): void;
-  with: {
-    (input: () => Parameters<T>[0]): ActionResult<() => ReturnType<T>>;
-    (...args: Parameters<T>): ActionResult<() => ReturnType<T>>;
-  };
   readonly id: number;
   readonly result: Awaited<ReturnType<T>> | undefined;
   readonly running: boolean;
@@ -15,7 +15,15 @@ export type ActionResult<T extends (...args: any[]) => any> = {
   readonly state: ActionState;
   clear: () => void;
   abort: () => void;
-};
+} & TryPick<T2, "title" | "params">;
+
+export type ActionResult<T extends (...args: any[]) => any> =
+  BaseActionResult<T> & {
+    with: {
+      (input: () => Parameters<T>[0]): BaseActionResult<() => ReturnType<T>, T>;
+      (...args: Parameters<T>): BaseActionResult<() => ReturnType<T>, T>;
+    };
+  };
 
 export function createAction<T extends (...args: any[]) => any>(
   cb: T,
@@ -81,6 +89,8 @@ export function createAction<T extends (...args: any[]) => any>(
     state: { get: state },
     clear: { value: clear },
     abort: { value: abort },
+    title: { get: () => (cb as any).title },
+    params: { get: () => (cb as any).params },
     with: {
       value: (...args: any[]) => {
         return new Proxy(action, {

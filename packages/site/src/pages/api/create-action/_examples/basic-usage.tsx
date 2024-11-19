@@ -23,7 +23,7 @@ export default $route
         <button
           onClick={start}
           disabled={start.running}
-          children={api.start.title}
+          children={start.title}
         />
         <button
           onClick={start.abort}

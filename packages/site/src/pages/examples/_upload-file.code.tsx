@@ -43,7 +43,7 @@ export const uploadRoute = $route
         <button
           onClick={upload}
           disabled={!file() || upload.running}
-          children={api.upload.title}
+          children={upload.title}
         />
       </>
     );

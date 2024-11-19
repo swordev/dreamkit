@@ -27,7 +27,7 @@ export default $route
       <>
         <p>
           <Input
-            placeholder={api.remove.params.key.options.title}
+            placeholder={remove.params.key.options.title}
             value={key}
             onChange={setKey}
           />
@@ -35,7 +35,7 @@ export default $route
         <button
           onClick={remove}
           disabled={remove.running}
-          children={api.remove.title}
+          children={remove.title}
         />
       </>
     );
