@@ -1,5 +1,13 @@
 # @dreamkit/utils
 
+## 0.0.5-next.0
+
+### Patch Changes
+
+- [#18](https://github.com/swordev/dreamkit/pull/18) [`7daed74`](https://github.com/swordev/dreamkit/commit/7daed74d6c5f5518b749d054e0bb2a6fa7e3e6b6) Thanks [@github-actions](https://github.com/apps/github-actions)! - Pass `title` and `params` properties to `createAction` result
+
+- [`4d1805a`](https://github.com/swordev/dreamkit/commit/4d1805a8d3bfd1f844e9c474a61fd71ac12a6c0a) Thanks [@juanrgm](https://github.com/juanrgm)! - Add `$settings`.
+
 ## 0.0.4
 
 ### Patch Changes

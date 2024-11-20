@@ -1,5 +1,19 @@
 # dreamkit
 
+## 0.0.15-next.1
+
+### Patch Changes
+
+- [`4d1805a`](https://github.com/swordev/dreamkit/commit/4d1805a8d3bfd1f844e9c474a61fd71ac12a6c0a) Thanks [@juanrgm](https://github.com/juanrgm)! - Add `$settings`.
+
+- Updated dependencies [[`a6b6deb`](https://github.com/swordev/dreamkit/commit/a6b6deba57566c8ed3962a634afa91cdc1dd6527), [`7daed74`](https://github.com/swordev/dreamkit/commit/7daed74d6c5f5518b749d054e0bb2a6fa7e3e6b6), [`4d1805a`](https://github.com/swordev/dreamkit/commit/4d1805a8d3bfd1f844e9c474a61fd71ac12a6c0a), [`1b9a155`](https://github.com/swordev/dreamkit/commit/1b9a155e04bf6c51e0a806a7fc1729bb0eba6434)]:
+  - @dreamkit/solid@0.0.9-next.1
+  - @dreamkit/node-app@0.0.2-next.0
+  - @dreamkit/app@0.0.7-next.1
+  - @dreamkit/dev@0.0.14-next.1
+  - @dreamkit/ioc@0.0.2-next.0
+  - @dreamkit/schema@0.0.5-next.0
+
 ## 0.0.15-next.0
 
 ### Patch Changes

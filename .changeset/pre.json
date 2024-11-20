@@ -1,9 +1,14 @@
 {
   "changesets": [
+    "eighty-lies-explode",
     "happy-tools-rescue",
+    "hot-beds-teach",
+    "large-mugs-march",
     "mighty-hotels-thank",
+    "shaggy-sheep-do",
     "slimy-suits-smash",
     "tender-mayflies-remember",
+    "three-hairs-kick",
     "twenty-fireants-sniff"
   ],
   "initialVersions": {
@@ -20,7 +25,8 @@
     "@dreamkit/node-app": "0.0.1",
     "@dreamkit/prettier-config": "0.0.1",
     "@dreamkit/tsconfig": "0.0.1",
-    "@dreamkit/workspace": "0.0.3"
+    "@dreamkit/workspace": "0.0.3",
+    "solid-start-app": "0.0.2-next.0"
   },
   "mode": "pre",
   "tag": "next"

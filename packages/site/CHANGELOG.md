@@ -1,5 +1,20 @@
 # @dreamkit/site
 
+## 0.0.18-next.1
+
+### Patch Changes
+
+- [#18](https://github.com/swordev/dreamkit/pull/18) [`a6b6deb`](https://github.com/swordev/dreamkit/commit/a6b6deba57566c8ed3962a634afa91cdc1dd6527) Thanks [@github-actions](https://github.com/apps/github-actions)! - Fix `useRoute`
+
+- [`202e875`](https://github.com/swordev/dreamkit/commit/202e8752d54bc923682ad9bf14b85fc195978308) Thanks [@juanrgm](https://github.com/juanrgm)! - Restructure API pages
+
+- [#18](https://github.com/swordev/dreamkit/pull/18) [`7daed74`](https://github.com/swordev/dreamkit/commit/7daed74d6c5f5518b749d054e0bb2a6fa7e3e6b6) Thanks [@github-actions](https://github.com/apps/github-actions)! - Pass `title` and `params` properties to `createAction` result
+
+- [`4d1805a`](https://github.com/swordev/dreamkit/commit/4d1805a8d3bfd1f844e9c474a61fd71ac12a6c0a) Thanks [@juanrgm](https://github.com/juanrgm)! - Add `$settings`.
+
+- Updated dependencies [[`4d1805a`](https://github.com/swordev/dreamkit/commit/4d1805a8d3bfd1f844e9c474a61fd71ac12a6c0a)]:
+  - dreamkit@0.0.15-next.1
+
 ## 0.0.18-next.0
 
 ### Patch Changes
