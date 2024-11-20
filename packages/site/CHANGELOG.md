@@ -1,5 +1,11 @@
 # @dreamkit/site
 
+## 0.0.18
+
+### Patch Changes
+
+- [`e18a2f8`](https://github.com/swordev/dreamkit/commit/e18a2f8e68a6d03a7292224374ba240bac27cb25) Thanks [@juanrgm](https://github.com/juanrgm)! - Remove link
+
 ## 0.0.17
 
 ### Patch Changes
