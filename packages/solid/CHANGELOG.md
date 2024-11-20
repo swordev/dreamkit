@@ -1,5 +1,18 @@
 # @dreamkit/solid
 
+## 0.0.9-next.1
+
+### Patch Changes
+
+- [#18](https://github.com/swordev/dreamkit/pull/18) [`a6b6deb`](https://github.com/swordev/dreamkit/commit/a6b6deba57566c8ed3962a634afa91cdc1dd6527) Thanks [@github-actions](https://github.com/apps/github-actions)! - Fix `useRoute`
+
+- [#18](https://github.com/swordev/dreamkit/pull/18) [`7daed74`](https://github.com/swordev/dreamkit/commit/7daed74d6c5f5518b749d054e0bb2a6fa7e3e6b6) Thanks [@github-actions](https://github.com/apps/github-actions)! - Pass `title` and `params` properties to `createAction` result
+
+- Updated dependencies [[`7daed74`](https://github.com/swordev/dreamkit/commit/7daed74d6c5f5518b749d054e0bb2a6fa7e3e6b6), [`4d1805a`](https://github.com/swordev/dreamkit/commit/4d1805a8d3bfd1f844e9c474a61fd71ac12a6c0a)]:
+  - @dreamkit/utils@0.0.5-next.0
+  - @dreamkit/app@0.0.7-next.1
+  - @dreamkit/schema@0.0.5-next.0
+
 ## 0.0.9-next.0
 
 ### Patch Changes
