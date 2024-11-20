@@ -22,6 +22,7 @@ const { props } = Astro;
   (props.playground ?? true) && (
     <div style="text-align: right">
       <LinkButton
+        title="Play code"
         href="#"
         class="project"
         style="margin-block:0; font-size: 15px"
@@ -33,17 +34,16 @@ const { props } = Astro;
         )}
       >
         <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="1em"
-          height="1em"
-          viewBox="0 0 16 16"
           fill="currentColor"
+          width="1.5em"
+          height="1.5em"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
         >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="m3.5 9.5l7.04-9l-2.04 6h4l-7.04 9l2.04-6z"
-          />
+          <>
+            <path d="M0 0h24v24H0z" fill="none" />
+            <path d="M8 5v14l11-7z" />
+          </>
         </svg>
       </LinkButton>
     </div>
