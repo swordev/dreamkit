@@ -1,16 +1,33 @@
 import { RequestUrl } from "./RequestUrl.js";
+import { isApi } from "./builders/ApiBuilder.js";
 import { Route } from "./builders/RouteBuilder.js";
+import { isSettings, SettingsConstructor } from "./builders/SettingsBuilder.js";
+import {
+  isSettingsHandler,
+  SettingsHandler,
+  SettingsHandlerConstructor,
+} from "./handlers/SettingsHandler.js";
 import { isMiddleware, MiddlewareConstructor } from "./objects/middleware.js";
 import {
   AppService,
   isService,
   ServiceConstructor,
 } from "./objects/service.js";
-import { isRoute } from "./utils/kind.js";
+import { isRoute, kindApp } from "./utils/kind.js";
 import { log } from "./utils/log.js";
-import { context, IocContext } from "@dreamkit/ioc";
+import {
+  context,
+  IocBaseClass,
+  IocContext,
+  normalizeIocParams,
+} from "@dreamkit/ioc";
+import { getKinds, is } from "@dreamkit/kind";
+import { merge } from "@dreamkit/utils/object.js";
 
 export class App {
+  static {
+    kindApp(this);
+  }
   static instanceKey = "dk:app";
   readonly started = false;
   readonly context: IocContext;
@@ -18,6 +35,8 @@ export class App {
   readonly routes = new Set<Route>();
   readonly services = new Set<AppService>();
   readonly middlewares = new Set<MiddlewareConstructor>();
+  readonly settings = new Set<SettingsConstructor>();
+  public settingsHandler: SettingsHandlerConstructor | undefined;
   protected listeners = {
     add: new Set<(data: { id: string; value: unknown }) => any>(),
     remove: new Set<(data: { id: string; value: unknown }) => any>(),
@@ -37,6 +56,11 @@ export class App {
   }
   static saveInstance(instance: App) {
     (globalThis as any)[App.instanceKey] = instance;
+  }
+  static createGlobalInstance(): App {
+    const app = new App();
+    this.saveInstance(app);
+    return app;
   }
   on(
     event: "add" | "remove",
@@ -60,7 +84,7 @@ export class App {
     }
     throw new Error("Object not found");
   }
-  async remove(ids: string[]) {
+  async remove(ids: string[]): Promise<void> {
     for (const id of ids) {
       const value = this.objects.get(id);
       if (!value) throw new Error(`Object not found: ${id}`);
@@ -72,6 +96,11 @@ export class App {
         await this.stopService(item);
       } else if (isMiddleware(value)) {
         this.middlewares.delete(value);
+      } else if (isSettings(value)) {
+        this.removeSettings(value);
+      } else if (isSettingsHandler(value)) {
+        this.context.unregister(SettingsHandler);
+        this.settingsHandler = undefined;
       }
       for (const cb of this.listeners.remove) await cb({ id, value });
       for (const cb of this.listeners.change)
@@ -85,6 +114,13 @@ export class App {
       service,
       started: false,
     };
+    if (is(service, IocBaseClass)) {
+      const params = normalizeIocParams(service.$ioc.params);
+      for (const key in params) {
+        const { value } = params[key].options;
+        if (isSettings(value)) this.settings.add(value);
+      }
+    }
     this.services.add(item);
     return item;
   }
@@ -107,8 +143,19 @@ export class App {
     log("service stopped", { name });
   }
 
-  async add(objects: Record<string, any>) {
+  async add(input: Record<string, any> | any[]): Promise<void> {
+    let loadSettingsHandler = false;
     const services: AppService[] = [];
+    const settings: SettingsConstructor[] = [];
+    const objects = Array.isArray(input)
+      ? input.reduce(
+          (result, value, index) => {
+            result[index] = value;
+            return result;
+          },
+          {} as Record<string, any>,
+        )
+      : input;
     for (const [id, value] of Object.entries(objects)) {
       if (isRoute(value)) {
         this.routes.add(value);
@@ -118,6 +165,25 @@ export class App {
         this.services.add(item);
       } else if (isMiddleware(value)) {
         this.middlewares.add(value);
+      } else if (isSettings(value)) {
+        this.settings.add(value);
+        settings.push(value);
+      } else if (isSettingsHandler(value)) {
+        loadSettingsHandler = true;
+        this.settingsHandler = value;
+        this.context.register(SettingsHandler, {
+          singleton: true,
+          useFactory: (context) => {
+            const handler = context.resolve(value);
+            handler["settings"] = this.settings;
+            return handler;
+          },
+        });
+      } else if (isApi(value)) {
+        // Not implemented (using solid start actions)
+        continue;
+      } else {
+        console.warn("Unknown object", { id, value, kinds: getKinds(value) });
       }
       this.objects.set(id, value);
       for (const cb of this.listeners.add) await cb({ id, value });
@@ -125,6 +191,9 @@ export class App {
         await cb({ id, value, action: "add" });
     }
     if (this.started) {
+      if (loadSettingsHandler)
+        await this.context.resolve(SettingsHandler).load();
+      for (const setting of settings) await this.registerSettings(setting);
       for (const service of services) await this.startService(service);
     }
   }
@@ -147,11 +216,61 @@ export class App {
       if (response) return response;
     }
   }
+
+  protected async initSettingsValue(constructor: SettingsConstructor) {
+    const handler = this.context.resolve(SettingsHandler, {
+      optional: true,
+    });
+    if (!handler) return;
+    const options = constructor.options;
+    let value = await handler.get(constructor);
+    if (options.optional && !options.generate && !value) return;
+    const generated = options.generate?.(value || {}) || {};
+    if (Object.keys(generated).length) {
+      value = merge({ ...value }, generated);
+      await handler.set(constructor, value);
+    }
+    return value;
+  }
+
+  protected async registerAllSettings() {
+    const settingsHandler = this.seettingsHandler();
+    if (settingsHandler) {
+      settingsHandler.autoSave = false;
+      await settingsHandler.load();
+    }
+    try {
+      for (const st of this.settings) await this.registerSettings(st);
+    } finally {
+      return await settingsHandler?.save();
+    }
+  }
+
+  protected async registerSettings(constructor: SettingsConstructor) {
+    const options = constructor.options;
+    const value = await this.initSettingsValue(constructor);
+    if (options.optional && !value) return;
+    log("registering settings", { name: options.name });
+    this.context.register(constructor, {
+      value: new constructor(value as any),
+    });
+  }
+
+  protected removeSettings(constructor: SettingsConstructor) {
+    this.settings.delete(constructor);
+    this.context.unregister(constructor);
+  }
+
+  protected seettingsHandler(): SettingsHandler | undefined {
+    return this.context.resolve(SettingsHandler, { optional: true });
+  }
   async start() {
     log("starting app");
     (this as any).started = true;
+    await this.registerAllSettings();
     for (const item of this.services) await this.startService(item);
   }
+
   async stop() {
     const errors: Error[] = [];
     const services = [...this.services].filter(
@@ -166,6 +285,7 @@ export class App {
         errors.push(error as Error);
       }
     }
+    for (const settings of this.settings) this.removeSettings(settings);
     if (errors.length) throw new AggregateError(errors, "App stop failed");
     (this as any).started = false;
   }

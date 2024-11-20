@@ -18,4 +18,6 @@ export type TryPick<T, Keys extends string> = {
     ? T[K]
     : never;
 };
+export type throwError<ErrorMessage> = { Error: ErrorMessage };
+
 export {};

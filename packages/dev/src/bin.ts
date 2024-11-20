@@ -32,16 +32,14 @@ program
     try {
       await server.prepare();
       const result = await generate(server);
-      const outputPath = relative(process.cwd(), result.output).replaceAll(
-        "\\",
-        "/",
-      );
-      console.info(
-        [
-          `Generated: ${outputPath}`,
-          !result.changed ? " (no changes)" : "",
-        ].join(""),
-      );
+      const rel = (path: string) =>
+        relative(process.cwd(), path).replaceAll("\\", "/");
+      for (const key in result) {
+        const { changed, path } = result[key];
+        console.info(
+          [`Generated: ${rel(path)}`, !changed ? " (no changes)" : ""].join(""),
+        );
+      }
     } finally {
       await server.stop();
     }

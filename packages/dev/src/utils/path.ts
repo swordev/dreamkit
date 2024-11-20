@@ -1,4 +1,8 @@
-import { basename, dirname, isAbsolute, join } from "path";
+import { basename, dirname, join } from "path";
+
+export function isRelative(input: string) {
+  return input.startsWith("./");
+}
 
 export function resolvePath(
   inPath: string,
@@ -6,7 +10,7 @@ export function resolvePath(
 ) {
   let path = inPath;
   for (const name in vars) path = path.replace(`{${name}}`, vars[name]);
-  return isAbsolute(path) ? path : join(vars.defaults, path);
+  return isRelative(path) ? join(vars.defaults, path) : path;
 }
 
 export function getExt(path: string) {

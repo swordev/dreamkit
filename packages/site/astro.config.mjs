@@ -92,16 +92,20 @@ export default defineConfig({
               link: "/api/$route",
             },
             {
+              label: "$api",
+              link: "/api/$api",
+            },
+            {
+              label: "$settings",
+              link: "/api/$settings",
+            },
+            {
               label: "routePath",
               link: "/api/route-path",
             },
             {
               label: "Link",
               link: "/api/link",
-            },
-            {
-              label: "$api",
-              link: "/api/$api",
             },
             {
               label: "createAction",
@@ -144,11 +148,6 @@ export default defineConfig({
             {
               label: "SQLite",
               link: "/examples/sqlite",
-            },
-            {
-              label: "Settings",
-              link: "/examples/settings",
-              badge: "WIP",
             },
             {
               label: "Upload file",

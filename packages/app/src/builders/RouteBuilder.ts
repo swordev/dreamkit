@@ -24,7 +24,12 @@ export type ResolveRouteApi<T extends RouteData> = keyof T["api"] extends never
         infer TData,
         infer TResult
       >
-        ? Func<Omit<TData, "self">, Promise<Awaited<TResult>>>
+        ? Func<
+            {
+              [K in keyof TData as K extends "self" ? never : K]: TData[K];
+            },
+            Promise<Awaited<TResult>>
+          >
         : never;
     };
 

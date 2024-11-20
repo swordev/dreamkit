@@ -45,6 +45,7 @@
     "@dreamkit/dev": "workspace:*",
     "@dreamkit/ioc": "workspace:*",
     "@dreamkit/kind": "workspace:*",
+    "@dreamkit/node-app": "workspace:*",
     "@dreamkit/schema": "workspace:*",
     "@dreamkit/solid": "workspace:*"
   },

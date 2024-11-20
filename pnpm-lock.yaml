@@ -114,15 +114,27 @@ importers:
       '@dreamkit/app':
         specifier: workspace:*
         version: link:../app
+      '@dreamkit/kind':
+        specifier: workspace:*
+        version: link:../kind
+      '@dreamkit/node-app':
+        specifier: workspace:*
+        version: link:../node-app
       '@dreamkit/schema':
         specifier: workspace:*
         version: link:../schema
+      '@dreamkit/utils':
+        specifier: workspace:*
+        version: link:../utils
       '@types/babel__generator':
         specifier: ^7.6.8
         version: 7.6.8
       '@types/babel__traverse':
         specifier: ^7.20.6
         version: 7.20.6
+      chokidar:
+        specifier: ^4.0.1
+        version: 4.0.1
       commander:
         specifier: ^12.1.0
         version: 12.1.0
@@ -178,6 +190,9 @@ importers:
       '@dreamkit/kind':
         specifier: workspace:*
         version: link:../kind
+      '@dreamkit/node-app':
+        specifier: workspace:*
+        version: link:../node-app
       '@dreamkit/schema':
         specifier: workspace:*
         version: link:../schema
@@ -223,6 +238,28 @@ importers:
       '@dreamkit/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
+
+  packages/node-app:
+    dependencies:
+      '@dreamkit/app':
+        specifier: workspace:*
+        version: link:../app
+      '@dreamkit/ioc':
+        specifier: workspace:*
+        version: link:../ioc
+      '@dreamkit/kind':
+        specifier: workspace:*
+        version: link:../kind
+      '@dreamkit/schema':
+        specifier: workspace:*
+        version: link:../schema
+    devDependencies:
+      '@dreamkit/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      '@types/node':
+        specifier: ^22.9.0
+        version: 22.9.0
 
   packages/prettier-config:
     dependencies:

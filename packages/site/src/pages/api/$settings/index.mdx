@@ -1,0 +1,67 @@
+import ApiPage from "../../../components/ApiPage.astro";
+
+<ApiPage
+  name="$settings"
+  definition={await import("./_definition?raw")} 
+  examples={[
+    await import("./_examples/basic-usage.tsx?raw"),
+    await import("./_examples/update-settings.tsx?raw"),
+    await import("./_examples/optional.tsx?raw"),
+  ]}
+>
+
+Define your settings and use them throughout the application (services, middlewares, APIs) with strong typing and validation.
+
+In every application there comes a time when we want to record data outside the repository, either because it is private (e.g. passwords) and/or is very specific (e.g. connection parameters). Normally this is done using environment variables or a JSON file.
+
+The problem with this method is that, in addition to not having strong typing in its declaration and use, there is no validation and there is no way to see all the available settings.
+
+`$settings` solves all these problems and goes one step further.
+
+In development mode, when creating settings, a JSON schema will automatically be generated so that your IDE auto-completes the available parameters based on all the settings created. Also, if the configuration file is modified, the settings will be reloaded.
+
+The default settings path is `{root}/settings.json`, where root is the package directory, but this can be changed with the `settingsPath` option of `dreamkitPlugin` in the `app.config.ts`.
+
+In production mode, it is possible to change the path from which the settings are loaded with the environment variable `DK_SETTINGS_PATH`.
+
+<div slot="post-definition">
+
+#### name
+
+You can have as many settings as you want, since each one of them will use the 'name' option that you have assigned to save its data.
+
+```ts
+$settings.name("my-app").create();
+```
+
+#### params
+
+The settings parameters are defined with the 'params' option and their values ​​are loaded and validated directly from the 'settings.json' file.
+
+If the data types of the settings do not match the defined ones, a fatal error will be generated which will prevent the application from starting, thus early detection of errors.
+
+#### generator
+
+The settings file will be automatically generated if the settings have the 'generator' option, so you could initialize certain settings as random keys if these have not been defined already.
+
+#### optional
+
+Sometimes it may be necessary to have optional settings and we want the application to start even if the settings have not been defined. This can be done by enabling the 'optional' option.
+
+When someone consumes the settings if you leave them undefined, it will throw a local error. You can also consume the settings optionally with 'iocParam' (see examples below).
+
+#### create
+
+Creates a strongly typed and validated class which allows receiving the configured parameters as the first argument.
+
+This simple class can be instantiated directly if desired for testing or other purposes.
+
+```ts
+const AppSettings = $settings.name("app").params({ name: s.string() }).create();
+const appSettings = new AppSettings({ name: "my-app" });
+console.log(appSettings.params.name); // my-app
+```
+
+</div>
+
+</ApiPage>

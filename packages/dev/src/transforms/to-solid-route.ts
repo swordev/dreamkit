@@ -18,7 +18,7 @@ export function toSolidRoute(ast: ParseResult<t.File>) {
 
   const routeSpec = "$route";
   const routeSource = "dreamkit";
-  const routeNewSource = "dreamkit/adapters/solid.js";
+  const routeNewSource = "dreamkit/adapters/solid-start/import.js";
 
   replaceImportSpec(ast, {
     newSource: routeNewSource,
@@ -32,7 +32,7 @@ export function toSolidRoute(ast: ParseResult<t.File>) {
         ImportDeclaration(importPath) {
           importPath.traverse({
             ImportSpecifier(path) {
-              // import { route as ? } from "dreamkit/adapters/solid.js";
+              // import { route as ? } from "dreamkit/adapters/solid-start/import.js";
               const isRouteImport =
                 path.node.imported.type === "Identifier" &&
                 path.node.imported.name === routeSpec &&
@@ -66,7 +66,7 @@ export function toSolidRoute(ast: ParseResult<t.File>) {
           // import { $route } from "dreamkit";
           // export default route.params({}).create(() => {});
           // [output]
-          // import { $route as _$route } from "dreamkit/adapters/solid.js"
+          // import { $route as _$route } from "dreamkit/adapters/solid-start/import.js"
           // import { useLocation, useRouter, useParams} from "@solidjs/router"
           // const selfRoute = _$route.params({}).clone({ deps: ? });
           // export const route = selfRoute.createRouteDefinition();
@@ -115,7 +115,7 @@ export function toSolidRoute(ast: ParseResult<t.File>) {
         // export const route = $route.params({}).path('/path');
         // export default function Users() { useRoute(route); }
         // [output]
-        // import { $route as _$route } from "dreamkit/adapters/solid.js"
+        // import { $route as _$route } from "dreamkit/adapters/solid-start/import.js"
         // import { useLocation, useRouter, useParams } from "@solidjs/router"
         // const selfRoute = _$route.params({}).path('/path').clone({ deps: ? });
         // export const route = selfRoute.createRouteDefinition();

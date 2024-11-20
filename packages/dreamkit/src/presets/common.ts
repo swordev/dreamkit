@@ -58,5 +58,14 @@ export {
   ServiceClass,
   ServiceStop,
   isService,
+  // settings
+  Settings,
+  type SettingsConstructor,
+  type SettingsData,
+  SettingsBuilder,
+  SettingsHandler,
+  SettingsHandlerClass,
+  $settings,
+  isSettings,
 } from "@dreamkit/app";
 export { kind, kindOf, is, createKind } from "@dreamkit/kind";

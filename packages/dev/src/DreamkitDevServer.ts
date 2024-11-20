@@ -12,7 +12,13 @@ import {
   getUrlTransforms,
   transformAndGenerate,
 } from "./utils/transform.js";
-import { App, isRoute, Route, $route } from "@dreamkit/app";
+import { App, isRoute, Route, $route, SettingsHandler } from "@dreamkit/app";
+import { is } from "@dreamkit/kind";
+import {
+  NodeSettingsHandler,
+  NodeSettingsHandlerOptions,
+} from "@dreamkit/node-app";
+import { FSWatcher, watch } from "chokidar";
 import { existsSync } from "fs";
 import { createServer, createViteRuntime, ViteDevServer } from "vite";
 import solidPlugin from "vite-plugin-solid";
@@ -35,6 +41,7 @@ export class DreamkitDevServer {
   readonly entry: VirtualShaking;
   protected runtimeServer: ViteDevServer | undefined;
   protected runtime: ViteRuntime | undefined;
+  protected settingsFileWatcher: FSWatcher | undefined;
   readonly options: DreamkitDevOptions;
   constructor(inOptions: DreamkitDevInOptions) {
     this.app = new App();
@@ -42,11 +49,13 @@ export class DreamkitDevServer {
       ...dreamkitPluginOptions,
       ...inOptions,
     });
-
     const vars = { defaults: options.root, root: options.root };
     options.entry = resolvePath(options.entry, vars);
+    options.settingsPath = resolvePath(options.settingsPath, vars);
     options.metaGlobalOutput = resolvePath(options.metaGlobalOutput, vars);
     options.metaLocalOutput = resolvePath(options.metaLocalOutput, vars);
+    options.preEntries = options.preEntries?.map((v) => resolvePath(v, vars));
+
     this.entry = new VirtualShaking({
       entry: options.entry,
       onChange: async (changes) => {
@@ -149,20 +158,33 @@ export class DreamkitDevServer {
       hmr: { logger: false },
     });
     this.entry.init();
-
-    const objects = {
+    for (const path of this.options.preEntries || [])
+      await this.app.add(await this.fetch(path));
+    await this.app.add({
       ...(await this.fetchEntryObjects()),
       ...(includeRouteFileObjects && (await this.findRouteObjects())),
-    };
+    });
 
-    await this.app.add(objects);
+    if (is(this.app.settingsHandler, NodeSettingsHandler)) {
+      this.app.context.register(NodeSettingsHandlerOptions, {
+        value: new NodeSettingsHandlerOptions({
+          path: this.options.settingsPath,
+        }),
+      });
+      this.settingsFileWatcher = watch(this.options.settingsPath, {
+        ignoreInitial: false,
+      }).on("all", async () => {
+        log("settings file changed");
+        await this.app.context.resolve(SettingsHandler).load();
+      });
+    }
   }
   async start() {
     await this.app.start();
   }
-
   async stop() {
     if (this.app.started) await this.app.stop();
+    await this.settingsFileWatcher?.close();
     await this.runtimeServer?.close();
     await this.runtime?.destroy();
   }

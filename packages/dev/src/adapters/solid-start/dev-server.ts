@@ -2,9 +2,11 @@ import {
   DreamkitDevInOptions,
   DreamkitDevServer,
 } from "../../DreamkitDevServer.js";
-import { generate } from "../../actions/generate.js";
+import { generateMeta } from "../../actions/generate-meta.js";
+import { generateSettings } from "../../actions/generate-settings.js";
 import { DreamkitPluginOptions } from "../../options.js";
 import { tryGenerate } from "../../utils/ast.js";
+import { log } from "../../utils/log.js";
 import { execute } from "../../utils/runtime.js";
 import { createDelayedFunction } from "../../utils/timeout.js";
 import { transformCode } from "../../utils/transform.js";
@@ -17,7 +19,7 @@ import {
   VinxiApp,
   VinxiRoute,
 } from "../../utils/vinxi.js";
-import { isRoute, Route, $route, App } from "@dreamkit/app";
+import { isRoute, Route, $route, App, isSettings } from "@dreamkit/app";
 import { existsSync } from "fs";
 import { join, normalize, relative, resolve } from "path";
 import { fileURLToPath } from "url";
@@ -181,7 +183,8 @@ export function createDreamkitDevServer(
   }
 
   async function onDevStart() {
-    const tryGenerate = createDelayedFunction(async () => {
+    const tryGenerateMeta = createDelayedFunction(async () => {
+      log("generating meta");
       const paths = new Set<string>();
       server.app.routes.forEach(async (route) => {
         const path = route.$options.path;
@@ -192,12 +195,19 @@ export function createDreamkitDevServer(
           paths.add(path);
         }
       });
-      await generate(server);
+      await generateMeta(server);
+    }, 300);
+    const tryGenerateSettings = createDelayedFunction(async () => {
+      log("generating settings");
+      await generateSettings(server);
     }, 300);
     server.app
       .on("change", (data) => {
+        log("change detected", { action: data.action, id: data.id });
         if (isRoute(data.value)) {
-          tryGenerate();
+          tryGenerateMeta();
+        } else if (isSettings(data.value)) {
+          tryGenerateSettings();
         }
       })
       .on("add", async ({ id, value }) => {
@@ -261,6 +271,8 @@ export function createDreamkitDevServer(
         });
       }
     }
+
+    await server.start();
   }
 
   const ssrRouter = vinxiApp.getRouter("ssr");
@@ -268,6 +280,7 @@ export function createDreamkitDevServer(
 
   if (isVinxiBuild()) {
     const dreamkitEntryId = "dk:entry";
+    const dreamkitPreEntriesId = "dk:pre-entries";
     const dreamkitEntry = join(
       server.options.root,
       "src/dreamkit.tsx",
@@ -279,11 +292,22 @@ export function createDreamkitDevServer(
       resolveId(id) {
         if (id === dreamkitEntryId) {
           return existsDreamkitEntry ? dreamkitEntry : `\0${dreamkitEntryId}`;
+        } else if (id === dreamkitPreEntriesId) {
+          return `\0${dreamkitPreEntriesId}`;
         }
       },
       load(id) {
         if (!existsDreamkitEntry && id === `\0${dreamkitEntryId}`)
           return { code: "export {}" };
+
+        if (id === `\0${dreamkitPreEntriesId}`) {
+          const exports = server.options.preEntries?.map(
+            (entry, index) =>
+              `export * as entry_${index} from ${JSON.stringify(entry)};`,
+          );
+
+          return { code: [...exports, `export {};`].join("\n") };
+        }
       },
     });
   }
