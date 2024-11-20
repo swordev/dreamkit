@@ -133,8 +133,24 @@ export function createIocClass<C extends AbstractConstructor>(
   constructor: C,
 ): <P extends IocParamsUserConfig = {}>(
   params: P,
-) => IocClass<P, InstanceType<C>> {
-  return (params) => IocClass(constructor, params);
+) => IocClass<
+  P & (C extends UnsafeIocClass ? C["$ioc"]["params"] : {}),
+  InstanceType<C>
+> {
+  return ((params: Record<string, any> = {}) => {
+    if (is(constructor, IocBaseClass)) {
+      const CustomIocClass = class extends constructor {};
+      iocKind(CustomIocClass, "IocClass");
+      return attachIocMeta(
+        CustomIocClass,
+        { ...params, ...constructor?.$ioc?.params },
+        undefined,
+        "class",
+      );
+    } else {
+      return IocClass(constructor, params);
+    }
+  }) as any;
 }
 
 export function isIocClass(input: unknown): input is IocClass<any> {

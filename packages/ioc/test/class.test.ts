@@ -1,4 +1,4 @@
-import { IocClass } from "../src/class.js";
+import { createIocClass, IocClass } from "../src/class.js";
 import { context } from "../src/context.js";
 import { iocParam } from "../src/params.js";
 import { kind } from "@dreamkit/kind";
@@ -186,5 +186,18 @@ describe("IocClass", () => {
       internal: 3,
       external: 2,
     });
+  });
+});
+
+describe("createIocClass", () => {
+  it("merge params", () => {
+    class Data {
+      value = 1;
+    }
+    class Handler extends IocClass({ data1: Data }) {}
+    const HandlerClass = createIocClass(Handler);
+    class Handler2 extends HandlerClass({ data2: Data }) {}
+    expect(Handler2.$ioc.params.data1).toBe(Data);
+    expect(Handler2.$ioc.params.data2).toBe(Data);
   });
 });
