@@ -8,37 +8,45 @@ const readmePackageTpl = readFileSync("./docs/readme-package.tpl.md", "utf8");
 
 export default defineConfig((pkg, { packages, dir }) => {
   if (pkg.name === "@dreamkit/root") {
+    const badgeName = (name) => name.replace("@", "").replace("/", "_");
     const dreamkitPkg = packages.find(
       (pkg) => pkg.manifest.name === "dreamkit",
     );
     if (!dreamkitPkg) throw new Error("dreamkit package not found");
-    const docPackages = [
-      dreamkitPkg,
-      ...packages.filter(
-        (pkg) =>
-          !pkg.manifest.private &&
-          pkg.manifest.name !== "@dreamkit/site" &&
-          pkg !== dreamkitPkg,
-      ),
-    ];
-    const packagesTable = markdownTable([
-      ["Name", "Version", "Description"],
-      ...docPackages.map((pkg, index) => [
-        `[${pkg.manifest.name}](${pkg.dir})`,
-        `[![npm-badge-${index}]](https://www.npmjs.com/package/${pkg.manifest.name})`,
-        pkg.manifest.description,
-      ]),
-    ]);
-    const packagesBadges = docPackages
+
+    const mainPackages = [dreamkitPkg];
+    const internalPackages = packages.filter(
+      (pkg) =>
+        !pkg.manifest.private &&
+        pkg.manifest.name !== "@dreamkit/site" &&
+        pkg !== dreamkitPkg,
+    );
+
+    /**
+     *
+     * @param {import("@dreamkit/workspace").Package[]} pkgs
+     * @returns
+     */
+    const renderTable = (pkgs) =>
+      markdownTable([
+        ["Name", "Version", "Description"],
+        ...pkgs.map((pkg, index) => [
+          `[${pkg.manifest.name}](${pkg.dir})`,
+          `[![npm-badge-${badgeName(pkg.manifest.name)}]](https://www.npmjs.com/package/${pkg.manifest.name})`,
+          pkg.manifest.description,
+        ]),
+      ]);
+    const packagesBadges = [...mainPackages, ...internalPackages]
       .map(
-        (pkg, index) =>
-          `[npm-badge-${index}]: https://img.shields.io/npm/v/${pkg.manifest.name}`,
+        (pkg) =>
+          `[npm-badge-${badgeName(pkg.manifest.name)}]: https://img.shields.io/npm/v/${pkg.manifest.name}`,
       )
       .join("\n");
     return {
       files: {
         "README.md": readmeTpl
-          .replaceAll("{packagesTable}", packagesTable)
+          .replaceAll("{packagesTable}", renderTable(mainPackages))
+          .replaceAll("{internalPackagesTable}", renderTable(internalPackages))
           .replaceAll("{packagesBadges}", packagesBadges),
       },
     };

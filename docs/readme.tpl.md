@@ -16,6 +16,10 @@ If you want to support the project, you have the possibility to do so [here](htt
 
 {packagesTable}
 
+## Internal packages
+
+{internalPackagesTable}
+
 {packagesBadges}
 
 ## Installation
@@ -40,8 +44,13 @@ pnpm install dreamkit
 ```sh
 git clone https://github.com/swordev/dreamkit
 cd dreamkit
+git checkout next
 pnpm install
 pnpm watch
+
+pnpm dev:site
+# or
+pnpm dev:solid-start-app
 ```
 
 ## License
