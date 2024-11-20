@@ -1,0 +1,17 @@
+import ApiPage from "../../../components/ApiPage.astro";
+
+<ApiPage
+  name="createAction"
+  definition={await import("./_definition?raw")}
+  examples={[
+    await import("./_examples/basic-usage.tsx?raw"),
+    await import("./_examples/predefined-params.tsx?raw"),
+  ]}
+>
+Utility to create actions and control them by signals in a safe way.
+
+It is not strictly necessary to use createAction to work with promises (e.g.
+fetch), but it is recommended, since it allows you to control their
+activation and monitoring.
+
+</ApiPage>

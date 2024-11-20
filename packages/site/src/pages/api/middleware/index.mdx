@@ -1,0 +1,22 @@
+import ApiPage from "../../../components/ApiPage.astro";
+
+<ApiPage
+  name="MiddlewareClass"
+  definition={await import("./_definition?raw")}
+  examples={[await import("./_examples/basic-usage.tsx?raw")]}
+>
+
+Middleware class builder.
+
+Middlewares are classes that can be exported in the DreamKit input and allow
+you to intervene in requests.
+
+The middleware constructor allows you to inject dependencies registered by
+services or use some of those available in the request context: Request,
+RequestUrl, Headers, IocContext.
+
+It is recommended that the middleware consumes lighter dependencies to avoid
+loading it with complexity, for example, if you need to access the headers,
+use Headers and avoid consuming Request.
+
+</ApiPage>

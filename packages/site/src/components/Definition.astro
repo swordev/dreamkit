@@ -1,0 +1,16 @@
+---
+import { Code } from "@astrojs/starlight/components";
+import { normalizeDeclaration } from "../utils/declarations.ts";
+
+interface Props {
+  value: string | { default: string };
+}
+const props = Astro.props;
+---
+
+<Code
+  lang="ts"
+  code={normalizeDeclaration(
+    typeof props.value === "string" ? props.value : props.value.default
+  )}
+/>

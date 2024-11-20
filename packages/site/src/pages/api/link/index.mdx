@@ -1,0 +1,11 @@
+import ApiPage from "../../../components/ApiPage.astro";
+
+<ApiPage
+  name="Link"
+  definition={await import("./_definition?raw")}
+  examples={[await import("./_examples/basic-usage.tsx?raw")]}
+>
+
+Component similar to A (from @solidjs/router) but with strong typing for paths and parameters.
+
+</ApiPage>

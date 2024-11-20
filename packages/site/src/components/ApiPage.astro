@@ -1,43 +1,18 @@
 ---
-import { Code } from "@astrojs/starlight/components";
 import ImportCode from "./ImportCode.astro";
 import Example from "./Example.astro";
 import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
 import { type ExampleProps, normalizeExample } from "./../utils/examples.ts";
+import Definition from "./Definition.astro";
 
 interface Props {
   name: string;
   imports?: string[];
-  description?: string;
-  definition: string;
+  definition?: string | { default: string };
   examples?: (ExampleProps | { default: string })[];
 }
 const props = Astro.props;
 const examples = props.examples?.map(normalizeExample);
-const definition = normalizeDeclare(props.definition);
-
-function normalizeDeclare(value: string) {
-  const pattern = 'declare module "dreamkit/definitions" {';
-  let declaring = false;
-  return value
-    .split("\n")
-    .map((line) => {
-      if (line === pattern) {
-        declaring = true;
-        return null;
-      } else if (declaring) {
-        if (line === "}\n") {
-          declaring = false;
-          return null;
-        } else return line.startsWith("  ") ? line.slice(2) : line;
-      } else {
-        return line;
-      }
-    })
-    .filter((v) => typeof v === "string")
-    .join("\n")
-    .replace(/}\n$/, "");
-}
 ---
 
 <StarlightPage
@@ -45,7 +20,6 @@ function normalizeDeclare(value: string) {
     title: props.name,
   }}
   headings={[
-    { depth: 2, text: "Description", slug: "Description" },
     { depth: 2, text: "Import", slug: "import" },
     { depth: 2, text: "Definition", slug: "definition" },
     ...(examples
@@ -60,19 +34,30 @@ function normalizeDeclare(value: string) {
       : []),
   ]}
 >
-  <h2 id="description">Description</h2>
-
-  <p>{props.description}</p>
-
-  <slot />
-
-  <h2 id="import">Import</h2>
-
   <ImportCode name={props.imports || props.name} />
 
-  <h2 id="definition">Definition</h2>
+  <slot />
+  <hr />
 
-  <Code lang="ts" code={definition} />
+  {
+    props.definition && (
+      <>
+        <h2 id="definition">Definition</h2>
+        <Definition value={props.definition} />
+        <slot name="post-definition" />
+        <hr />
+      </>
+    )
+  }
+
+  {
+    Astro.slots.has("extra") && (
+      <>
+        <slot name="extra" />
+        <hr />
+      </>
+    )
+  }
 
   {
     examples && (
@@ -86,7 +71,7 @@ function normalizeDeclare(value: string) {
   }
 
   <style>
-    h2:not(#description) {
+    h2:not(#import) {
       margin-top: 1.5rem !important;
     }
   </style>

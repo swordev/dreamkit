@@ -1,0 +1,24 @@
+import ApiPage from "../../../components/ApiPage.astro";
+
+<ApiPage
+  name="ioc"
+  imports={["context", "iocParam", "IocClass"]}
+  definition={await import("./_definition?raw")}
+  examples={[
+    await import("./_examples/basic-usage.tsx?raw"),
+    await import("./_examples/optional.tsx?raw"),
+  ]}
+>
+Inversion of control is a very versatile tool that helps you manage
+dependency injection.
+
+One of the great advantages of @dreamkit/ioc is that it does not use
+decorators, is fully typed, and allows you to manually inject dependencies
+for testing purposes.
+
+DreamKit uses it extensively and hands over part of its management to the
+user, allowing the user to consume only the dependencies they need and/or
+create their own dependencies.
+
+ </ApiPage
+>

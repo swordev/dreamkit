@@ -1,0 +1,26 @@
+import ApiPage from "../../../components/ApiPage.astro";
+
+<ApiPage
+  name="Input"
+  definition={await import("./_definition?raw")}
+  examples={[
+    await import("./_examples/controlled-text.tsx?raw"),
+    await import("./_examples/controlled-number.tsx?raw"),
+    await import("./_examples/controlled-checkbox.tsx?raw"),
+    await import("./_examples/controlled-file.tsx?raw"),
+    await import("./_examples/uncontrolled-text.tsx?raw"),
+  ]}
+>
+Type-safe and/or controlled input component.
+
+Controlled components are well known in the React community but are not
+available in Solid.js as it does not work with a virtual DOM.
+
+While it is possible to emulate the behaviour of a controlled component with
+the 'onInput' listener, it is not really possible and there are many cases
+where the component is no longer controlled.
+
+With the Input component it is possible to control its value and also ensure
+TypeScript typing based on the field type.
+
+</ApiPage>

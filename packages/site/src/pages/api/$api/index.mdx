@@ -1,0 +1,22 @@
+import ApiPage from "../../../components/ApiPage.astro";
+
+<ApiPage
+  name="$api"
+  definition={await import("./_definition?raw")}
+  examples={[
+    await import("./_examples/simple-server-exec.tsx?raw"),
+    await import("./_examples/params-validation.tsx?raw"),
+  ]}
+>
+
+With the API builder you can create functions that can be used by routes.
+
+You can also consume objects registered by services and middlewares and you
+will have automatic validation of input parameters on the client (before the
+request is created) and server.
+
+If you define a parameter schema in the API you can reference this schema on
+the client for various purposes such as auto-generating the UI or reusing
+other schema data such as titles.
+
+</ApiPage>

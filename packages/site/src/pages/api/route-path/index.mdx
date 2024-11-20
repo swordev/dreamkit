@@ -1,0 +1,9 @@
+import ApiPage from "../../../components/ApiPage.astro";
+
+<ApiPage
+  name="routePath"
+  definition={await import("./_definition?raw")}
+  examples={[await import("./_examples/basic-usage.tsx?raw")]}
+>
+  Utility function to construct a routing path along with its parameters.
+</ApiPage>

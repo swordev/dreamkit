@@ -1,0 +1,10 @@
+import ApiPage from "../../../components/ApiPage.astro";
+
+<ApiPage
+  name="useRoute"
+  definition={await import("./_definition?raw")}
+  examples={[await import("./_examples/basic-usage.tsx?raw")]}
+>
+  Use route config without having to create the component with the route
+  builder.
+</ApiPage>

@@ -1,0 +1,25 @@
+import ApiPage from "../../../components/ApiPage.astro";
+
+<ApiPage
+  name="ServiceClass"
+  definition={await import("./_definition?raw")}
+  examples={[await import("./_examples/basic-usage.tsx?raw")]}
+>
+
+Service class builder.
+
+Services are classes that can be exported in the DreamKit entry and allow
+you to initialize configurations that remain alive throughout the
+application's lifecycle.
+
+If you edit a service in development mode, that service will be safely
+restarted.
+
+The service constructor allows you to inject dependencies that will be
+resolved when the service is started.
+
+It is common to use services to initialize databases and register them in
+the IoC context so that other objects can consume them (ex: middleware,
+api).
+
+</ApiPage>
