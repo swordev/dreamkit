@@ -26,7 +26,7 @@ pnpm install dreamkit
 
 ## Resources
 
-- [Documentation](https://dreamkit.dev)
+- [Documentation](https://next.dreamkit.dev/get-started)
 
 ## Development
 
