@@ -1,5 +1,11 @@
 # @dreamkit/dev
 
+## 0.0.14-next.2
+
+### Patch Changes
+
+- [#20](https://github.com/swordev/dreamkit/pull/20) [`7103430`](https://github.com/swordev/dreamkit/commit/7103430d9b8359f22475b0bae3217ba127debbb2) Thanks [@github-actions](https://github.com/apps/github-actions)! - Fix pre-entry
+
 ## 0.0.14-next.1
 
 ### Patch Changes

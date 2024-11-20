@@ -1,5 +1,14 @@
 # @dreamkit/site
 
+## 0.0.18-next.2
+
+### Patch Changes
+
+- [#20](https://github.com/swordev/dreamkit/pull/20) [`879ed4a`](https://github.com/swordev/dreamkit/commit/879ed4a1c5977f2b0364bdeed9c5a5cea39bc827) Thanks [@github-actions](https://github.com/apps/github-actions)! - Update play icon
+
+- Updated dependencies []:
+  - dreamkit@0.0.15-next.2
+
 ## 0.0.18-next.1
 
 ### Patch Changes
