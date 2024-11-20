@@ -27,6 +27,8 @@ export const parseExample = (example: ExampleProps, index: number) => {
       return false;
     } else if (line.trim() === "{/* @ts-expect-error */}") {
       return false;
+    } else if (line.trim() === "{/* @ts-ignore */}") {
+      return false;
     } else {
       return true;
     }
