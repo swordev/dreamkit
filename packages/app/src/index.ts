@@ -3,6 +3,9 @@ export { isRoute, isApp } from "./utils/kind.js";
 export { isApi } from "./builders/ApiBuilder.js";
 export { App } from "./App.js";
 export { defineRoutePath, routePath } from "./routePath.js";
+// contexts
+export { AppContext } from "./contexts/AppContext.js";
+export { RequestContext } from "./contexts/RequestContext.js";
 // objects
 export { $api } from "./objects/$api.js";
 export { $route } from "./objects/$route.js";

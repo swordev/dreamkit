@@ -3,7 +3,8 @@ import {
   SettingsConstructor,
   SettingsData,
 } from "../builders/SettingsBuilder.js";
-import { createIocClass, IocClass, IocContext } from "@dreamkit/ioc";
+import { AppContext } from "../contexts/AppContext.js";
+import { createIocClass, IocClass } from "@dreamkit/ioc";
 import { createKind } from "@dreamkit/kind";
 import { Constructor } from "@dreamkit/utils/ts.js";
 
@@ -19,7 +20,7 @@ export type SettingsHandlerSaveResult = Record<
   { path: string; changed: boolean }
 >;
 
-export abstract class SettingsHandler extends IocClass({ IocContext }) {
+export abstract class SettingsHandler extends IocClass({ AppContext }) {
   static {
     kindSettingsHandler(this);
   }
@@ -33,7 +34,7 @@ export abstract class SettingsHandler extends IocClass({ IocContext }) {
     this.data = await this.onLoad();
     for (const settings of this.settings) {
       const data = this.data[settings.options.name!];
-      this.iocContext.resolve(settings, { optional: true })?.update(data);
+      this.appContext.resolve(settings, { optional: true })?.update(data);
     }
   }
   async get<T extends SettingsData>(
@@ -45,23 +46,20 @@ export abstract class SettingsHandler extends IocClass({ IocContext }) {
     constructor: SettingsConstructor<T>,
     data: InferSettingsParams<T>,
   ): Promise<void> {
-    const settingsInstance = this.iocContext.resolve(constructor, {
+    const settingsInstance = this.appContext.resolve(constructor, {
       optional: true,
     });
     if (settingsInstance) {
       settingsInstance.update(data);
     } else {
-      this.iocContext.register(constructor, {
+      this.appContext.register(constructor, {
         value: new constructor(data),
       });
     }
-    if (this.autoSave) {
-      await this.onSave();
-    } else {
-      const name = constructor.options.name!;
-      this.data[name] = data;
-      this.pending.push(name);
-    }
+    const name = constructor.options.name!;
+    this.data[name] = data;
+    this.pending.push(name);
+    if (this.autoSave) await this.onSave();
   }
   async save(): Promise<SettingsHandlerSaveResult> {
     this.autoSave = true;

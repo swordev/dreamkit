@@ -2,6 +2,8 @@ import { RequestUrl } from "./RequestUrl.js";
 import { isApi } from "./builders/ApiBuilder.js";
 import { Route } from "./builders/RouteBuilder.js";
 import { isSettings, SettingsConstructor } from "./builders/SettingsBuilder.js";
+import { AppContext } from "./contexts/AppContext.js";
+import { RequestContext } from "./contexts/RequestContext.js";
 import {
   isSettingsHandler,
   SettingsHandler,
@@ -30,7 +32,7 @@ export class App {
   }
   static instanceKey = "dk:app";
   readonly started = false;
-  readonly context: IocContext;
+  readonly context: AppContext;
   readonly objects = new Map<string, any>();
   readonly routes = new Set<Route>();
   readonly services = new Set<AppService>();
@@ -45,9 +47,10 @@ export class App {
     >(),
   };
   constructor() {
-    this.context = context.fork().register(App, {
+    this.context = new AppContext().register(App, {
       value: this,
     });
+    this.context.register(AppContext, { value: this.context });
   }
   static instance(): App {
     const value = (globalThis as any)[App.instanceKey];
@@ -198,13 +201,17 @@ export class App {
     }
   }
 
-  createRequestContext(request: Request) {
-    const url = new RequestUrl(request.url, "http://localhost");
-    return this.context
-      .fork()
+  createRequestContext(request: Request): RequestContext {
+    const context = new RequestContext({
+      parentContainer: this.context,
+    });
+    return context
+      .register(RequestContext, { value: context })
       .register(Request, { value: request })
       .register(Headers, { value: request.headers })
-      .register(RequestUrl, { value: url });
+      .register(RequestUrl, {
+        value: new RequestUrl(request.url, "http://localhost"),
+      });
   }
 
   async request(request: Request): Promise<Response | undefined> {

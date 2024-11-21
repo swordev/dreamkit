@@ -41,6 +41,9 @@ export {
 } from "@dreamkit/ioc";
 export {
   App,
+  // contexts
+  AppContext,
+  RequestContext,
   // route
   $route,
   defineRoutePath,
