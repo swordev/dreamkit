@@ -233,13 +233,9 @@ export class IocContext {
     if (typeof input === "symbol") {
       return new IocError(`Symbol is not registered: ${input.toString()}`);
     } else if (typeof input === "function") {
-      return new IocError(`Class is not registered: ${input.name}`, {
-        cause: { key: input },
-      });
+      return new IocError(`Class is not registered: ${input.name}`);
     } else {
-      return new IocError(`Unknown object is not registered: ${input}`, {
-        cause: { key: input },
-      });
+      return new IocError(`Unknown object is not registered: ${input}`);
     }
   }
   resolve<T extends AbstractConstructor>(

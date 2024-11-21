@@ -1,12 +1,27 @@
 import { TypeContext } from "./context.js";
 import type { Type } from "./types/Type.js";
+import { typeOf } from "./utils/object.js";
 
 export type TypeAssertErrorData<C extends string = any> = {
   path: string[];
   code: C;
-  value?: unknown;
+  expected?: string;
+  received?: string;
   message?: string;
 };
+
+export class TypeAssertError extends Error {
+  public name = "TypeAssertError";
+  constructor(readonly errors: TypeAssertErrorData[]) {
+    super(JSON.stringify(errors, null, 2));
+  }
+}
+
+export function isTypeAssertError(error: unknown): error is TypeAssertError {
+  return (
+    error instanceof Error && error.name === TypeAssertError.prototype.name
+  );
+}
 
 export class TypeValidation<C extends string = any> {
   readonly errors: TypeAssertErrorData<C | "type">[] = [];
@@ -24,11 +39,18 @@ export class TypeValidation<C extends string = any> {
     if (this.type.options.optional && this.value === undefined) return false;
     return true;
   }
-  addTypeError() {
-    return this.add("type" as any);
+  addTypeError(expected?: string) {
+    return this.add("type" as any, {
+      received: typeOf(this.value),
+      ...(expected && { expected }),
+    });
   }
-  add(code: C) {
-    this.errors.push({ code, path: this.context.path, value: this.value });
+  add(code: C, data?: Partial<TypeAssertErrorData>) {
+    this.errors.push({
+      code,
+      path: this.context.path,
+      ...data,
+    });
     return this.errors;
   }
 }

@@ -52,7 +52,7 @@ export class ArrayType<
       super.onValidate(value, context),
     );
     if (!val.next()) return val.errors;
-    if (!Array.isArray(value)) return val.addTypeError();
+    if (!Array.isArray(value)) return val.addTypeError("array");
     const { options } = this;
     if (typeof options.min === "number" && value.length < options.min)
       val.add("min");

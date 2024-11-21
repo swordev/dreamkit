@@ -45,7 +45,7 @@ export class StringType<F extends $.TypeFlag.Options = {}> extends $.Type<
       super.onValidate(value, context),
     );
     if (!val.next()) return val.errors;
-    if (typeof value !== "string") return val.addTypeError();
+    if (typeof value !== "string") return val.addTypeError("string");
     const { options } = this;
     if (typeof options.min === "number" && value.length < options.min)
       val.add("min");

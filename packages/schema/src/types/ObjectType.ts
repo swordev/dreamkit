@@ -142,7 +142,7 @@ export class ObjectType<
     );
 
     if (!val.next()) return val.errors;
-    if (!isPlainObject(value)) return val.addTypeError();
+    if (!isPlainObject(value)) return val.addTypeError("plain-object");
 
     for (const name in this.options.props) {
       const propType = this.options.props[name] as any as $.Type;
@@ -154,7 +154,6 @@ export class ObjectType<
         val.errors.push({
           path: [...context.path, name],
           code: "additionalProperty",
-          value: value,
         });
     }
 

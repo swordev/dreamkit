@@ -2,7 +2,7 @@ import { TypeContext } from "../context.js";
 import { type TypeFlag, flagValues } from "../flags.js";
 import { InferType, TypeDef } from "../infer.js";
 import { kindSchema } from "../utils/kind.js";
-import type { TypeAssertErrorData } from "../validation.js";
+import { TypeAssertError, type TypeAssertErrorData } from "../validation.js";
 import { MinimalType } from "./MinimalType.js";
 import type { JSONSchema7 } from "json-schema";
 
@@ -107,10 +107,7 @@ export abstract class Type<
   }
   assert(value: unknown): asserts value is TypeDef<this> {
     const errors = this.validate(value);
-    if (errors.length) {
-      console.error(errors);
-      throw new Error("Type assert error", { cause: errors });
-    }
+    if (errors.length) throw new TypeAssertError(errors);
   }
   parse(input: TypeDef<this>, context?: TypeContext): unknown {
     if (!context) context = new TypeContext({ input });

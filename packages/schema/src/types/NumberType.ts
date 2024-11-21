@@ -47,7 +47,7 @@ export class NumberType<F extends $.TypeFlag.Options = {}> extends $.Type<
       super.onValidate(value, context),
     );
     if (!val.next()) return val.errors;
-    if (typeof value !== "number") return val.addTypeError();
+    if (typeof value !== "number") return val.addTypeError("number");
     const { options } = this;
     if (typeof options.min === "number" && value < options.min) val.add("min");
     if (typeof options.max === "number" && value > options.max) val.add("max");

@@ -1,5 +1,8 @@
 export { TypeContext } from "../context.js";
-export { TypeValidation, type TypeAssertErrorData } from "../validation.js";
+export {
+  TypeValidation,
+  type TypeAssertErrorData as TypeAssertErrorData,
+} from "../validation.js";
 export { TypeFlag } from "../flags.js";
 export type { TypeDef } from "../infer.js";
 export { kindSchema as kind } from "../utils/kind.js";

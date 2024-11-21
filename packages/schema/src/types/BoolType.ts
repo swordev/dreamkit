@@ -44,7 +44,7 @@ export class BoolType<F extends $.TypeFlag.Options = {}> extends $.Type<
       super.onValidate(value, context),
     );
     if (!val.next()) return val.errors;
-    if (typeof value !== "boolean") return val.addTypeError();
+    if (typeof value !== "boolean") return val.addTypeError("boolean");
     return val.errors;
   }
   protected override onJsonSchema(): $.JSONSchema7 {

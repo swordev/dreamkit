@@ -41,7 +41,7 @@ export class FileType<F extends $.TypeFlag.Options = {}> extends $.Type<
       super.onValidate(value, context),
     );
     if (!val.next()) return val.errors;
-    if (!(value instanceof File)) return val.addTypeError();
+    if (!(value instanceof File)) return val.addTypeError("File");
     const { options } = this;
     if (options.min) {
       const min = parseSize(options.min);

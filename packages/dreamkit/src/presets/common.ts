@@ -30,6 +30,10 @@ export {
   // Type
   MinimalType,
   Type,
+  // validation
+  TypeAssertError,
+  type TypeAssertErrorData,
+  isTypeAssertError,
 } from "@dreamkit/schema";
 export {
   context,
