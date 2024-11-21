@@ -1,5 +1,11 @@
 # @dreamkit/ioc
 
+## 0.0.2-next.1
+
+### Patch Changes
+
+- [#21](https://github.com/swordev/dreamkit/pull/21) [`0bea5e7`](https://github.com/swordev/dreamkit/commit/0bea5e79bef4d858b2f23dcf0d94c41bffe37721) Thanks [@github-actions](https://github.com/apps/github-actions)! - Avoid auto registering
+
 ## 0.0.2-next.0
 
 ### Patch Changes

@@ -1,5 +1,15 @@
 # @dreamkit/app
 
+## 0.0.7-next.2
+
+### Patch Changes
+
+- [#21](https://github.com/swordev/dreamkit/pull/21) [`070ae31`](https://github.com/swordev/dreamkit/commit/070ae313592783e38d90cece3893e6c61a4b2caf) Thanks [@github-actions](https://github.com/apps/github-actions)! - Fix `SettingsHandler`.
+
+- Updated dependencies [[`0bea5e7`](https://github.com/swordev/dreamkit/commit/0bea5e79bef4d858b2f23dcf0d94c41bffe37721)]:
+  - @dreamkit/ioc@0.0.2-next.1
+  - @dreamkit/func@0.0.3-next.2
+
 ## 0.0.7-next.1
 
 ### Patch Changes
