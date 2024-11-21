@@ -16,7 +16,7 @@ import {
 import { iocKind } from "./utils/kind.js";
 import { capitalize } from "./utils/string.js";
 import type { AbstractConstructor, Constructor } from "./utils/ts.js";
-import { is, kind } from "@dreamkit/kind";
+import { is } from "@dreamkit/kind";
 
 export type IocContextOptions = {
   parentContainer?: IocContext;
@@ -47,8 +47,6 @@ export class IocContext {
   readonly registry: IocRegistry<IocContext>;
   constructor(readonly options: IocContextOptions = {}) {
     this.registry = this.options.registry ?? new IocRegistry();
-    if (!this.registry.has(IocContext))
-      this.registry.set(IocContext, { value: this });
   }
   protected getConstructor(): IocContextConstructor {
     return this.constructor as any;

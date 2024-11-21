@@ -14,8 +14,8 @@ describe("IocContext.fork", () => {
     ctx.register(class A {}, {
       value: 1,
     });
-    expect(ctx.registry.size).toBe(2);
-    expect(context.registry.size).toBe(1);
+    expect(ctx.registry.size).toBe(1);
+    expect(context.registry.size).toBe(0);
   });
 });
 
@@ -50,8 +50,8 @@ describe("IocContext.register", () => {
 });
 
 describe("IocContext.resolve", () => {
-  it("resolve self", () => {
-    expect(context.resolve(IocContext) === context).toBeTruthy();
+  it("return undefined", () => {
+    expect(context.resolve(IocContext, { optional: true })).toBeUndefined();
   });
   it("throw error", () => {
     const ctx = context.fork();
@@ -232,10 +232,10 @@ describe("IocContext.register", () => {
     const config1 = { value: new A() };
     const config2 = { value: new A() };
     ctx.register(A, config1);
-    expect(ctx.registry.size).toBe(2);
+    expect(ctx.registry.size).toBe(1);
     expect(ctx.registry.get(A)).toBe(config1);
     ctx.register(A2, config2);
-    expect(ctx.registry.size).toBe(2);
+    expect(ctx.registry.size).toBe(1);
     expect(ctx.registry.get(A)).toBe(config2);
   });
 });
