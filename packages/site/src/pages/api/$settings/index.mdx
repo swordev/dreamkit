@@ -28,23 +28,23 @@ In production mode, it is possible to change the path from which the settings ar
 
 #### name
 
-You can have as many settings as you want, since each one of them will use the 'name' option that you have assigned to save its data.
+You can have as many settings as you want, since each one of them will use the `name` option that you have assigned to save its data.
 
 #### params
 
-The settings parameters are defined with the 'params' option and their values ​​are loaded and validated directly from the 'settings.json' file.
+The settings parameters are defined with the `params` option and their values ​​are loaded and validated directly from the `settings.json` file.
 
 If the data types of the settings do not match the defined ones, a fatal error will be generated which will prevent the application from starting, thus early detection of errors.
 
 #### generator
 
-The settings file will be automatically generated if the settings have the 'generator' option, so you could initialize certain settings as random keys if these have not been defined already.
+The settings file will be automatically generated if the settings have the `generator` option, so you could initialize certain settings as random keys if these have not been defined already.
 
 #### optional
 
-Sometimes it may be necessary to have optional settings and we want the application to start even if the settings have not been defined. This can be done by enabling the 'optional' option.
+Sometimes it may be necessary to have optional settings and we want the application to start even if the settings have not been defined. This can be done by enabling the `optional` option.
 
-When someone consumes the settings if you leave them undefined, it will throw a local error. You can also consume the settings optionally with 'iocParam' (see examples below).
+When someone consumes the settings if you leave them undefined, it will throw a local error. You can also consume the settings optionally with `iocParam` (see examples below).
 
 #### create
 
