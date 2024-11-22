@@ -44,6 +44,16 @@ const installVersion = dreamkitVersion.includes("next")
         </Tabs>
       </li>
       <li>
+        <span id="configure-npm">Configure pnpm</span>
+        <Tabs syncKey="package-manager">
+          <Code
+            ins={[1]}
+            title=".npmrc"
+            code={"public-hoist-pattern[]=@dreamkit/node-app"}
+          />
+        </Tabs>
+      </li>
+      <li>
         <span id="install-deps"
           >Install the <code>{packageName}</code> dependency</span
         >

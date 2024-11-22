@@ -24,6 +24,7 @@ export default defineConfig({
               "src/entry-server.tsx",
               "src/global.d.ts",
               ".gitignore",
+              ".npmrc",
               "README.md",
               "app.config.ts",
               "package.json",
