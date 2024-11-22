@@ -1,0 +1,19 @@
+---
+function getAnchor(text: string) {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9 ]/g, "")
+    .replace(/[ ]/g, "-");
+}
+
+interface Props {
+  text: string;
+}
+
+const value = await Astro.slots.render("default");
+const anchor = getAnchor(value);
+---
+
+<h3 id={anchor}>
+  {value}
+</h3>

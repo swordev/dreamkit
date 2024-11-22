@@ -1,4 +1,5 @@
 import ApiPage from "../../../components/ApiPage.astro";
+import H3 from "../../../components/H3.astro";
 
 <ApiPage
   name="$route"
@@ -15,12 +16,117 @@ import ApiPage from "../../../components/ApiPage.astro";
 With the route builder you can define and use search and path parameters
 with typing and validation.
 
-You can also consume functions created with the API builder ($api) to
+You can also consume functions created with <a href="/api/$api">$api</a> to
 securely exchange data with the server.
 
 When you create a route in development mode, metadata will be automatically
 generated and you will have strong typing to access routes and their
-parameters in the Link component, the routePath function, and the RequestUrl
-class.
+parameters in the <a href="/api/link">Link</a> component, the <a href="/api/route-path">routePath</a> function, and the <a href="/api/request-url">RequestUrl</a> class.
 
+<div slot="post-definition">
+
+<H3>title</H3>
+
+Set a title to the page using the `Title` component of `@solidjs/meta`.
+
+<H3>params</H3>
+
+Define the parameters schema of the route.
+
+By default, all parameters are used as search parameters, but you can use them in the path using the <a href="#path">path</a> option.
+
+```ts
+$route.params({ name: s.string() });
+```
+
+<H3>onParamsError</H3>
+
+If an error occurs when validating parameters, you can choose to reset the parameters to a predefined valid value:
+
+```ts
+$route.params({ name: s.string() }).onParamsError({ value: "" });
+```
+
+Or redirect to another page:
+
+```ts
+$route.params({ name: s.string() }).onParamsError({ redirect: "/error" });
+```
+
+<H3>path</H3>
+
+You can define the route path in two ways, using a fixed route without params (ex: `/user?id=1`):
+
+```ts
+$route.params({ id: s.number }).path("/user");
+```
+
+Or by injecting part of the previously defined parameter scheme (ex: `/user/1`):
+
+```ts
+$route.params({ id: s.number }).path((params) => `/user/${params.id}`);
+```
+
+If you are creating the route under the file system (ex: `/src/routes/users.tsx`), you don't need to define the path.
+
+<H3>api</H3>
+
+Injects API functions created with <a href="/api/$api">$api</a> so they can be used in the component.
+
+```ts
+const fetchPid = $api.create(() => process.pid);
+$route.api({ fetchPid }).create(({ api }) => {
+  api.fetchPid().then((pid) => console.log(pid));
+});
+```
+
+<H3>preload</H3>
+
+Preloads data before accessing the route (default when hovering over the link).
+
+```ts
+const fetchPid = $api.create(() => process.pid);
+$route
+  .api({ fetchPid })
+  .preload(({ api }) => api.fetchPid())
+  .create(({ data }) => {
+    data.then((pid) => console.log(pid));
+  });
+```
+
+<H3>create</H3>
+
+Creates the route component with all the options previously entered.
+
+The component receives an argument with the following properties:
+
+- params: the parameters of the route configured with the <a href="#params">params</a> option.
+- setParams: a function to set the search params of the route with type safe.
+- api: the API functions injected with the <a href="#api">api</a> option.
+- data: the data preloaded in the <a href="#preload">preload</a> option.
+
+```ts
+$route.create(({ params, setParams, api, data }) => {});
+```
+
+</div>
+
+<div slot="extra">
+
+## FAQ
+
+### Why inject API functions instead of using them directly?
+
+By injecting API functions into the route you can get a tree of which APIs each route uses and thus be able to manage access permissions later.
+
+If the API function you create consumes dependencies it cannot be called directly without generating an error in TypeScript:
+
+```ts
+const exec = $api.self({ Db }).create(() => {});
+exec(); // TypeScript error
+exec.bind({ db: new Db() })(); // OK
+```
+
+</div>
 </ApiPage>
+```

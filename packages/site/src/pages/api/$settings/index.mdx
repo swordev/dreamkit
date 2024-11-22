@@ -1,4 +1,5 @@
 import ApiPage from "../../../components/ApiPage.astro";
+import H3 from "../../../components/H3.astro";
 
 <ApiPage
   name="$settings"
@@ -10,7 +11,7 @@ import ApiPage from "../../../components/ApiPage.astro";
   ]}
 >
 
-Define your settings and use them throughout the application (services, middlewares, APIs) with strong typing and validation.
+Define your settings and use them throughout the application (<a href="/api/service">services</a>, <a href="/api/middleware">middlewares</a>, <a href="/api/$api">APIs</a>) with strong typing and validation.
 
 In every application there comes a time when we want to record data outside the repository, either because it is private (e.g. passwords) and/or is very specific (e.g. connection parameters). Normally this is done using environment variables or a JSON file.
 
@@ -26,27 +27,27 @@ In production mode, it is possible to change the path from which the settings ar
 
 <div slot="post-definition">
 
-#### name
+<H3>name</H3>
 
 You can have as many settings as you want, since each one of them will use the `name` option that you have assigned to save its data.
 
-#### params
+<H3>params</H3>
 
 The settings parameters are defined with the `params` option and their values ​​are loaded and validated directly from the `settings.json` file.
 
 If the data types of the settings do not match the defined ones, a fatal error will be generated which will prevent the application from starting, thus early detection of errors.
 
-#### generator
+<H3>generator</H3>
 
 The settings file will be automatically generated if the settings have the `generator` option, so you could initialize certain settings as random keys if these have not been defined already.
 
-#### optional
+<H3>optional</H3>
 
 Sometimes it may be necessary to have optional settings and we want the application to start even if the settings have not been defined. This can be done by enabling the `optional` option.
 
 When someone consumes the settings if you leave them undefined, it will throw a local error. You can also consume the settings optionally with `iocParam` (see examples below).
 
-#### create
+<H3>create</H3>
 
 Creates a strongly typed and validated class which allows receiving the configured parameters as the first argument.
 

@@ -1,4 +1,5 @@
 import ApiPage from "../../../components/ApiPage.astro";
+import H3 from "../../../components/H3.astro";
 
 <ApiPage
   name="$api"
@@ -9,14 +10,62 @@ import ApiPage from "../../../components/ApiPage.astro";
   ]}
 >
 
-With the API builder you can create functions that can be used by routes.
+You will be able to define a <a href="#params">parameter schema</a> to validate your input data and <a href="#self">consume objects</a> registered by <a href="/api/service">services</a> and <a href="/api/middleware">middlewares</a>.
 
-You can also consume objects registered by services and middlewares and you
-will have automatic validation of input parameters on the client (before the
-request is created) and server.
+<div slot="post-definition">
 
-If you define a parameter schema in the API you can reference this schema on
-the client for various purposes such as auto-generating the UI or reusing
-other schema data such as titles.
+<H3>title</H3>
+
+Stores the API title.
+
+This value can be reused by others.
+
+```ts
+const login = $api.title("Login").create(() => {});
+console.log(login.title); // "Login"
+```
+
+<H3>params</H3>
+
+Defines the input parameter scheme of the API.
+
+Parameters are validated on the client and on the server, and the schema can be reused after the function is created.
+
+If the parameters are not valid, the remote request will not be made and an error will be thrown.
+
+```ts
+const login = $api
+  .params({ username: s.string(), password: s.string() })
+  .create(() => {});
+login.params; // { username: s.string(), password: s.string() }
+```
+
+<H3>self</H3>
+
+Consumes dependencies registered in the IoC context so that they can be used internally by the function.
+
+By default there are a number of registered objects available:
+
+- <a href="https://developer.mozilla.org/en-US/docs/Web/API/Request">Request</a>
+- <a href="https://developer.mozilla.org/en-US/docs/Web/API/Headers">Headers</a>
+- <a href="/api/request-url">RequestUrl</a>
+
+```ts
+const fetchContentType = $api.self({ Headers }).create(function () {
+  return this.headers.get("Content-Type");
+});
+```
+
+<H3>cache</H3>
+
+Temporarily saves the request and response to avoid unnecessary multiple calls.
+
+Internally calls the <a href="https://docs.solidjs.com/solid-router/reference/data-apis/query#query">query</a> function from `@solidjs/router`.
+
+<H3>create</H3>
+
+Create the API function with the configured <a href="#params">parameters</a> and <a href="#self">instance</a>.
+
+</div>
 
 </ApiPage>

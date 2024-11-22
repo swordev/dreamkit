@@ -4,6 +4,10 @@ declare module "dreamkit/definitions" {
     params(value: object): typeof $api;
     self(value: object): typeof $api;
     cache(key?: string): typeof $api;
-    create(this: object, params: object): any;
+    create(cb: (this: object, params: object) => any): {
+      title: string;
+      params: object;
+      (this: object, params: object): any;
+    };
   };
 }
