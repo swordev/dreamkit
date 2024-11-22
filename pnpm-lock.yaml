@@ -312,6 +312,9 @@ importers:
       better-sqlite3:
         specifier: ^11.5.0
         version: 11.5.0
+      client-zip:
+        specifier: ^2.4.6
+        version: 2.4.6
       dreamkit:
         specifier: workspace:*
         version: link:../dreamkit
@@ -2141,6 +2144,9 @@ packages:
   cli-truncate@4.0.0:
     resolution: {integrity: sha512-nPdaFdQ0h/GEigbPClz11D0v/ZJEwxmeVZGeMo3Z5StPtUTkA9o1lD6QwoirYiSDzbcwn2XcjwmCp68W1IS4TA==}
     engines: {node: '>=18'}
+
+  client-zip@2.4.6:
+    resolution: {integrity: sha512-e7t1u14h/yT0A12qBwFsaus8UZZ8+MCaNAEn/z53mrukLq/LFcKX7TkbntAppGu8he2p8pz9vc5NEGE/h4ohlw==}
 
   clipboardy@4.0.0:
     resolution: {integrity: sha512-5mOlNS0mhX0707P2I0aZ2V/cmHUEO/fL7VFLqszkhUsxt7RwnmrInf/eEQKlf5GzvYeHIjT+Ov1HRfNmymlG0w==}
@@ -6993,6 +6999,8 @@ snapshots:
     dependencies:
       slice-ansi: 5.0.0
       string-width: 7.2.0
+
+  client-zip@2.4.6: {}
 
   clipboardy@4.0.0:
     dependencies:

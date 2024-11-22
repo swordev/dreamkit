@@ -1,6 +1,5 @@
 ---
 import { Code, LinkButton } from "@astrojs/starlight/components";
-
 export type Props = {
   title: string | false;
   code: string;
@@ -20,18 +19,47 @@ const { props } = Astro;
 
 {
   (props.playground ?? true) && (
-    <div style="text-align: right">
+    <div
+      style="text-align: right"
+      data-project-title={props.title || ""}
+      data-project-code={props.code}
+      data-project-file-name={props.fileName}
+      data-project-pkg-dependencies={JSON.stringify(props.pkgDependencies)}
+      data-project-pkg-dev-dependencies={JSON.stringify(
+        props.pkgDevDependencies
+      )}
+    >
+      <LinkButton
+        title="Download"
+        href="#"
+        class="project"
+        style="margin-block:0; font-size: 15px"
+        data-action="download"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          enable-background="new 0 0 24 24"
+          fill="currentColor"
+          height="24"
+          viewBox="0 0 24 24"
+          width="24"
+        >
+          <>
+            <g>
+              <rect fill="none" height="24" width="24" />
+            </g>
+            <g>
+              <path d="M5,20h14v-2H5V20z M19,9h-4V3H9v6H5l7,7L19,9z" />
+            </g>
+          </>
+        </svg>
+      </LinkButton>
       <LinkButton
         title="Play code"
         href="#"
         class="project"
         style="margin-block:0; font-size: 15px"
-        data-project-file-name={props.fileName}
-        data-project-code={props.code}
-        data-project-pkg-dependencies={JSON.stringify(props.pkgDependencies)}
-        data-project-pkg-dev-dependencies={JSON.stringify(
-          props.pkgDevDependencies
-        )}
+        data-action="open"
       >
         <svg
           fill="currentColor"
@@ -51,30 +79,64 @@ const { props } = Astro;
 }
 
 <script>
-  import openProject from "../utils/stackblitz.ts";
-  document.addEventListener("click", (e) => {
+  import openProject, { buildProjectFiles } from "../utils/stackblitz.ts";
+  import { downloadZip } from "client-zip";
+  document.addEventListener("click", async (e) => {
     const element =
+      e.target instanceof Element
+        ? (e.target.closest("[data-project-code]") as HTMLElement)
+        : undefined;
+    const targetElement =
       e.target instanceof HTMLElement
-        ? e.target.matches("[data-project-code]")
+        ? e.target.matches("[data-action]")
           ? e.target
           : undefined
         : e.target instanceof Element
-          ? (e.target.closest("[data-project-code]") as HTMLElement)
+          ? (e.target.closest("[data-action]") as HTMLElement)
           : undefined;
-    if (element) {
+    if (element && targetElement) {
       e.preventDefault();
+      const action = targetElement.dataset.action;
+      location.href;
+      const section = location.href.split("/").pop();
+      const fileName = [
+        section,
+        element.dataset.projectTitle?.toLowerCase().replaceAll(" ", "-"),
+        "example",
+      ]
+        .filter(Boolean)
+        .join("-");
       const pkgDependencies = element.dataset.projectPkgDependencies
         ? JSON.parse(element.dataset.projectPkgDependencies)
         : {};
       const pkgDevDependencies = element.dataset.projectPkgDevDependencies
         ? JSON.parse(element.dataset.projectPkgDevDependencies)
         : {};
-      openProject({
-        pkgDependencies,
-        pkgDevDependencies,
-        appFile: element.dataset.projectFileName,
-        appCode: element.dataset.projectCode ?? "",
-      });
+      if (action === "open") {
+        openProject({
+          pkgDependencies,
+          pkgDevDependencies,
+          appFile: element.dataset.projectFileName,
+          appCode: element.dataset.projectCode ?? "",
+        });
+      } else if (action === "download") {
+        const files = Object.entries(
+          buildProjectFiles({
+            pkgDependencies,
+            pkgDevDependencies,
+            appFile: element.dataset.projectFileName,
+            appCode: element.dataset.projectCode ?? "",
+          })
+        ).map(([name, content]) => new File([content], name));
+
+        const blob = await downloadZip(files).blob();
+
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = `${fileName}.zip`;
+        link.click();
+        link.remove();
+      }
     }
   });
 </script>
