@@ -62,10 +62,6 @@ export class FuncBuilder<T extends FuncData = FuncData> {
   cache(key?: string): this {
     return this.clone({ cache: { key } });
   }
-  protected onCreate(func: Func): Func {
-    kindFunc(func);
-    return func;
-  }
   create<R = any>(
     body: (
       this: IocParams<T["self"]>,
@@ -107,7 +103,8 @@ export class FuncBuilder<T extends FuncData = FuncData> {
     };
 
     Object.assign(func, meta);
-
-    return this.onCreate(func as any) as any;
+    kindFunc(func);
+    if (this.options.onCreate) return this.options.onCreate(func as any) as any;
+    return func as any;
   }
 }

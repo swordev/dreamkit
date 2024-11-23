@@ -32,6 +32,7 @@ export type FuncData<
 export type FuncOptions<T extends FuncData = FuncData> = T & {
   register?: IocRegistryData;
   context?: (options: FuncOptions) => IocContext;
+  onCreate?: (func: Func) => Func;
   cache?: { key?: string };
 };
 

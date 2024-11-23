@@ -1,3 +1,8 @@
-import { ApiBuilder } from "../builders/ApiBuilder.js";
+import { ApiBuilder, kindApi } from "../builders/ApiBuilder.js";
 
-export const $api = /*#__PURE__*/ new ApiBuilder({});
+export const $api = /*#__PURE__*/ new ApiBuilder({})["clone"]({
+  onCreate: (func) => {
+    kindApi(func);
+    return func;
+  },
+});
