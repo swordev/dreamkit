@@ -1,5 +1,5 @@
 // title: Basic usage
-import { $api, $route, IocContext, kind, ServiceClass } from "dreamkit";
+import { $api, $route, $service, AppContext, kind } from "dreamkit";
 import { createResource } from "solid-js";
 
 class CounterModel {
@@ -10,15 +10,15 @@ class CounterModel {
   value = 0;
 }
 
-export class CounterService extends ServiceClass({ IocContext }) {
+export class CounterService extends $service.self({ AppContext }).create() {
   onStart() {
     const counter = new CounterModel();
     const interval = setInterval(() => {
       counter.value += 1;
     }, 1000);
-    this.iocContext.register(CounterModel, { value: counter });
+    this.appContext.register(CounterModel, { value: counter });
     return () => {
-      this.iocContext.unregister(CounterModel);
+      this.appContext.unregister(CounterModel);
       clearInterval(interval);
     };
   }

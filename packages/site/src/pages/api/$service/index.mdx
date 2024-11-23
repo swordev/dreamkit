@@ -1,0 +1,46 @@
+import ApiPage from "../../../components/ApiPage.astro";
+import H3 from "../../../components/H3.astro";
+
+<ApiPage
+  name="$service"
+  definition={await import("./_definition?raw")}
+  examples={[await import("./_examples/basic-usage.tsx?raw")]}
+>
+
+Services are classes that can be exported in the <a href="/entry">entry</a> and allow you to initialize configurations that remain alive throughout the
+application's lifecycle.
+
+If you edit a service in development mode, that service will be safely restarted.
+
+It is common to use services to initialize databases and register them in the IoC context so that other objects can consume them (<a href="/api/$middleware">middleware</a>, <a href="/api/$api">api</a>).
+
+<div slot="post-definition">
+
+<H3>self</H3>
+
+Consumes dependencies registered in the IoC context so that they can be used internally by the function.
+
+By default there are a number of registered objects available:
+
+- <a href="https://developer.mozilla.org/en-US/docs/Web/API/Request">Request</a>
+- <a href="https://developer.mozilla.org/en-US/docs/Web/API/Headers">Headers</a>
+- AppContext
+
+<H3>create</H3>
+
+Create an abstract service class with the configured <a href="#self">instance</a>. You must override the method `onStart` to implement the service logic.
+
+If a function is returned in the `onStart` method, it will be called when the service stops.
+
+```ts
+export class MyService extends $service.create() {
+  override onStart() {
+    console.log("Starting");
+    return () => console.log("Stopping");
+  }
+}
+```
+
+</div>
+
+</ApiPage>

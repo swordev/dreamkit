@@ -1,0 +1,42 @@
+import ApiPage from "../../../components/ApiPage.astro";
+import H3 from "../../../components/H3.astro";
+
+<ApiPage
+  name="$middleware"
+  definition={await import("./_definition?raw")}
+  examples={[await import("./_examples/basic-usage.tsx?raw")]}
+>
+
+Middlewares are classes that can be exported in the <a href="/entry">entry</a> and allow you to intervene in requests.
+
+<div slot="post-definition">
+
+<H3>self</H3>
+
+Consumes dependencies registered in the IoC context so that they can be used internally by the function.
+
+By default there are a number of registered objects available:
+
+- <a href="https://developer.mozilla.org/en-US/docs/Web/API/Request">Request</a>
+- <a href="https://developer.mozilla.org/en-US/docs/Web/API/Headers">Headers</a>
+- RequestUrl
+- RequestContext
+- AppContext
+
+It is recommended that the middleware consumes lighter dependencies to avoid loading it with complexity, for example, if you need to access the headers, use Headers and avoid consuming Request.
+
+<H3>create</H3>
+
+Create an abstract middleware class with the configured <a href="#self">instance</a>. You must override the method `onRequest` to implement the middleware logic.
+
+```ts
+export class MyMiddleware extends $middleware.self({ Headers }).create() {
+  override onRequest() {
+    console.log(this.headers.get("Content-Type"));
+  }
+}
+```
+
+</div>
+
+</ApiPage>

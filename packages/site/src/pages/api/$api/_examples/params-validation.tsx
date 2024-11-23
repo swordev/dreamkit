@@ -24,9 +24,9 @@ export default $route
 
     return (
       <>
-        <Input value={name} onChange={setName} />
+        <Input value={name} onChange={setName} />{" "}
         <button onClick={send} disabled={send.running} children={send.title} />
-        {send.error && <p>Error: {JSON.stringify(send.error.cause)}</p>}
+        {send.error && <p>Error: {send.error.message}</p>}
         {send.state === "success" && <p>Success</p>}
       </>
     );

@@ -1,9 +1,7 @@
 // title: Basic usage
-import { $route, MiddlewareClass, RequestUrl, Link } from "dreamkit";
+import { $route, $middleware, RequestUrl, Link } from "dreamkit";
 
-export class AppMiddleware extends MiddlewareClass({
-  RequestUrl,
-}) {
+export class AppMiddleware extends $middleware.self({ RequestUrl }).create() {
   onRequest() {
     // @ts-expect-error
     if (this.requestUrl.is("/section")) {

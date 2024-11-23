@@ -105,6 +105,24 @@ export default defineConfig({
               link: "/api/$settings",
             },
             {
+              label: "$middleware",
+              link: "/api/$middleware",
+            },
+            {
+              label: "$service",
+              link: "/api/$service",
+            },
+            {
+              label: "$session",
+              link: "/api/$session",
+              badge: "WIP",
+            },
+            {
+              label: "$storage",
+              link: "/api/$storage",
+              badge: "WIP",
+            },
+            {
               label: "routePath",
               link: "/api/route-path",
             },
@@ -127,14 +145,6 @@ export default defineConfig({
             {
               label: "ioc",
               link: "/api/ioc",
-            },
-            {
-              label: "Service",
-              link: "/api/service",
-            },
-            {
-              label: "Middleware",
-              link: "/api/middleware",
             },
           ],
         },

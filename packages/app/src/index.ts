@@ -9,6 +9,8 @@ export { RequestContext } from "./contexts/RequestContext.js";
 // objects
 export { $api } from "./objects/$api.js";
 export { $route } from "./objects/$route.js";
+export { $middleware } from "./objects/$middleware.js";
+export { $service } from "./objects/$service.js";
 export {
   RouteBuilder,
   type RouteOptions,
@@ -26,15 +28,18 @@ export {
 } from "./builders/SettingsBuilder.js";
 export {
   Middleware,
-  MiddlewareClass,
   isMiddleware,
-} from "./objects/middleware.js";
+  type MiddlewareConstructor,
+  type MiddlewareOptions,
+  type MiddlewareData,
+} from "./builders/MiddlewareBuilder.js";
 export {
   Service,
-  ServiceClass,
-  type ServiceStop,
+  type ServiceConstructor,
+  type ServiceOptions,
+  type ServiceData,
   isService,
-} from "./objects/service.js";
+} from "./builders/ServiceBuilder.js";
 // handlers
 export {
   SettingsHandler,

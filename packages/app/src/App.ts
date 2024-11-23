@@ -1,6 +1,15 @@
 import { RequestUrl } from "./RequestUrl.js";
 import { isApi } from "./builders/ApiBuilder.js";
+import {
+  isMiddleware,
+  MiddlewareConstructor,
+} from "./builders/MiddlewareBuilder.js";
 import { Route } from "./builders/RouteBuilder.js";
+import {
+  AppService,
+  isService,
+  ServiceConstructor,
+} from "./builders/ServiceBuilder.js";
 import { isSettings, SettingsConstructor } from "./builders/SettingsBuilder.js";
 import { AppContext } from "./contexts/AppContext.js";
 import { RequestContext } from "./contexts/RequestContext.js";
@@ -9,12 +18,6 @@ import {
   SettingsHandler,
   SettingsHandlerConstructor,
 } from "./handlers/SettingsHandler.js";
-import { isMiddleware, MiddlewareConstructor } from "./objects/middleware.js";
-import {
-  AppService,
-  isService,
-  ServiceConstructor,
-} from "./objects/service.js";
 import { isRoute, kindApp } from "./utils/kind.js";
 import { log } from "./utils/log.js";
 import {

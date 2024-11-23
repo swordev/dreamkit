@@ -5,7 +5,7 @@ import {
   iocParam,
   RequestUrl,
   SessionClass,
-  MiddlewareClass,
+  $middleware,
   Input,
   $api,
   $route,
@@ -44,10 +44,12 @@ export const fetchUserData = $api
     return { id: this.userSession.data.id };
   });
 
-export class AuthMiddleware extends MiddlewareClass({
-  RequestUrl,
-  UserSession: iocParam(UserSession).optional(),
-}) {
+export class AuthMiddleware extends $middleware
+  .self({
+    RequestUrl,
+    UserSession: iocParam(UserSession).optional(),
+  })
+  .create() {
   override onRequest() {
     if (this.userSession) {
       if (this.requestUrl.is("/", "/login")) {

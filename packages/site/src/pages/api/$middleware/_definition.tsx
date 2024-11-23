@@ -1,6 +1,7 @@
 declare module "dreamkit/definitions" {
-  const MiddlewareClass: {
-    (iocParams: object): {
+  const $middleware: {
+    self(value: object): typeof $middleware;
+    create(): {
       new (): {
         onRequest(): Response | undefined;
       };

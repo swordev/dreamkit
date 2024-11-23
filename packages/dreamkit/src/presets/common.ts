@@ -57,14 +57,17 @@ export {
   $api,
   isApi,
   // middleware
+  $middleware,
   Middleware,
-  MiddlewareClass,
   isMiddleware,
+  type MiddlewareConstructor,
+  type MiddlewareData,
+  type MiddlewareOptions,
   // service
+  $service,
   Service,
-  ServiceClass,
-  ServiceStop,
   isService,
+  type ServiceConstructor,
   // settings
   Settings,
   type SettingsConstructor,

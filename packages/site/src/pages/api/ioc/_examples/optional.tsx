@@ -1,5 +1,5 @@
 // title: Optional parameter
-import { context, IocClass, iocParam, ServiceClass } from "dreamkit";
+import { context, IocClass, iocParam, $service } from "dreamkit";
 
 class StringModel {
   toUpperCase(value: string) {
@@ -15,7 +15,7 @@ class MyModel extends IocClass({
   }
 }
 
-export class MyService extends ServiceClass({}) {
+export class MyService extends $service.create() {
   onStart() {
     const model1 = new MyModel({});
     const model2 = new MyModel({

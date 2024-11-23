@@ -10,7 +10,7 @@ import H3 from "../../../components/H3.astro";
   ]}
 >
 
-You will be able to define a <a href="#params">parameter schema</a> to validate your input data and <a href="#self">consume objects</a> registered by <a href="/api/service">services</a> and <a href="/api/middleware">middlewares</a>.
+You will be able to define a <a href="#params">parameter schema</a> to validate your input data and <a href="#self">consume objects</a> registered by <a href="/api/$service">services</a> and <a href="/api/$middleware">middlewares</a>.
 
 <div slot="post-definition">
 
@@ -48,7 +48,9 @@ By default there are a number of registered objects available:
 
 - <a href="https://developer.mozilla.org/en-US/docs/Web/API/Request">Request</a>
 - <a href="https://developer.mozilla.org/en-US/docs/Web/API/Headers">Headers</a>
-- <a href="/api/request-url">RequestUrl</a>
+- RequestUrl
+- RequestContext
+- AppContext
 
 ```ts
 const fetchContentType = $api.self({ Headers }).create(function () {

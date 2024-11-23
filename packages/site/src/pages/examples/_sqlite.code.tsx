@@ -2,11 +2,11 @@ import Database from "better-sqlite3";
 import {
   $api,
   $route,
+  $service,
+  AppContext,
   type InferType,
   Input,
-  IocContext,
   s,
-  ServiceClass,
 } from "dreamkit";
 import { createResource, For } from "solid-js";
 
@@ -15,18 +15,20 @@ const userSchema = s.object({
   name: s.string(),
 });
 
-export class SqlService extends ServiceClass({
-  IocContext,
-}) {
-  onStart() {
+export class SqlService extends $service
+  .self({
+    AppContext,
+  })
+  .create() {
+  override onStart() {
     const db = new Database(":memory:");
     db.exec("CREATE TABLE users (id INTEGER, name TEXT)");
     const insert = db.prepare("INSERT INTO users (id, name) VALUES (?, ?)");
     for (let id = 1; id <= 10; id++) insert.run([id, `User ${id}`]);
-    this.iocContext.register(Database, { value: db });
+    this.appContext.register(Database, { value: db });
     return () => {
       db.close();
-      this.iocContext.unregister(Database);
+      this.appContext.unregister(Database);
     };
   }
 }

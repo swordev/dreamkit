@@ -1,6 +1,7 @@
 declare module "dreamkit/definitions" {
-  const ServiceClass: {
-    (iocParams: object): {
+  const $service: {
+    self(value: object): typeof $service;
+    create(): {
       new (): {
         onStart(): (() => any) | undefined;
         onStop(): any;
