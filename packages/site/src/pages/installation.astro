@@ -16,10 +16,15 @@ const installVersion = dreamkitVersion.includes("next")
 
 <StarlightPage
   frontmatter={{
-    title: "Get started",
+    title: "Installation",
   }}
   headings={[
     { depth: 2, text: "Create project", slug: "create-project" },
+    {
+      depth: 2,
+      text: "Configure package manager",
+      slug: "configure-package-manager",
+    },
     { depth: 2, text: "Install dependencies", slug: "install-deps" },
     { depth: 2, text: "Configure", slug: "config" },
   ]}
@@ -44,7 +49,9 @@ const installVersion = dreamkitVersion.includes("next")
         </Tabs>
       </li>
       <li>
-        <span id="configure-npm">Configure pnpm</span>
+        <span id="configure-package-manager"
+          >Configure package manager (only pnpm)</span
+        >
         <Tabs syncKey="package-manager">
           <Code
             ins={[1]}

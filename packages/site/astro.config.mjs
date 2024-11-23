@@ -82,6 +82,10 @@ export default defineConfig({
           link: "/get-started",
         },
         {
+          label: "Installation",
+          link: "/installation",
+        },
+        {
           label: "Entry",
           link: "/entry",
         },
