@@ -1,5 +1,20 @@
 # @dreamkit/site
 
+## 0.0.18-next.4
+
+### Patch Changes
+
+- [#22](https://github.com/swordev/dreamkit/pull/22) [`4160a0f`](https://github.com/swordev/dreamkit/commit/4160a0f65ce07686add5a01da817876b0ff22316) Thanks [@github-actions](https://github.com/apps/github-actions)! - Add download button
+
+- [`ea6283e`](https://github.com/swordev/dreamkit/commit/ea6283e72e6c530486f58adee74b741f50dbbf7c) Thanks [@juanrgm](https://github.com/juanrgm)! - Update docs
+
+- [#22](https://github.com/swordev/dreamkit/pull/22) [`d2b584d`](https://github.com/swordev/dreamkit/commit/d2b584d71086c8a6ab0d64b4ad7d0589194a921f) Thanks [@github-actions](https://github.com/apps/github-actions)! - Update docs
+
+- [`e4e5f70`](https://github.com/swordev/dreamkit/commit/e4e5f709093cabf3b711baab249c183765cef663) Thanks [@juanrgm](https://github.com/juanrgm)! - Rename `ServiceClass` and `MiddlewareClass` to `$service` and `$middleware`.
+
+- Updated dependencies [[`e4e5f70`](https://github.com/swordev/dreamkit/commit/e4e5f709093cabf3b711baab249c183765cef663), [`1cb7b4d`](https://github.com/swordev/dreamkit/commit/1cb7b4da8f66a0c961f9bd4186218c7edd780869)]:
+  - dreamkit@0.0.15-next.4
+
 ## 0.0.18-next.3
 
 ### Patch Changes

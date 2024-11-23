@@ -1,5 +1,15 @@
 # @dreamkit/func
 
+## 0.0.3-next.3
+
+### Patch Changes
+
+- [`0cada93`](https://github.com/swordev/dreamkit/commit/0cada9305ebbcd790bec875a5f31131f1157c1ee) Thanks [@juanrgm](https://github.com/juanrgm)! - Set api kind.
+
+- Updated dependencies [[`1cb7b4d`](https://github.com/swordev/dreamkit/commit/1cb7b4da8f66a0c961f9bd4186218c7edd780869)]:
+  - @dreamkit/schema@0.0.5-next.1
+  - @dreamkit/ioc@0.0.2-next.2
+
 ## 0.0.3-next.2
 
 ### Patch Changes
