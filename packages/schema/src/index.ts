@@ -4,6 +4,6 @@ export * from "./types/index.js";
 export { s } from "./s.js";
 export {
   isTypeAssertError,
-  type TypeAssertError,
+  TypeAssertError,
   type TypeAssertErrorData,
 } from "./validation.js";
