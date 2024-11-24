@@ -60,13 +60,10 @@ export abstract class Settings<T extends SettingsData = SettingsData> {
   update(params: InferSettingsParams<T>) {
     const options = (this.constructor as SettingsConstructor).options;
     const errors = (options.params as ObjectType).validate(params);
-    if (errors.length) {
-      const error = new Error(`Invalid '${options.name}' settings`, {
-        cause: errors,
-      });
-      console.error(error);
-      throw error;
-    }
+    if (errors.length)
+      throw new Error(
+        `Invalid '${options.name}' settings: ${JSON.stringify(errors, null, 2)}`,
+      );
     (this as any).params = options.defaults
       ? options.defaults(params as any)
       : params;

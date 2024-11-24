@@ -34,6 +34,7 @@
   ],
   "dependencies": {
     "@dreamkit/app": "workspace:*",
+    "@dreamkit/ioc": "workspace:*",
     "@dreamkit/schema": "workspace:*",
     "@dreamkit/utils": "workspace:*"
   },

@@ -1,7 +1,47 @@
 import ApiPage from "../../../components/ApiPage.astro";
+import H3 from "../../../components/H3.astro";
 
 <ApiPage
   name="$session"
+  imports={["$session", "SessionHandler"]}
+  definition={await import("./_definition?raw")} 
+  examples={[
+    await import("./_examples/auth.tsx?raw"),
+    await import("./_examples/temp.tsx?raw")
+  ]}
 >
+
+<div slot="post-definition">
+
+<H3>name</H3>
+
+You can have as many sessions as you want, since each one of them will use the `name` option that you have assigned.
+
+<H3>params</H3>
+
+Sets the session parameter scheme. If the client session parameters do not match the scheme the session will be considered null.
+
+<H3>timelife</H3>
+
+Delete the session when it exceeds the maximum lifetime.
+
+If no lifetime is specified it will never be deleted.
+
+<H3>create</H3>
+
+Creates a strongly typed and validated class which allows receiving the configured parameters as the first argument.
+
+```ts
+class UserSession extends $session
+  .name("user")
+  .params({
+    id: s.string(),
+  })
+  .create() {}
+const session = new UserSession({ id: 1 });
+console.log(session.params.name); // 1
+```
+
+</div>
 
 </ApiPage>

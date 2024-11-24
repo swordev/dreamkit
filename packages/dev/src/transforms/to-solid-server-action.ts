@@ -179,6 +179,7 @@ function createServerAction(
               arguments: [
                 t.objectExpression([
                   t.objectProperty(t.identifier("context"), t.nullLiteral()),
+                  t.objectProperty(t.identifier("onCall"), t.nullLiteral()),
                 ]),
               ],
             },

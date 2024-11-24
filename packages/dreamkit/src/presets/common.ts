@@ -45,6 +45,7 @@ export {
 } from "@dreamkit/ioc";
 export {
   App,
+  ResponseHeaders,
   // contexts
   AppContext,
   RequestContext,
@@ -77,5 +78,12 @@ export {
   SettingsHandlerClass,
   $settings,
   isSettings,
+  // session
+  $session,
+  SessionHandler,
+  SessionHandlerClass,
+  type SessionHandlerConstructor,
+  ClientSessionHandler,
+  ClientSessionSettings,
 } from "@dreamkit/app";
 export { kind, kindOf, is, createKind } from "@dreamkit/kind";

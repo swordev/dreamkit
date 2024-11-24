@@ -115,7 +115,6 @@ export default defineConfig({
             {
               label: "$session",
               link: "/api/$session",
-              badge: "WIP",
             },
             {
               label: "$storage",

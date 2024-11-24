@@ -1,4 +1,5 @@
 import { RequestUrl } from "./RequestUrl.js";
+import { ResponseHeaders } from "./ResponseHeaders.js";
 import { isApi } from "./builders/ApiBuilder.js";
 import {
   isMiddleware,
@@ -14,18 +15,18 @@ import { isSettings, SettingsConstructor } from "./builders/SettingsBuilder.js";
 import { AppContext } from "./contexts/AppContext.js";
 import { RequestContext } from "./contexts/RequestContext.js";
 import {
+  isSessionHandler,
+  SessionHandler,
+  SessionHandlerConstructor,
+} from "./handlers/SessionHandler.js";
+import {
   isSettingsHandler,
   SettingsHandler,
   SettingsHandlerConstructor,
 } from "./handlers/SettingsHandler.js";
 import { isRoute, kindApp } from "./utils/kind.js";
 import { log } from "./utils/log.js";
-import {
-  context,
-  IocBaseClass,
-  IocContext,
-  normalizeIocParams,
-} from "@dreamkit/ioc";
+import { IocBaseClass, normalizeIocParams } from "@dreamkit/ioc";
 import { getKinds, is } from "@dreamkit/kind";
 import { merge } from "@dreamkit/utils/object.js";
 
@@ -42,6 +43,7 @@ export class App {
   readonly middlewares = new Set<MiddlewareConstructor>();
   readonly settings = new Set<SettingsConstructor>();
   public settingsHandler: SettingsHandlerConstructor | undefined;
+  public sessionHandler: SessionHandlerConstructor | undefined;
   protected listeners = {
     add: new Set<(data: { id: string; value: unknown }) => any>(),
     remove: new Set<(data: { id: string; value: unknown }) => any>(),
@@ -107,6 +109,8 @@ export class App {
       } else if (isSettingsHandler(value)) {
         this.context.unregister(SettingsHandler);
         this.settingsHandler = undefined;
+      } else if (isSessionHandler(value)) {
+        this.sessionHandler = undefined;
       }
       for (const cb of this.listeners.remove) await cb({ id, value });
       for (const cb of this.listeners.change)
@@ -120,13 +124,6 @@ export class App {
       service,
       started: false,
     };
-    if (is(service, IocBaseClass)) {
-      const params = normalizeIocParams(service.$ioc.params);
-      for (const key in params) {
-        const { value } = params[key].options;
-        if (isSettings(value)) this.settings.add(value);
-      }
-    }
     this.services.add(item);
     return item;
   }
@@ -185,12 +182,29 @@ export class App {
             return handler;
           },
         });
+      } else if (isSessionHandler(value)) {
+        this.sessionHandler = value;
       } else if (isApi(value)) {
         // Not implemented (using solid start actions)
         continue;
       } else {
         console.warn("Unknown object", { id, value, kinds: getKinds(value) });
       }
+
+      /*
+      // [review] require create a dependency for removing
+      
+      if (is(value, IocBaseClass)) {
+        const params = normalizeIocParams(value.$ioc.params);
+        for (const key in params) {
+          const { value } = params[key].options;
+          if (isSettings(value)) {
+            this.settings.add(value);
+            settings.push(value);
+          }
+        }
+      }*/
+
       this.objects.set(id, value);
       for (const cb of this.listeners.add) await cb({ id, value });
       for (const cb of this.listeners.change)
@@ -208,13 +222,20 @@ export class App {
     const context = new RequestContext({
       parentContainer: this.context,
     });
-    return context
+    const requestContext = context
       .register(RequestContext, { value: context })
       .register(Request, { value: request })
       .register(Headers, { value: request.headers })
+      .register(ResponseHeaders, { value: new ResponseHeaders() })
       .register(RequestUrl, {
         value: new RequestUrl(request.url, "http://localhost"),
       });
+    if (this.sessionHandler)
+      requestContext.register(SessionHandler, {
+        singleton: true,
+        useClass: this.sessionHandler,
+      });
+    return requestContext;
   }
 
   async request(request: Request): Promise<Response | undefined> {
@@ -249,11 +270,8 @@ export class App {
       settingsHandler.autoSave = false;
       await settingsHandler.load();
     }
-    try {
-      for (const st of this.settings) await this.registerSettings(st);
-    } finally {
-      return await settingsHandler?.save();
-    }
+    for (const st of this.settings) await this.registerSettings(st);
+    return await settingsHandler?.save();
   }
 
   protected async registerSettings(constructor: SettingsConstructor) {

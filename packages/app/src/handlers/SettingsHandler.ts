@@ -34,12 +34,14 @@ export abstract class SettingsHandler extends IocClass({ AppContext }) {
     this.data = await this.onLoad();
     for (const settings of this.settings) {
       const data = this.data[settings.options.name!];
-      this.appContext.resolve(settings, { optional: true })?.update(data);
+      try {
+        this.appContext.resolve(settings, { optional: true })?.update(data);
+      } catch (_) {}
     }
   }
-  async get<T extends SettingsData>(
+  get<T extends SettingsData>(
     constructor: SettingsConstructor<T>,
-  ): Promise<InferSettingsParams<T>> {
+  ): InferSettingsParams<T> | undefined {
     return this.data[constructor.options.name!];
   }
   async set<T extends SettingsData>(

@@ -1,10 +1,9 @@
-// @ts-nocheck
 import {
   s,
   SessionHandler,
   iocParam,
   RequestUrl,
-  SessionClass,
+  $session,
   $middleware,
   Input,
   $api,
@@ -13,13 +12,14 @@ import {
 } from "dreamkit";
 import { createSignal, createResource } from "solid-js";
 
-export class UserSession extends SessionClass({
-  name: "user",
-  props: { id: s.number() },
-}) {}
+export class UserSession extends $session
+  .name("user")
+  .params({ id: s.number() })
+  .timelife({ days: 7 })
+  .create() {}
 
 export const logout = $api.self({ SessionHandler }).create(function () {
-  this.sessionHander.remove(UserSession);
+  this.sessionHandler.unset(UserSession);
   return Response.redirect("/");
 });
 
@@ -27,7 +27,7 @@ export const login = $api
   .title("Login")
   .self({ SessionHandler })
   .params({ user: s.string(), password: s.string() })
-  .create(async (params) => {
+  .create(async function (params) {
     if (params.user === "admin" && params.password === "admin") {
       await this.sessionHandler.set(UserSession, { id: 1 });
       return Response.redirect("/");
@@ -41,7 +41,7 @@ export const fetchUserData = $api
     UserSession,
   })
   .create(function () {
-    return { id: this.userSession.data.id };
+    return { id: this.userSession.params.id };
   });
 
 export class AuthMiddleware extends $middleware

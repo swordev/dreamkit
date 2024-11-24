@@ -130,20 +130,29 @@ export async function analyzeModule(path: string) {
 
 export function findExportedNames(ast: ParseFileResult) {
   return ast.program.body
-    .map((stm) => {
+    .flatMap((stm) => {
       if (stm.type === "ExportDefaultDeclaration") {
         return "default";
-      } else if (stm.type === "ExportNamedDeclaration" && stm.declaration) {
-        if (stm.declaration.type === "VariableDeclaration") {
-          const [dec] = stm.declaration.declarations;
-          if (dec.id.type === "Identifier") return dec.id.name;
-        } else if (
-          stm.declaration.type === "FunctionDeclaration" ||
-          stm.declaration.type === "ClassDeclaration"
-        ) {
-          if (stm.declaration.id?.type === "Identifier") {
-            return stm.declaration.id.name;
+      } else if (stm.type === "ExportNamedDeclaration") {
+        if (stm.declaration) {
+          if (stm.declaration.type === "VariableDeclaration") {
+            const [dec] = stm.declaration.declarations;
+            if (dec.id.type === "Identifier") return dec.id.name;
+          } else if (
+            stm.declaration.type === "FunctionDeclaration" ||
+            stm.declaration.type === "ClassDeclaration"
+          ) {
+            if (stm.declaration.id?.type === "Identifier") {
+              return stm.declaration.id.name;
+            }
           }
+        } else if (stm.specifiers) {
+          return stm.specifiers
+            .map(
+              (spec) =>
+                spec.exported.type === "Identifier" && spec.exported.name,
+            )
+            .filter(Boolean);
         }
       }
     })
