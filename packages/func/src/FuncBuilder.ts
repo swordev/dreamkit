@@ -12,7 +12,7 @@ import type {
 import {
   cloneFuncOptions,
   resolveFuncParams,
-  resolveFuncSelf,
+  resolveFuncSelfContext,
 } from "./utils/func.js";
 import { kindFunc } from "./utils/kind.js";
 import {
@@ -78,9 +78,19 @@ export class FuncBuilder<T extends FuncData = FuncData> {
       });
       const paramsType = $this.options.params as ObjectType | undefined;
       paramsType?.assert(params);
-      const self = resolveFuncSelf($this.options, {
+      const context = resolveFuncSelfContext($this.options, {
         self: $this.options.context?.($this.options) || this,
       });
+      if (context && $this.options.onCall) {
+        return $this.options.onCall($this.options as FuncOptions<any>, {
+          context,
+          callback: body,
+          params,
+        });
+      }
+      const self: any = context
+        ? context.resolveParams($this.options.self || {})
+        : this;
       const $cb = body.bind(self) as any;
       return $cb(params);
     });

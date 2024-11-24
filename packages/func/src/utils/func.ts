@@ -21,20 +21,17 @@ export function cloneFuncOptions(prev: FuncOptions, next: FuncOptions) {
   };
 }
 
-export function resolveFuncSelf(options: FuncOptions, input: { self: any }) {
-  const selfContext = options.self
-    ? kindOf(input.self, IocContext)
-      ? input.self
-      : input.self === globalThis
-        ? context
-        : undefined
-    : undefined;
-
-  const self = selfContext
-    ? selfContext.resolveParams(options.self as any)
-    : input.self;
-
-  return self;
+export function resolveFuncSelfContext(
+  options: FuncOptions,
+  input: { self: any },
+): IocContext | undefined {
+  if (options.self) {
+    if (kindOf(input.self, IocContext)) {
+      return input.self;
+    } else if (input.self === globalThis) {
+      return context;
+    }
+  }
 }
 
 export function resolveFuncParams(
