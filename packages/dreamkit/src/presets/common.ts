@@ -85,5 +85,7 @@ export {
   type SessionHandlerConstructor,
   ClientSessionHandler,
   ClientSessionSettings,
+  // schema
+  $schema,
 } from "@dreamkit/app";
 export { kind, kindOf, is, createKind } from "@dreamkit/kind";

@@ -93,6 +93,10 @@ export default defineConfig({
           label: "API",
           items: [
             {
+              label: "$schema",
+              link: "/api/$schema",
+            },
+            {
               label: "$route",
               link: "/api/$route",
             },
@@ -136,10 +140,6 @@ export default defineConfig({
             {
               label: "Input",
               link: "/api/input",
-            },
-            {
-              label: "Schema",
-              link: "/api/schema",
             },
             {
               label: "ioc",

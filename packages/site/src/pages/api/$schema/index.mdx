@@ -1,0 +1,40 @@
+import ApiPage from "../../../components/ApiPage.astro";
+
+<ApiPage
+  name="$schema"
+  imports={["$schema", "s"]}
+  definition={await import("./_definition?raw")}
+  examples={[
+    await import("./_examples/validate.tsx?raw"),
+    await import("./_examples/object.tsx?raw"),
+  ]}
+>
+
+With the `$schema` constructor you can create schemas very easily and most importantly, these schemas can be reused throughout the application, especially in <a href="/api/$route">$route</a>, <a href="/api/$settings">$settings</a>, <a href="/api/$session">$session</a> and <a href="/api/$api">$api</a>.
+
+Because most of the data tends to come from a limited schema (SQL/NoSQL), `$schema` does not aspire to be able to build very complex schemas, since these complex schemas, in addition to not existing in a database, are not easy to represent with secure typing in a form.
+
+To simplify the creation of schemas it is recommended to use `s`, a simple alias for `$schema`.
+
+An important point to note about `$schema` is the ability to deeply manipulate object properties with the methods: `pick`, `omit`, `assign`, `require`, `deepPartial`, `deepRequired` and `deepNullish`.
+
+<div slot="extra">
+
+## FAQ
+
+### Why another schema validator?
+
+You may be tired of the number of libraries of this kind
+(e.g. zod, yup, valibot), but below I will explain some of the reasons for
+this decision.
+
+In the initial stages of development, valibot was considered, but its user
+experience is diminished by its aggressive tree shaking system, and if there
+is one thing that DreamKit aims to stand out for, it is its UX.
+
+Zod was another alternative, but its large size and performance deficiencies
+in TypeScript were important reasons for its discard.
+
+</div>
+
+</ApiPage>

@@ -13,6 +13,7 @@ export { $route } from "./objects/$route.js";
 export { $middleware } from "./objects/$middleware.js";
 export { $service } from "./objects/$service.js";
 export { $session } from "./objects/$session.js";
+export { $schema } from "./objects/$schema.js";
 export {
   RouteBuilder,
   type RouteOptions,
