@@ -50,7 +50,10 @@ By default there are a number of registered objects available:
 - <a href="https://developer.mozilla.org/en-US/docs/Web/API/Headers">Headers</a>
 - RequestUrl
 - RequestContext
+- ResponseHeaders
 - AppContext
+- Settings created with <a href="/api/$settings">`$settings`</a>
+- Sessions created with <a href="/api/$session">`$session`</a>
 
 ```ts
 const fetchContentType = $api.self({ Headers }).create(function () {

@@ -21,7 +21,10 @@ By default there are a number of registered objects available:
 - <a href="https://developer.mozilla.org/en-US/docs/Web/API/Headers">Headers</a>
 - RequestUrl
 - RequestContext
+- ResponseHeaders
 - AppContext
+- Settings created with <a href="/api/$settings">`$settings`</a>
+- Sessions created with <a href="/api/$session">`$session`</a>
 
 It is recommended that the middleware consumes lighter dependencies to avoid loading it with complexity, for example, if you need to access the headers, use Headers and avoid consuming Request.
 
