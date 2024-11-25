@@ -97,8 +97,10 @@ const { props } = Astro;
     if (element && targetElement) {
       e.preventDefault();
       const action = targetElement.dataset.action;
-      location.href;
-      const section = location.href.split("/").pop();
+      const section = location.href
+        .split("/")
+        .filter((v) => v.length)
+        .pop();
       const fileName = [
         section,
         element.dataset.projectTitle?.toLowerCase().replaceAll(" ", "-"),
