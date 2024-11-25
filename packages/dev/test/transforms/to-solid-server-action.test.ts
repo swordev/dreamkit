@@ -21,7 +21,8 @@ describe("toSolidServerAction", () => {
       };
       const _original_login = login;
       login = _base_login.clone({
-        context: null
+        context: null,
+        onCall: null
       }).create(_original_login);
       export { login };"
     `);
@@ -45,7 +46,8 @@ describe("toSolidServerAction", () => {
       };
       const _original_login = login;
       login = _base_login.clone({
-        context: null
+        context: null,
+        onCall: null
       }).create(_original_login);"
     `);
   });
