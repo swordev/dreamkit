@@ -1,6 +1,6 @@
 {
   "name": "@dreamkit/func",
-  "version": "0.0.3-next.3",
+  "version": "0.0.3-next.4",
   "description": "Functions builder with IoC and input validation.",
   "homepage": "https://dreamkit.dev",
   "repository": {

@@ -1,5 +1,14 @@
 # @dreamkit/func
 
+## 0.0.3-next.4
+
+### Patch Changes
+
+- [`3e400fa`](https://github.com/swordev/dreamkit/commit/3e400fa6f15d483007216baa3eb8403db647b388) Thanks [@juanrgm](https://github.com/juanrgm)! - Add `onCall` option.
+
+- Updated dependencies [[`a0fef64`](https://github.com/swordev/dreamkit/commit/a0fef64ce6c98e7859f5a26463e56f2289649825)]:
+  - @dreamkit/schema@0.0.5-next.2
+
 ## 0.0.3-next.3
 
 ### Patch Changes
