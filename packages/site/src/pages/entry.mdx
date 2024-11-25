@@ -11,11 +11,24 @@ import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
   headings={[{ depth: 2, text: "Example", slug: "example" }]}
 >
 
-The DreamKit entry allows you to programmatically define services, middlewares, api functions and routes in a single file.
+The DreamKit entry allows you to programmatically exports the next objects:
 
-It can be used as an optional alternative to the file routing system and both can work together at the same time. In addition, it has an advanced tree shaking system that separates each route with its dependencies and is compatible with HMR.
+- <a href="/api/$route">Routes</a>
+- <a href="/api/$api">API</a>
+- <a href="/api/$settings">Settings</a>
+- <a href="/api/$middleware">Middlewares</a>
+- <a href="/api/$service">Services</a>
+- <a href="/api/$session">Sessions</a>
 
-All examples shown in the documentation make use of this mechanic to more easily illustrate the code. And remember, the entry is optional and you can use the file routing system also.
+The default entry path is `src/dreamkit.tsx` and can be configured by `dreamkitPlugin`.
+
+It is not mandatory to create the routes and APIs in the entry, you can still use the file system (`src/routes/*`), since both systems can work at the same time.
+
+However, the rest of the objects do need to be exported from the entry (settings, middlewares, services and sessions).
+
+The entry has an advanced tree shaking system that separates each route with its dependencies and is compatible with HMR.
+
+All examples shown in the documentation make use of this mechanic to more easily illustrate the code. And remember, the entry is optional for routes and APIs and you can use the file system also.
 
 The following examples are equivalent:
 
