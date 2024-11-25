@@ -1,5 +1,17 @@
 # @dreamkit/app
 
+## 0.0.7-next.4
+
+### Patch Changes
+
+- [`9a419c0`](https://github.com/swordev/dreamkit/commit/9a419c0a1c2963a80d0025e5f7c2d9c09b0096c1) Thanks [@juanrgm](https://github.com/juanrgm)! - Add sessions.
+
+- [`5251e34`](https://github.com/swordev/dreamkit/commit/5251e343be252d7afe32bde4f383b093984b1349) Thanks [@juanrgm](https://github.com/juanrgm)! - Add `$schema`.
+
+- Updated dependencies [[`3e400fa`](https://github.com/swordev/dreamkit/commit/3e400fa6f15d483007216baa3eb8403db647b388), [`a0fef64`](https://github.com/swordev/dreamkit/commit/a0fef64ce6c98e7859f5a26463e56f2289649825)]:
+  - @dreamkit/func@0.0.3-next.4
+  - @dreamkit/schema@0.0.5-next.2
+
 ## 0.0.7-next.3
 
 ### Patch Changes
