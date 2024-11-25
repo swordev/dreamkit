@@ -1,5 +1,6 @@
 import ApiPage from "../../../components/ApiPage.astro";
 import H3 from "../../../components/H3.astro";
+import { Aside } from "@astrojs/starlight/components";
 
 <ApiPage
   name="$session"
@@ -45,6 +46,15 @@ const session = new UserSession({ id: 1 });
 console.log(session.params.name); // 1
 ```
 
+</div>
+
+<div slot="pre-examples">
+  <Aside type="caution">
+    Playground doesn't work because StackBlitz doesn't support Node.js 20.
+
+    Download the examples to run them.
+
+  </Aside>
 </div>
 
 </ApiPage>
