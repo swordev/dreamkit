@@ -1,6 +1,6 @@
 {
   "name": "solid-start-app",
-  "version": "0.0.2-next.5",
+  "version": "0.0.2-next.6",
   "private": true,
   "type": "module",
   "scripts": {
