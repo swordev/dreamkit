@@ -45,12 +45,7 @@ export class ArrayType<
     value: unknown,
     context: $.TypeContext,
   ): $.TypeAssertErrorData[] {
-    const val = new $.TypeValidation<"min" | "max">(
-      this as any,
-      context,
-      value,
-      super.onValidate(value, context),
-    );
+    const val = this.validation<"min" | "max">(value, context);
     if (!val.next()) return val.errors;
     if (!Array.isArray(value)) return val.addTypeError("array");
     const { options } = this;
@@ -70,7 +65,7 @@ export class ArrayType<
         index++;
       }
     }
-    return val.errors;
+    return val.end();
   }
   protected override onJsonSchema(): $.JSONSchema7 {
     return {

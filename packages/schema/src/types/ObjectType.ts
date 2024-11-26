@@ -134,16 +134,9 @@ export class ObjectType<
     value: unknown,
     context: $.TypeContext,
   ): $.TypeAssertErrorData<any>[] {
-    const val = new $.TypeValidation<"additionalProperty">(
-      this as any,
-      context,
-      value,
-      super.onValidate(value, context),
-    );
-
+    const val = this.validation<"additionalProperty">(value, context);
     if (!val.next()) return val.errors;
     if (!isPlainObject(value)) return val.addTypeError("plain-object");
-
     for (const name in this.options.props) {
       const propType = this.options.props[name] as any as $.Type;
       const propValue = value[name];
@@ -157,7 +150,7 @@ export class ObjectType<
         });
     }
 
-    return val.errors;
+    return val.end();
   }
   protected override onCast(value: unknown) {
     if (

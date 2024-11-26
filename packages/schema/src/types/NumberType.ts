@@ -40,19 +40,14 @@ export class NumberType<F extends $.TypeFlag.Options = {}> extends $.Type<
     value: $.TypeDef<this>,
     context: $.TypeContext,
   ) {
-    const val = new $.TypeValidation<"min" | "max" | "integer">(
-      this as any,
-      context,
-      value,
-      super.onValidate(value, context),
-    );
+    const val = this.validation<"min" | "max" | "integer">(value, context);
     if (!val.next()) return val.errors;
     if (typeof value !== "number") return val.addTypeError("number");
     const { options } = this;
     if (typeof options.min === "number" && value < options.min) val.add("min");
     if (typeof options.max === "number" && value > options.max) val.add("max");
     if (options.integer && !Number.isInteger(value)) val.add("integer");
-    return val.errors;
+    return val.end();
   }
   protected override onJsonSchema(): $.JSONSchema7 {
     return {

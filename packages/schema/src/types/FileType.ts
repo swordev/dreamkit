@@ -34,12 +34,7 @@ export class FileType<F extends $.TypeFlag.Options = {}> extends $.Type<
     value: $.TypeDef<this>,
     context: $.TypeContext,
   ) {
-    const val = new $.TypeValidation<"min" | "max">(
-      this as any,
-      context,
-      value,
-      super.onValidate(value, context),
-    );
+    const val = this.validation<"min" | "max">(value, context);
     if (!val.next()) return val.errors;
     if (!(value instanceof File)) return val.addTypeError("File");
     const { options } = this;
@@ -51,7 +46,7 @@ export class FileType<F extends $.TypeFlag.Options = {}> extends $.Type<
       const max = parseSize(options.max);
       if (value.size > max) return val.add("max");
     }
-    return val.errors;
+    return val.end();
   }
   protected override onJsonSchema(): $.JSONSchema7 {
     return {

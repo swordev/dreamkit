@@ -2,7 +2,11 @@ import { TypeContext } from "../context.js";
 import { type TypeFlag, flagValues } from "../flags.js";
 import { InferType, TypeDef } from "../infer.js";
 import { kindSchema } from "../utils/kind.js";
-import { TypeAssertError, type TypeAssertErrorData } from "../validation.js";
+import {
+  TypeAssertError,
+  TypeValidation,
+  type TypeAssertErrorData,
+} from "../validation.js";
 import { MinimalType } from "./MinimalType.js";
 import type { JSONSchema7 } from "json-schema";
 
@@ -95,6 +99,9 @@ export abstract class Type<
   }
   required(): Type<D, TypeFlag.Required<F>> {
     return this.clone({ nullable: undefined, optional: undefined } as any);
+  }
+  protected validation<C extends string>(input: unknown, context: TypeContext) {
+    return new TypeValidation<C>(this as any, context, input);
   }
   validate(input: unknown, context?: TypeContext): TypeAssertErrorData<any>[] {
     return this.onValidate(

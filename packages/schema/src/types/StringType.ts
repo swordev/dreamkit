@@ -38,12 +38,7 @@ export class StringType<F extends $.TypeFlag.Options = {}> extends $.Type<
     value: $.TypeDef<this>,
     context: $.TypeContext,
   ) {
-    const val = new $.TypeValidation<"min" | "max">(
-      this as any,
-      context,
-      value,
-      super.onValidate(value, context),
-    );
+    const val = this.validation<"min" | "max">(value, context);
     if (!val.next()) return val.errors;
     if (typeof value !== "string") return val.addTypeError("string");
     const { options } = this;
@@ -51,7 +46,7 @@ export class StringType<F extends $.TypeFlag.Options = {}> extends $.Type<
       val.add("min");
     if (typeof options.max === "number" && value.length > options.max)
       val.add("max");
-    return val.errors;
+    return val.end();
   }
   protected override onJsonSchema(): $.JSONSchema7 {
     return {

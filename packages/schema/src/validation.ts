@@ -53,4 +53,7 @@ export class TypeValidation<C extends string = any> {
     });
     return this.errors;
   }
+  end() {
+    return this.errors;
+  }
 }

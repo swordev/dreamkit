@@ -37,15 +37,10 @@ export class BoolType<F extends $.TypeFlag.Options = {}> extends $.Type<
     return value;
   }
   protected override onValidate(value: unknown, context: $.TypeContext) {
-    const val = new $.TypeValidation<"min" | "max" | "integer">(
-      this as any,
-      context,
-      value,
-      super.onValidate(value, context),
-    );
+    const val = this.validation(value, context);
     if (!val.next()) return val.errors;
     if (typeof value !== "boolean") return val.addTypeError("boolean");
-    return val.errors;
+    return val.end();
   }
   protected override onJsonSchema(): $.JSONSchema7 {
     return {
