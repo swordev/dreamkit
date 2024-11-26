@@ -1,5 +1,11 @@
 # @dreamkit/app
 
+## 0.0.7-next.5
+
+### Patch Changes
+
+- [`d672bd8`](https://github.com/swordev/dreamkit/commit/d672bd899b055029da4ce5f26baa2d8568dcc2a1) Thanks [@juanrgm](https://github.com/juanrgm)! - Warn via TypeScript if there are undefined path params.
+
 ## 0.0.7-next.4
 
 ### Patch Changes

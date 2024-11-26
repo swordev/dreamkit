@@ -1,5 +1,16 @@
 # @dreamkit/site
 
+## 0.0.18-next.6
+
+### Patch Changes
+
+- [`a44fc99`](https://github.com/swordev/dreamkit/commit/a44fc99c3efb39ceaad3994b91c2e6d07466a268) Thanks [@juanrgm](https://github.com/juanrgm)! - Add `RequestUrl` docs
+
+- [`d672bd8`](https://github.com/swordev/dreamkit/commit/d672bd899b055029da4ce5f26baa2d8568dcc2a1) Thanks [@juanrgm](https://github.com/juanrgm)! - Warn via TypeScript if there are undefined path params.
+
+- Updated dependencies []:
+  - dreamkit@0.0.15-next.6
+
 ## 0.0.18-next.5
 
 ### Patch Changes
