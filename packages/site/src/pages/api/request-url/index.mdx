@@ -1,0 +1,12 @@
+import ApiPage from "../../../components/ApiPage.astro";
+
+<ApiPage
+  name="RequestUrl"
+  definition={await import("./_definition?raw")}
+  examples={[await import("./_examples/basic-usage.tsx?raw")]}
+>
+Class inherited from <a href="https://developer.mozilla.org/en-US/docs/Web/API/URL">URL</a> but with strongly typed `is` method.
+
+It can also be consumed by <a href="/api/$middleware#self">middlewares</a> and <a href="/api/$api#self">APIs</a>.
+
+</ApiPage>

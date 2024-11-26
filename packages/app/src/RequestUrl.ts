@@ -1,5 +1,5 @@
 import { kindApp } from "./utils/kind.js";
-import { createRoutePathRegex, extractPathParams } from "./utils/routing.js";
+import { createRoutePathRegex } from "./utils/routing.js";
 
 export class RequestUrl<T = string> extends URL {
   static {

@@ -130,6 +130,10 @@ export default defineConfig({
               link: "/api/route-path",
             },
             {
+              label: "RequestUrl",
+              link: "/api/request-url",
+            },
+            {
               label: "Link",
               link: "/api/link",
             },
