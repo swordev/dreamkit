@@ -116,6 +116,7 @@ export class DreamkitDevServer {
               ? $route
               : $route["clone"]({
                   ...value.$options,
+                  filePath: item.filePath.replaceAll("\\", "/"),
                   path: item.path,
                 }).create(value.$options.component!);
           } else if (typeof value === "function") {

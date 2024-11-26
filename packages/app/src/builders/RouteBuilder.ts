@@ -9,13 +9,14 @@ import {
   s,
   type Type,
 } from "@dreamkit/schema";
-import type { Merge } from "@dreamkit/utils/ts.js";
+import type { Merge, throwError } from "@dreamkit/utils/ts.js";
 
-export type RoutePathParams<P extends string | number | symbol> = {
+export type RoutePathParamsObject<P extends string | number | symbol> = {
   [K in P]: K extends string ? `:${K}` : never;
 };
 
 export type RouteParams = MinimalObjectType | undefined;
+export type RoutePathParams = string[] | undefined;
 export type RouteApi = { [key: string]: (...args: any[]) => any };
 export type ResolveRouteApi<T extends RouteData> = keyof T["api"] extends never
   ? never
@@ -41,12 +42,24 @@ export type RoutePreloadData<T extends RouteData> = {
 export type RouteData<
   TParams extends RouteParams = RouteParams,
   TApi extends RouteApi = RouteApi,
+  TPathParams extends RoutePathParams = RoutePathParams,
   TData extends unknown = unknown,
 > = {
   params?: TParams;
   api?: TApi;
+  pathParams?: TPathParams;
   _data?: TData;
 };
+
+export type PendingRouteParams<T extends RouteData> = keyof {
+  [K in (T["pathParams"] & {})[number] as K extends keyof (T["params"] & {})["props"]
+    ? never
+    : K]: true;
+};
+
+export type RouteCreate<T extends RouteData = RouteData> = (
+  component: (props: RouteProps<T>) => any,
+) => Route;
 
 export type RouteOptions<T extends RouteData = RouteData> = T & {
   title?: string;
@@ -116,6 +129,11 @@ export class RouteBuilder<T extends RouteData = RouteData> {
   ): RouteBuilder<MergeFuncData<T, { api: T["api"] & TApi }>> {
     return this.clone({ api }) as any;
   }
+  pathParams<TPathParams extends [string, ...string[]]>(
+    ...input: TPathParams
+  ): RouteBuilder<MergeFuncData<T, { pathParams: TPathParams }>> {
+    return this as any;
+  }
   params<TParams extends RouteParams>(
     type: TParams,
   ): RouteBuilder<MergeFuncData<T, { params: TParams }>>;
@@ -134,7 +152,9 @@ export class RouteBuilder<T extends RouteData = RouteData> {
     value:
       | string
       | ((
-          params: RoutePathParams<keyof NonNullable<T["params"]>["props"]>,
+          params: RoutePathParamsObject<
+            keyof NonNullable<T["params"]>["props"]
+          >,
         ) => string),
   ): this {
     if (typeof value === "string") return this.clone({ path: value }) as this;
@@ -161,7 +181,13 @@ export class RouteBuilder<T extends RouteData = RouteData> {
       throw new Error("routeDefinition is not defined");
     return this.options.routeDefinition(this.options as RouteOptions);
   }
-  create(component: (props: RouteProps<T>) => any): Route {
+  create: unknown extends T["pathParams"]
+    ? RouteCreate<T>
+    : PendingRouteParams<T> extends never
+      ? RouteCreate<T>
+      : throwError<`Route params not defined: ${PendingRouteParams<T>}`> = ((
+    component: (props: RouteProps<T>) => any,
+  ) => {
     const self = this.clone({ component });
     const result = function (props: any) {
       if (!self.options.createComponent)
@@ -173,5 +199,5 @@ export class RouteBuilder<T extends RouteData = RouteData> {
       $options: self.options,
     });
     return result as any;
-  }
+  }) as any;
 }

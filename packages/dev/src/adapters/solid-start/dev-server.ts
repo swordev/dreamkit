@@ -2,6 +2,7 @@ import {
   DreamkitDevInOptions,
   DreamkitDevServer,
 } from "../../DreamkitDevServer.js";
+import { generateCode } from "../../actions/generate-code.js";
 import { generateMeta } from "../../actions/generate-meta.js";
 import { generateSettings } from "../../actions/generate-settings.js";
 import { DreamkitPluginOptions } from "../../options.js";
@@ -202,10 +203,15 @@ export function createDreamkitDevServer(
       await generateSettings(server);
     }, 300);
     server.app
-      .on("change", (data) => {
+      .on("change", async (data) => {
         log("change detected", { action: data.action, id: data.id });
         if (isRoute(data.value)) {
           tryGenerateMeta();
+          if (data.action === "add" && data.value.$options.filePath) {
+            await generateCode(server, {
+              filePath: data.value.$options.filePath,
+            });
+          }
         } else if (isSettings(data.value)) {
           tryGenerateSettings();
         }
@@ -234,7 +240,7 @@ export function createDreamkitDevServer(
       });
 
     await server.prepare(true);
-
+    await generateCode(server);
     for (const router of vinxiApp.config.routers) {
       const internalRouter = router.internals.routes;
       if (internalRouter) {
