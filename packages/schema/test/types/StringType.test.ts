@@ -65,4 +65,12 @@ describe("string.test", () => {
     expect(string.test({})).toBeFalsy();
     expect(string.test(new String())).toBeFalsy();
   });
+  it("test with refine", () => {
+    const upperType = s
+      .string()
+      .refine((value) => value.toUpperCase() === value);
+    expect(upperType.test("aa")).toBe(false);
+    expect(upperType.test("AA")).toBe(true);
+    expect(upperType.test("1")).toBe(true);
+  });
 });

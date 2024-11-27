@@ -8,6 +8,7 @@ declare module "dreamkit/definitions" {
     validate(input: any): any[];
     test(input: any): boolean;
     assert(input: any): asserts input is any;
+    refine(input: (input: any) => boolean | any[]): this;
     toJsonSchema(): any;
   }
   const $schema: {
@@ -44,6 +45,7 @@ declare module "dreamkit/definitions" {
       min(value: number | `${number}mb`): Type;
       max(value: number | `${number}mb`): Type;
     };
+    custom(assert: (value: any) => boolean): Type;
   };
 
   const s: typeof $schema;

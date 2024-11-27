@@ -24,7 +24,7 @@ export function isTypeAssertError(error: unknown): error is TypeAssertError {
 }
 
 export class TypeValidation<C extends string = any> {
-  readonly errors: TypeAssertErrorData<C | "type">[] = [];
+  readonly errors: TypeAssertErrorData<C | "type" | "refine">[] = [];
   constructor(
     protected type: Type,
     protected context: TypeContext,
@@ -54,6 +54,11 @@ export class TypeValidation<C extends string = any> {
     return this.errors;
   }
   end() {
+    if (this.type.options.refine) {
+      const result = this.type.options.refine(this.value);
+      if (Array.isArray(result)) return result;
+      if (!result) return this.add("refine" as any);
+    }
     return this.errors;
   }
 }

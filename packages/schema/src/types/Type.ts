@@ -17,6 +17,7 @@ export type TypeConstructor<T extends Type = Type> = {
 
 export type TypeOptions<O = {}> = TypeFlag.Options & {
   title?: string;
+  refine?: (input: any) => boolean;
 } & O;
 
 export type Context = {
@@ -100,6 +101,9 @@ export abstract class Type<
   required(): Type<D, TypeFlag.Required<F>> {
     return this.clone({ nullable: undefined, optional: undefined } as any);
   }
+  refine(refine: (input: InferType<this>) => boolean): this {
+    return this.clone({ refine } as any);
+  }
   protected validation<C extends string>(input: unknown, context: TypeContext) {
     return new TypeValidation<C>(this as any, context, input);
   }
@@ -137,6 +141,9 @@ export abstract class Type<
   }
   regex(): RegExp {
     return this.onRegex();
+  }
+  create(value: InferType<this>): InferType<this> {
+    return value;
   }
   toJsonSchema(): JSONSchema7 {
     return this.onJsonSchema();
