@@ -1,5 +1,14 @@
 # @dreamkit/site
 
+## 0.0.18-next.7
+
+### Patch Changes
+
+- [#25](https://github.com/swordev/dreamkit/pull/25) [`4fc9c55`](https://github.com/swordev/dreamkit/commit/4fc9c55b222650df04c9c644d208f7f11fed5dd9) Thanks [@github-actions](https://github.com/apps/github-actions)! - Add `custom` type and `refine` option
+
+- Updated dependencies [[`3fefdbf`](https://github.com/swordev/dreamkit/commit/3fefdbffef57b99f0a024e5b6880d5f0297548d6), [`c83a49a`](https://github.com/swordev/dreamkit/commit/c83a49aaf75b4b3752cbfb64eef6329c5a12098d)]:
+  - dreamkit@0.0.15-next.7
+
 ## 0.0.18-next.6
 
 ### Patch Changes

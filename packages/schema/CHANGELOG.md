@@ -1,5 +1,11 @@
 # @dreamkit/schema
 
+## 0.0.5-next.3
+
+### Patch Changes
+
+- [#25](https://github.com/swordev/dreamkit/pull/25) [`4fc9c55`](https://github.com/swordev/dreamkit/commit/4fc9c55b222650df04c9c644d208f7f11fed5dd9) Thanks [@github-actions](https://github.com/apps/github-actions)! - Add `custom` type and `refine` option
+
 ## 0.0.5-next.2
 
 ### Patch Changes
