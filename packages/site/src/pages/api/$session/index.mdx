@@ -4,16 +4,16 @@ import { Aside } from "@astrojs/starlight/components";
 
 <ApiPage
   name="$session"
-  imports={["$session", "SessionHandler"]}
   definition={await import("./_definition?raw")} 
   examples={[
-    await import("./_examples/basic.tsx?raw"),
     await import("./_examples/auth.tsx?raw"),
     await import("./_examples/temp.tsx?raw")
   ]}
 >
 
 Define sessions with parameters and use them as required or optional in <a href="/api/$api#self">api</a> and <a href="/api/$middleware#self">middleware</a>.
+
+If you want to get/set the session params directly you can use <a href="/api/session-handler">SessionHandler</a>.
 
 <div slot="post-definition">
 

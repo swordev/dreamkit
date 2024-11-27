@@ -3,11 +3,9 @@ import H3 from "../../../components/H3.astro";
 
 <ApiPage
   name="$settings"
-  imports={["$settings", "SettingsHandler"]}
   definition={await import("./_definition?raw")} 
   examples={[
     await import("./_examples/basic-usage.tsx?raw"),
-    await import("./_examples/update-settings.tsx?raw"),
     await import("./_examples/optional.tsx?raw"),
   ]}
 >
@@ -25,6 +23,8 @@ In development mode, when creating settings, a JSON schema will automatically be
 The default settings path is `{root}/settings.json`, where root is the package directory, but this can be changed with the `settingsPath` option of `dreamkitPlugin` in the `app.config.ts`.
 
 In production mode, it is possible to change the path from which the settings are loaded with the environment variable `DK_SETTINGS_PATH`.
+
+If you want to get/set the settings params directly you can use <a href="/api/settings-handler">SettingsHandler</a>.
 
 <div slot="post-definition">
 

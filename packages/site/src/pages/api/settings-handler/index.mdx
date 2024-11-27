@@ -1,0 +1,26 @@
+import ApiPage from "../../../components/ApiPage.astro";
+import H3 from "../../../components/H3.astro";
+
+<ApiPage
+  name="SettingsHandler"
+  definition={await import("./_definition?raw")} 
+  examples={[
+    await import("./_examples/update.tsx?raw")
+  ]}
+>
+
+Handles the settings params using her the constructor created with <a href="/api/$settings">$settings</a>.
+
+<div slot="post-definition">
+
+<H3>get</H3>
+
+Gets the settings params if they exist, otherwise an `undefined` value.
+
+<H3>set</H3>
+
+Sets and saves the settings params. If the params are invalid it will throw an error.
+
+</div>
+
+</ApiPage>

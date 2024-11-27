@@ -5,7 +5,6 @@ import {
   $session,
   createAction,
   Input,
-  iocParam,
   s,
   SessionHandler,
 } from "dreamkit";
@@ -21,7 +20,6 @@ const set = $api
   .params(ClientSession.params)
   .self({ SessionHandler })
   .create(async function (params) {
-    console.log(params);
     await this.sessionHandler.set(ClientSession, params);
   });
 
@@ -34,9 +32,9 @@ const unset = $api
 
 const get = $api
   .title("Get")
-  .self({ ClientSession: iocParam(ClientSession).optional() })
-  .create(function () {
-    return this.clientSession?.params;
+  .self({ SessionHandler })
+  .create(async function () {
+    return await this.sessionHandler.get(ClientSession);
   });
 
 export default $route

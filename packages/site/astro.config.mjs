@@ -131,6 +131,19 @@ export default defineConfig({
               ],
             },
             {
+              label: "Handlers",
+              items: [
+                {
+                  label: "SettingsHandler",
+                  link: "/api/settings-handler",
+                },
+                {
+                  label: "SessionHandler",
+                  link: "/api/session-handler",
+                },
+              ],
+            },
+            {
               label: "Components",
               items: [
                 {

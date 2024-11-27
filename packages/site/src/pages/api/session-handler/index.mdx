@@ -1,0 +1,31 @@
+import ApiPage from "../../../components/ApiPage.astro";
+import H3 from "../../../components/H3.astro";
+import { Aside } from "@astrojs/starlight/components";
+
+<ApiPage
+  name="SessionHandler"
+  definition={await import("./_definition?raw")} 
+  examples={[
+    await import("./_examples/basic.tsx?raw"),
+  ]}
+>
+
+Handles the session params using her the constructor created with <a href="/api/$session">$session</a>.
+
+<div slot="post-definition">
+
+<H3>get</H3>
+
+Gets the session params if they exist, otherwise an `undefined` value.
+
+<H3>unset</H3>
+
+Deletes the session params.
+
+<H3>set</H3>
+
+Sets and saves the session params. If the params are invalid it will throw an error.
+
+</div>
+
+</ApiPage>
