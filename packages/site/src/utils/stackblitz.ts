@@ -16,6 +16,7 @@ export function buildProjectFiles(options: {
   const files = {
     ...templateFiles,
     ...(options.files || {}),
+    [appFile]: options.appCode,
   };
 
   if (options.pkgDependencies || options.pkgDevDependencies) {
@@ -29,10 +30,9 @@ export function buildProjectFiles(options: {
       ...pkg.devDependencies,
       ...options.pkgDevDependencies,
     };
-
-    files[appFile] = options.appCode;
     files["package.json"] = JSON.stringify(pkg, null, 2);
   }
+
   return files;
 }
 export function buildProjectOptions(
