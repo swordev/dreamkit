@@ -29,7 +29,7 @@ export async function generateMeta(server: DreamkitDevServer) {
   let contents: string;
   if (options.metaFormat === "global") {
     const declarations: Record<string, string> = {
-      ["dreamkit/presets/global.override.js"]: createInterface(
+      ["dreamkit/scopes/global.override.js"]: createInterface(
         "Routing",
         typeRoutes,
         1,
@@ -45,13 +45,13 @@ export async function generateMeta(server: DreamkitDevServer) {
   } else {
     contents = [
       `// prettier-ignore`,
-      `import { defineRoutePath } from "dreamkit/presets/common.js";`,
-      `import { defineLink } from "dreamkit/presets/solid.js";`,
+      `import { defineRoutePath } from "dreamkit/scopes/common.js";`,
+      `import { defineLink } from "dreamkit/scopes/solid.js";`,
       "",
       ...(options.metaLocalExports
         ? [
-            'export * from "dreamkit/presets/common.js";',
-            'export * from "dreamkit/presets/solid.js";',
+            'export * from "dreamkit/scopes/common.js";',
+            'export * from "dreamkit/scopes/solid.js";',
           ]
         : []),
       createInterface("Routing", typeRoutes, 0),
