@@ -54,7 +54,7 @@ export class DreamkitDevServer {
     options.settingsPath = resolvePath(options.settingsPath, vars);
     options.metaGlobalOutput = resolvePath(options.metaGlobalOutput, vars);
     options.metaLocalOutput = resolvePath(options.metaLocalOutput, vars);
-    options.preEntries = options.preEntries?.map((v) => resolvePath(v, vars));
+    options.presets = options.presets?.map((v) => resolvePath(v, vars));
 
     this.entry = new VirtualShaking({
       entry: options.entry,
@@ -159,7 +159,7 @@ export class DreamkitDevServer {
       hmr: { logger: false },
     });
     this.entry.init();
-    for (const path of this.options.preEntries || [])
+    for (const path of this.options.presets || [])
       await this.app.add(await this.fetch(path));
     await this.app.add({
       ...(await this.fetchEntryObjects()),

@@ -18,7 +18,7 @@ export const toSolidServerAction = defineTransform({
     let changes = replaceImportSpec(ast, {
       spec: { $api: "$serverApi" },
       source: "dreamkit",
-      newSource: "dreamkit/adapters/solid-start/import.js",
+      newSource: "dreamkit/scopes/solid-import.js",
       onRenameSpec(prev, next) {
         apiId = next;
       },

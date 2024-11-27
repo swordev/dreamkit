@@ -11,7 +11,7 @@ describe("toSolidServerAction", () => {
       toSolidServerAction: true,
     });
     expect(code).toMatchInlineSnapshot(`
-      "import { $serverApi as _$serverApi } from "dreamkit/adapters/solid-start/import.js";
+      "import { $serverApi as _$serverApi } from "dreamkit/scopes/solid-import.js";
       const _base_login = _$serverApi.params({});
       let login = async params => {
         "use server";
@@ -36,7 +36,7 @@ describe("toSolidServerAction", () => {
       toSolidServerAction: true,
     });
     expect(code).toMatchInlineSnapshot(`
-      "import { $serverApi as _$serverApi } from "dreamkit/adapters/solid-start/import.js";
+      "import { $serverApi as _$serverApi } from "dreamkit/scopes/solid-import.js";
       const _base_login = _$serverApi.params({});
       let login = async params => {
         "use server";

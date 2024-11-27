@@ -1,6 +1,6 @@
 export type DreamkitPluginOptions = {
   entry?: string;
-  preEntries?: string[];
+  presets?: string[];
   metaFormat?: "global" | "local";
   metaRouting?: boolean;
   metaGlobalOutput?: string;
@@ -13,7 +13,7 @@ export const dreamkitPluginOptions = {
   metaFormat: "global",
   metaRouting: true,
   entry: "./src/dreamkit.tsx",
-  preEntries: ["dreamkit/adapters/solid-start/entry.js"],
+  presets: ["dreamkit/presets/solid-start.js"],
   metaGlobalOutput: "./src/dreamkit-global.d.ts",
   metaLocalOutput: "./src/dreamkit-local.ts",
   metaLocalExports: true,

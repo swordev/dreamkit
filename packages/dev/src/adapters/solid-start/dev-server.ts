@@ -286,7 +286,7 @@ export function createDreamkitDevServer(
 
   if (isVinxiBuild()) {
     const dreamkitEntryId = "dk:entry";
-    const dreamkitPreEntriesId = "dk:pre-entries";
+    const dreamkitPresetsId = "dk:presets";
     const dreamkitEntry = join(
       server.options.root,
       "src/dreamkit.tsx",
@@ -298,16 +298,16 @@ export function createDreamkitDevServer(
       resolveId(id) {
         if (id === dreamkitEntryId) {
           return existsDreamkitEntry ? dreamkitEntry : `\0${dreamkitEntryId}`;
-        } else if (id === dreamkitPreEntriesId) {
-          return `\0${dreamkitPreEntriesId}`;
+        } else if (id === dreamkitPresetsId) {
+          return `\0${dreamkitPresetsId}`;
         }
       },
       load(id) {
         if (!existsDreamkitEntry && id === `\0${dreamkitEntryId}`)
           return { code: "export {}" };
 
-        if (id === `\0${dreamkitPreEntriesId}`) {
-          const exports = server.options.preEntries?.map(
+        if (id === `\0${dreamkitPresetsId}`) {
+          const exports = server.options.presets?.map(
             (entry, index) =>
               `export * as entry_${index} from ${JSON.stringify(entry)};`,
           );
