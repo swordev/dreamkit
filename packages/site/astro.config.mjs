@@ -93,61 +93,76 @@ export default defineConfig({
           label: "API",
           items: [
             {
-              label: "$schema",
-              link: "/api/$schema",
+              label: "Builders",
+              items: [
+                {
+                  label: "$schema",
+                  link: "/api/$schema",
+                },
+                {
+                  label: "$route",
+                  link: "/api/$route",
+                },
+                {
+                  label: "$api",
+                  link: "/api/$api",
+                },
+                {
+                  label: "$settings",
+                  link: "/api/$settings",
+                },
+                {
+                  label: "$middleware",
+                  link: "/api/$middleware",
+                },
+                {
+                  label: "$service",
+                  link: "/api/$service",
+                },
+                {
+                  label: "$session",
+                  link: "/api/$session",
+                },
+                {
+                  label: "$storage",
+                  link: "/api/$storage",
+                  badge: "WIP",
+                },
+              ],
             },
             {
-              label: "$route",
-              link: "/api/$route",
+              label: "Components",
+              items: [
+                {
+                  label: "Link",
+                  link: "/api/link",
+                },
+                {
+                  label: "Input",
+                  link: "/api/input",
+                },
+              ],
             },
             {
-              label: "$api",
-              link: "/api/$api",
-            },
-            {
-              label: "$settings",
-              link: "/api/$settings",
-            },
-            {
-              label: "$middleware",
-              link: "/api/$middleware",
-            },
-            {
-              label: "$service",
-              link: "/api/$service",
-            },
-            {
-              label: "$session",
-              link: "/api/$session",
-            },
-            {
-              label: "$storage",
-              link: "/api/$storage",
-              badge: "WIP",
-            },
-            {
-              label: "routePath",
-              link: "/api/route-path",
-            },
-            {
-              label: "RequestUrl",
-              link: "/api/request-url",
-            },
-            {
-              label: "Link",
-              link: "/api/link",
-            },
-            {
-              label: "createAction",
-              link: "/api/create-action",
-            },
-            {
-              label: "Input",
-              link: "/api/input",
-            },
-            {
-              label: "ioc",
-              link: "/api/ioc",
+              label: "Utilities",
+              items: [
+                {
+                  label: "createAction",
+                  link: "/api/create-action",
+                },
+                {
+                  label: "routePath",
+                  link: "/api/route-path",
+                },
+                {
+                  label: "RequestUrl",
+                  link: "/api/request-url",
+                },
+                {
+                  label: "ioc",
+                  link: "/api/ioc",
+                },
+              ],
             },
           ],
         },
