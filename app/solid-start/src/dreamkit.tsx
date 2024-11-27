@@ -26,7 +26,7 @@ export default $route
           onChange={(name) => setParams({ name: name || undefined })}
         />{" "}
         <button onClick={send} disabled={send.running} children={send.title} />
-        {send.error && <p>Error: {JSON.stringify(send.error.cause)}</p>}
+        {send.error && <p>Error: {send.error.message}</p>}
         {send.state === "success" && <p>Success</p>}
       </>
     );
