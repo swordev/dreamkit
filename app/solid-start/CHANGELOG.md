@@ -1,5 +1,12 @@
 # solid-start-app
 
+## 0.0.2-next.7
+
+### Patch Changes
+
+- Updated dependencies [[`3fefdbf`](https://github.com/swordev/dreamkit/commit/3fefdbffef57b99f0a024e5b6880d5f0297548d6), [`c83a49a`](https://github.com/swordev/dreamkit/commit/c83a49aaf75b4b3752cbfb64eef6329c5a12098d)]:
+  - dreamkit@0.0.15-next.7
+
 ## 0.0.2-next.6
 
 ### Patch Changes

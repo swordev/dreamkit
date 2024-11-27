@@ -1,5 +1,18 @@
 # @dreamkit/dev
 
+## 0.0.14-next.7
+
+### Patch Changes
+
+- [#25](https://github.com/swordev/dreamkit/pull/25) [`3fefdbf`](https://github.com/swordev/dreamkit/commit/3fefdbffef57b99f0a024e5b6880d5f0297548d6) Thanks [@github-actions](https://github.com/apps/github-actions)! - Rename to presets
+
+- [#25](https://github.com/swordev/dreamkit/pull/25) [`c83a49a`](https://github.com/swordev/dreamkit/commit/c83a49aaf75b4b3752cbfb64eef6329c5a12098d) Thanks [@github-actions](https://github.com/apps/github-actions)! - Rename folder
+
+- Updated dependencies [[`4fc9c55`](https://github.com/swordev/dreamkit/commit/4fc9c55b222650df04c9c644d208f7f11fed5dd9)]:
+  - @dreamkit/schema@0.0.5-next.3
+  - @dreamkit/app@0.0.7-next.6
+  - @dreamkit/node-app@0.0.2-next.5
+
 ## 0.0.14-next.6
 
 ### Patch Changes
