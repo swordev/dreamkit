@@ -47,6 +47,6 @@
     "@dreamkit/workspace": "0.0.3",
     "solid-start-app": "0.0.2-next.0"
   },
-  "mode": "pre",
+  "mode": "exit",
   "tag": "next"
 }
