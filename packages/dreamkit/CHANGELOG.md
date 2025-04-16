@@ -1,5 +1,33 @@
 # dreamkit
 
+## 0.0.15
+
+### Patch Changes
+
+- [`070ae31`](https://github.com/swordev/dreamkit/commit/070ae313592783e38d90cece3893e6c61a4b2caf) Thanks [@juanrgm](https://github.com/juanrgm)! - Fix `SettingsHandler`.
+
+- [`e4e5f70`](https://github.com/swordev/dreamkit/commit/e4e5f709093cabf3b711baab249c183765cef663) Thanks [@juanrgm](https://github.com/juanrgm)! - Rename `ServiceClass` and `MiddlewareClass` to `$service` and `$middleware`.
+
+- [`4d1805a`](https://github.com/swordev/dreamkit/commit/4d1805a8d3bfd1f844e9c474a61fd71ac12a6c0a) Thanks [@juanrgm](https://github.com/juanrgm)! - Add `$settings`.
+
+- [`1cb7b4d`](https://github.com/swordev/dreamkit/commit/1cb7b4da8f66a0c961f9bd4186218c7edd780869) Thanks [@juanrgm](https://github.com/juanrgm)! - Enhance errors.
+
+- [`9a419c0`](https://github.com/swordev/dreamkit/commit/9a419c0a1c2963a80d0025e5f7c2d9c09b0096c1) Thanks [@juanrgm](https://github.com/juanrgm)! - Add sessions.
+
+- [`3fefdbf`](https://github.com/swordev/dreamkit/commit/3fefdbffef57b99f0a024e5b6880d5f0297548d6) Thanks [@juanrgm](https://github.com/juanrgm)! - Rename to presets
+
+- [`5251e34`](https://github.com/swordev/dreamkit/commit/5251e343be252d7afe32bde4f383b093984b1349) Thanks [@juanrgm](https://github.com/juanrgm)! - Add `$schema`.
+
+- [`c83a49a`](https://github.com/swordev/dreamkit/commit/c83a49aaf75b4b3752cbfb64eef6329c5a12098d) Thanks [@juanrgm](https://github.com/juanrgm)! - Rename folder
+
+- Updated dependencies [[`7103430`](https://github.com/swordev/dreamkit/commit/7103430d9b8359f22475b0bae3217ba127debbb2), [`a6b6deb`](https://github.com/swordev/dreamkit/commit/a6b6deba57566c8ed3962a634afa91cdc1dd6527), [`0cada93`](https://github.com/swordev/dreamkit/commit/0cada9305ebbcd790bec875a5f31131f1157c1ee), [`7daed74`](https://github.com/swordev/dreamkit/commit/7daed74d6c5f5518b749d054e0bb2a6fa7e3e6b6), [`070ae31`](https://github.com/swordev/dreamkit/commit/070ae313592783e38d90cece3893e6c61a4b2caf), [`87968e4`](https://github.com/swordev/dreamkit/commit/87968e47363c1e1941450dbf995ee60537e90f19), [`e4e5f70`](https://github.com/swordev/dreamkit/commit/e4e5f709093cabf3b711baab249c183765cef663), [`4d1805a`](https://github.com/swordev/dreamkit/commit/4d1805a8d3bfd1f844e9c474a61fd71ac12a6c0a), [`1cb7b4d`](https://github.com/swordev/dreamkit/commit/1cb7b4da8f66a0c961f9bd4186218c7edd780869), [`0bea5e7`](https://github.com/swordev/dreamkit/commit/0bea5e79bef4d858b2f23dcf0d94c41bffe37721), [`8783c0e`](https://github.com/swordev/dreamkit/commit/8783c0e1b1e5a568360b10163b8a882139c00611), [`1b9a155`](https://github.com/swordev/dreamkit/commit/1b9a155e04bf6c51e0a806a7fc1729bb0eba6434), [`d672bd8`](https://github.com/swordev/dreamkit/commit/d672bd899b055029da4ce5f26baa2d8568dcc2a1), [`9a419c0`](https://github.com/swordev/dreamkit/commit/9a419c0a1c2963a80d0025e5f7c2d9c09b0096c1), [`a0fef64`](https://github.com/swordev/dreamkit/commit/a0fef64ce6c98e7859f5a26463e56f2289649825), [`3fefdbf`](https://github.com/swordev/dreamkit/commit/3fefdbffef57b99f0a024e5b6880d5f0297548d6), [`5251e34`](https://github.com/swordev/dreamkit/commit/5251e343be252d7afe32bde4f383b093984b1349), [`4fc9c55`](https://github.com/swordev/dreamkit/commit/4fc9c55b222650df04c9c644d208f7f11fed5dd9), [`c83a49a`](https://github.com/swordev/dreamkit/commit/c83a49aaf75b4b3752cbfb64eef6329c5a12098d)]:
+  - @dreamkit/dev@0.0.14
+  - @dreamkit/solid@0.0.9
+  - @dreamkit/app@0.0.7
+  - @dreamkit/node-app@0.0.2
+  - @dreamkit/schema@0.0.5
+  - @dreamkit/ioc@0.0.2
+
 ## 0.0.15-next.7
 
 ### Patch Changes
