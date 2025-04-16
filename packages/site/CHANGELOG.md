@@ -1,5 +1,48 @@
 # @dreamkit/site
 
+## 0.0.18
+
+### Patch Changes
+
+- [`4160a0f`](https://github.com/swordev/dreamkit/commit/4160a0f65ce07686add5a01da817876b0ff22316) Thanks [@juanrgm](https://github.com/juanrgm)! - Add download button
+
+- [`a6b6deb`](https://github.com/swordev/dreamkit/commit/a6b6deba57566c8ed3962a634afa91cdc1dd6527) Thanks [@juanrgm](https://github.com/juanrgm)! - Fix `useRoute`
+
+- [`becde50`](https://github.com/swordev/dreamkit/commit/becde502d95187f836b78946b334848334c2ffc8) Thanks [@juanrgm](https://github.com/juanrgm)! - Show SolidHack banner in the next version
+
+- [`202e875`](https://github.com/swordev/dreamkit/commit/202e8752d54bc923682ad9bf14b85fc195978308) Thanks [@juanrgm](https://github.com/juanrgm)! - Restructure API pages
+
+- [`7daed74`](https://github.com/swordev/dreamkit/commit/7daed74d6c5f5518b749d054e0bb2a6fa7e3e6b6) Thanks [@juanrgm](https://github.com/juanrgm)! - Pass `title` and `params` properties to `createAction` result
+
+- [`ea6283e`](https://github.com/swordev/dreamkit/commit/ea6283e72e6c530486f58adee74b741f50dbbf7c) Thanks [@juanrgm](https://github.com/juanrgm)! - Update docs
+
+- [`879ed4a`](https://github.com/swordev/dreamkit/commit/879ed4a1c5977f2b0364bdeed9c5a5cea39bc827) Thanks [@juanrgm](https://github.com/juanrgm)! - Update play icon
+
+- [`d2b584d`](https://github.com/swordev/dreamkit/commit/d2b584d71086c8a6ab0d64b4ad7d0589194a921f) Thanks [@juanrgm](https://github.com/juanrgm)! - Update docs
+
+- [`87968e4`](https://github.com/swordev/dreamkit/commit/87968e47363c1e1941450dbf995ee60537e90f19) Thanks [@juanrgm](https://github.com/juanrgm)! - Add `preload` and `cache`
+
+- [`e4e5f70`](https://github.com/swordev/dreamkit/commit/e4e5f709093cabf3b711baab249c183765cef663) Thanks [@juanrgm](https://github.com/juanrgm)! - Rename `ServiceClass` and `MiddlewareClass` to `$service` and `$middleware`.
+
+- [`a44fc99`](https://github.com/swordev/dreamkit/commit/a44fc99c3efb39ceaad3994b91c2e6d07466a268) Thanks [@juanrgm](https://github.com/juanrgm)! - Add `RequestUrl` docs
+
+- [`4d1805a`](https://github.com/swordev/dreamkit/commit/4d1805a8d3bfd1f844e9c474a61fd71ac12a6c0a) Thanks [@juanrgm](https://github.com/juanrgm)! - Add `$settings`.
+
+- [`b72f96c`](https://github.com/swordev/dreamkit/commit/b72f96c91e09c25e32020b3eb087aea1e39eedbd) Thanks [@juanrgm](https://github.com/juanrgm)! - Avoid declaring conflicts
+
+- [`d672bd8`](https://github.com/swordev/dreamkit/commit/d672bd899b055029da4ce5f26baa2d8568dcc2a1) Thanks [@juanrgm](https://github.com/juanrgm)! - Warn via TypeScript if there are undefined path params.
+
+- [`9a419c0`](https://github.com/swordev/dreamkit/commit/9a419c0a1c2963a80d0025e5f7c2d9c09b0096c1) Thanks [@juanrgm](https://github.com/juanrgm)! - Add sessions.
+
+- [`114a337`](https://github.com/swordev/dreamkit/commit/114a337d43492c7022fa1e5c925d1a3da7894ebb) Thanks [@juanrgm](https://github.com/juanrgm)! - Fix SQLite example
+
+- [`5251e34`](https://github.com/swordev/dreamkit/commit/5251e343be252d7afe32bde4f383b093984b1349) Thanks [@juanrgm](https://github.com/juanrgm)! - Add `$schema`.
+
+- [`4fc9c55`](https://github.com/swordev/dreamkit/commit/4fc9c55b222650df04c9c644d208f7f11fed5dd9) Thanks [@juanrgm](https://github.com/juanrgm)! - Add `custom` type and `refine` option
+
+- Updated dependencies [[`070ae31`](https://github.com/swordev/dreamkit/commit/070ae313592783e38d90cece3893e6c61a4b2caf), [`e4e5f70`](https://github.com/swordev/dreamkit/commit/e4e5f709093cabf3b711baab249c183765cef663), [`4d1805a`](https://github.com/swordev/dreamkit/commit/4d1805a8d3bfd1f844e9c474a61fd71ac12a6c0a), [`1cb7b4d`](https://github.com/swordev/dreamkit/commit/1cb7b4da8f66a0c961f9bd4186218c7edd780869), [`9a419c0`](https://github.com/swordev/dreamkit/commit/9a419c0a1c2963a80d0025e5f7c2d9c09b0096c1), [`3fefdbf`](https://github.com/swordev/dreamkit/commit/3fefdbffef57b99f0a024e5b6880d5f0297548d6), [`5251e34`](https://github.com/swordev/dreamkit/commit/5251e343be252d7afe32bde4f383b093984b1349), [`c83a49a`](https://github.com/swordev/dreamkit/commit/c83a49aaf75b4b3752cbfb64eef6329c5a12098d)]:
+  - dreamkit@0.0.15
+
 ## 0.0.18-next.7
 
 ### Patch Changes
