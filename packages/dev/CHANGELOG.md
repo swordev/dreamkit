@@ -1,5 +1,11 @@
 # @dreamkit/dev
 
+## 0.0.16
+
+### Patch Changes
+
+- [`25a25ed`](https://github.com/swordev/dreamkit/commit/25a25eda318f3a3b9edc2ba403f6f6feac0c6f61) Thanks [@juanrgm](https://github.com/juanrgm)! - Update dependencies.
+
 ## 0.0.15
 
 ### Patch Changes

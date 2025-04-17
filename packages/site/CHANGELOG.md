@@ -1,5 +1,14 @@
 # @dreamkit/site
 
+## 0.0.20
+
+### Patch Changes
+
+- [`06ddd05`](https://github.com/swordev/dreamkit/commit/06ddd05380a7faba9e1a9b5ff1beb943f50bd6c9) Thanks [@juanrgm](https://github.com/juanrgm)! - Remove notice.
+
+- Updated dependencies []:
+  - dreamkit@0.0.17
+
 ## 0.0.19
 
 ### Patch Changes
