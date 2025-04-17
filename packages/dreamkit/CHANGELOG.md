@@ -1,5 +1,20 @@
 # dreamkit
 
+## 0.0.16
+
+### Patch Changes
+
+- [`d91d4bf`](https://github.com/swordev/dreamkit/commit/d91d4bf13150ac7cb49228cf9ab31983b96f5214) Thanks [@juanrgm](https://github.com/juanrgm)! - Update dependencies.
+
+- Updated dependencies [[`d91d4bf`](https://github.com/swordev/dreamkit/commit/d91d4bf13150ac7cb49228cf9ab31983b96f5214)]:
+  - @dreamkit/node-app@0.0.3
+  - @dreamkit/solid@0.0.10
+  - @dreamkit/app@0.0.8
+  - @dreamkit/dev@0.0.15
+  - @dreamkit/ioc@0.0.3
+  - @dreamkit/kind@0.0.3
+  - @dreamkit/schema@0.0.6
+
 ## 0.0.15
 
 ### Patch Changes

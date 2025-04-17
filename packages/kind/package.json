@@ -1,6 +1,6 @@
 {
   "name": "@dreamkit/kind",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Alternative to instanceof compatible with partial HMR.",
   "homepage": "https://dreamkit.dev",
   "repository": {
