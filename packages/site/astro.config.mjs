@@ -64,9 +64,13 @@ export default defineConfig({
     solidJs(),
     starlight({
       title: "dreamkit",
-      social: {
-        github: "https://github.com/swordev/dreamkit",
-      },
+      social: [
+        {
+          icon: "github",
+          label: "GitHub",
+          href: "https://github.com/swordev/dreamkit",
+        },
+      ],
       head: [
         {
           tag: "meta",
