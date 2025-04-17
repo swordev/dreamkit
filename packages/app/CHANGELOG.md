@@ -1,5 +1,18 @@
 # @dreamkit/app
 
+## 0.0.8
+
+### Patch Changes
+
+- [`d91d4bf`](https://github.com/swordev/dreamkit/commit/d91d4bf13150ac7cb49228cf9ab31983b96f5214) Thanks [@juanrgm](https://github.com/juanrgm)! - Update dependencies.
+
+- Updated dependencies [[`d91d4bf`](https://github.com/swordev/dreamkit/commit/d91d4bf13150ac7cb49228cf9ab31983b96f5214)]:
+  - @dreamkit/func@0.0.4
+  - @dreamkit/ioc@0.0.3
+  - @dreamkit/kind@0.0.3
+  - @dreamkit/schema@0.0.6
+  - @dreamkit/utils@0.0.6
+
 ## 0.0.7
 
 ### Patch Changes
