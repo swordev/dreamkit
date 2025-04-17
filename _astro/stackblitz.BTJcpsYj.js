@@ -131,11 +131,11 @@ export default defineConfig({
   },
   "dependencies": {
     "@solidjs/meta": "^0.29.4",
-    "@solidjs/router": "^0.15.1",
-    "@solidjs/start": "^1.0.10",
-    "dreamkit": "^0.0.16",
-    "solid-js": "^1.9.3",
-    "vinxi": "^0.4.3"
+    "@solidjs/router": "^0.15.3",
+    "@solidjs/start": "^1.1.3",
+    "dreamkit": "^0.0.17",
+    "solid-js": "^1.9.5",
+    "vinxi": "^0.5.4"
   },
   "engines": {
     "node": ">=18"
