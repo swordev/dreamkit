@@ -59,7 +59,7 @@ export function Input(inProps: any) {
             [value, setValue, controlled] as any,
             props.onChange,
           );
-          if (typeof props.ref === "function") props.ref(element);
+          if (typeof props.ref === "function") (props.ref as any)(element);
         },
         value: value(),
         onChange: props.onNativeChange,

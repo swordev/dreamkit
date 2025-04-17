@@ -24,9 +24,9 @@
     "src"
   ],
   "dependencies": {
-    "@trivago/prettier-plugin-sort-imports": "^4.3.0",
-    "prettier": "^3.3.3",
-    "prettier-plugin-packagejson": "^2.5.3",
-    "prettier-plugin-sort-json": "^4.0.0"
+    "@trivago/prettier-plugin-sort-imports": "^5.2.2",
+    "prettier": "^3.5.3",
+    "prettier-plugin-packagejson": "^2.5.10",
+    "prettier-plugin-sort-json": "^4.1.1"
   }
 }

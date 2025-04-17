@@ -20,17 +20,18 @@ If you want to support the project, you have the possibility to do so [here](htt
 
 ## Internal packages
 
-| Name                                      | Version                                                                            | Description                                            |
-| ----------------------------------------- | ---------------------------------------------------------------------------------- | ------------------------------------------------------ |
-| [@dreamkit/app](./packages/app)           | [![npm-badge-dreamkit_app]](https://www.npmjs.com/package/@dreamkit/app)           | Set of utils to create applications.                   |
-| [@dreamkit/dev](./packages/dev)           | [![npm-badge-dreamkit_dev]](https://www.npmjs.com/package/@dreamkit/dev)           | Development tools for DreamKit.                        |
-| [@dreamkit/func](./packages/func)         | [![npm-badge-dreamkit_func]](https://www.npmjs.com/package/@dreamkit/func)         | Functions builder with IoC and input validation.       |
-| [@dreamkit/ioc](./packages/ioc)           | [![npm-badge-dreamkit_ioc]](https://www.npmjs.com/package/@dreamkit/ioc)           | A simple and lightweight IoC container for TypeScript. |
-| [@dreamkit/kind](./packages/kind)         | [![npm-badge-dreamkit_kind]](https://www.npmjs.com/package/@dreamkit/kind)         | Alternative to instanceof compatible with partial HMR. |
-| [@dreamkit/node-app](./packages/node-app) | [![npm-badge-dreamkit_node-app]](https://www.npmjs.com/package/@dreamkit/node-app) | DreamKit application for Node.js.                      |
-| [@dreamkit/schema](./packages/schema)     | [![npm-badge-dreamkit_schema]](https://www.npmjs.com/package/@dreamkit/schema)     | Validation and management of typed schemas.            |
-| [@dreamkit/solid](./packages/solid)       | [![npm-badge-dreamkit_solid]](https://www.npmjs.com/package/@dreamkit/solid)       | DreamKit tools for Solid.                              |
-| [@dreamkit/utils](./packages/utils)       | [![npm-badge-dreamkit_utils]](https://www.npmjs.com/package/@dreamkit/utils)       | A collection of utilities for DreamKit.                |
+| Name                                        | Version                                                                              | Description                                            |
+| ------------------------------------------- | ------------------------------------------------------------------------------------ | ------------------------------------------------------ |
+| [@dreamkit/app](./packages/app)             | [![npm-badge-dreamkit_app]](https://www.npmjs.com/package/@dreamkit/app)             | Set of utils to create applications.                   |
+| [@dreamkit/dev](./packages/dev)             | [![npm-badge-dreamkit_dev]](https://www.npmjs.com/package/@dreamkit/dev)             | Development tools for DreamKit.                        |
+| [@dreamkit/func](./packages/func)           | [![npm-badge-dreamkit_func]](https://www.npmjs.com/package/@dreamkit/func)           | Functions builder with IoC and input validation.       |
+| [@dreamkit/ioc](./packages/ioc)             | [![npm-badge-dreamkit_ioc]](https://www.npmjs.com/package/@dreamkit/ioc)             | A simple and lightweight IoC container for TypeScript. |
+| [@dreamkit/kind](./packages/kind)           | [![npm-badge-dreamkit_kind]](https://www.npmjs.com/package/@dreamkit/kind)           | Alternative to instanceof compatible with partial HMR. |
+| [@dreamkit/node-app](./packages/node-app)   | [![npm-badge-dreamkit_node-app]](https://www.npmjs.com/package/@dreamkit/node-app)   | DreamKit application for Node.js.                      |
+| [@dreamkit/schema](./packages/schema)       | [![npm-badge-dreamkit_schema]](https://www.npmjs.com/package/@dreamkit/schema)       | Validation and management of typed schemas.            |
+| [@dreamkit/solid](./packages/solid)         | [![npm-badge-dreamkit_solid]](https://www.npmjs.com/package/@dreamkit/solid)         | DreamKit tools for Solid.                              |
+| [@dreamkit/utils](./packages/utils)         | [![npm-badge-dreamkit_utils]](https://www.npmjs.com/package/@dreamkit/utils)         | A collection of utilities for DreamKit.                |
+| [@dreamkit/workspace](./packages/workspace) | [![npm-badge-dreamkit_workspace]](https://www.npmjs.com/package/@dreamkit/workspace) | Tool for managing monorepos.                           |
 
 [npm-badge-dreamkit]: https://img.shields.io/npm/v/dreamkit
 [npm-badge-dreamkit_app]: https://img.shields.io/npm/v/@dreamkit/app
@@ -42,6 +43,7 @@ If you want to support the project, you have the possibility to do so [here](htt
 [npm-badge-dreamkit_schema]: https://img.shields.io/npm/v/@dreamkit/schema
 [npm-badge-dreamkit_solid]: https://img.shields.io/npm/v/@dreamkit/solid
 [npm-badge-dreamkit_utils]: https://img.shields.io/npm/v/@dreamkit/utils
+[npm-badge-dreamkit_workspace]: https://img.shields.io/npm/v/@dreamkit/workspace
 
 ## Installation
 

@@ -20,11 +20,16 @@ import {
 } from "@dreamkit/node-app";
 import { FSWatcher, watch } from "chokidar";
 import { existsSync } from "fs";
-import { createServer, createViteRuntime, ViteDevServer } from "vite";
+import { createViteDevServer } from "vinxi/dev-server";
+import {
+  createServer,
+  createServerModuleRunner as createViteRuntime,
+  ViteDevServer,
+} from "vite";
 import solidPlugin from "vite-plugin-solid";
 import tsconfigPlugin from "vite-tsconfig-paths";
-import { ViteRuntime } from "vite/runtime";
 
+export type ViteRuntime = ReturnType<typeof createViteRuntime>;
 export type DreamkitDevExternalOptions = {
   root: string;
   routeDir: string;
@@ -87,7 +92,7 @@ export class DreamkitDevServer {
     //if (mod) $server.moduleGraph.invalidateModule(mod);
     try {
       const ext = getExt(path);
-      return await this.runtime!.executeUrl(`${path}?${Date.now()}&ext=${ext}`);
+      return await this.runtime!.import(`${path}?${Date.now()}&ext=${ext}`);
     } catch (error) {
       console.error(error);
       return undefined;
@@ -155,7 +160,7 @@ export class DreamkitDevServer {
         solidPlugin({ ssr: true }),
       ],
     });
-    this.runtime = await createViteRuntime(this.runtimeServer, {
+    this.runtime = createViteRuntime(this.runtimeServer.environments.ssr, {
       hmr: { logger: false },
     });
     this.entry.init();
@@ -187,6 +192,6 @@ export class DreamkitDevServer {
     if (this.app.started) await this.app.stop();
     await this.settingsFileWatcher?.close();
     await this.runtimeServer?.close();
-    await this.runtime?.destroy();
+    await this.runtime?.close();
   }
 }

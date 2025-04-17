@@ -34,7 +34,7 @@
   },
   "devDependencies": {
     "@dreamkit/tsconfig": "workspace:*",
-    "@types/node": "^22.9.0"
+    "@types/node": "^22.14.1"
   },
   "x-dreamkit": {
     "profile": "lib"

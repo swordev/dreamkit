@@ -1,5 +1,5 @@
 import { dirname } from "path";
-import { createServer, createViteRuntime, Plugin } from "vite";
+import { createServer, createServerModuleRunner, Plugin } from "vite";
 import solidPlugin from "vite-plugin-solid";
 
 export async function execute(path: string, plugins: Plugin[] = []) {
@@ -7,13 +7,13 @@ export async function execute(path: string, plugins: Plugin[] = []) {
     root: dirname(path),
     plugins: [...plugins, solidPlugin({ ssr: true })],
   });
-  const rt = await createViteRuntime(server, {
+  const rt = createServerModuleRunner(server.environments.ssr, {
     hmr: { logger: false },
   });
   try {
-    return await rt.executeUrl(path);
+    return await rt.import(path);
   } finally {
-    await rt.destroy();
+    await rt.close();
     await server.close();
   }
 }
