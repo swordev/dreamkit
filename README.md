@@ -9,8 +9,7 @@
 
 ## Notice
 
-The main branch will be locked due to [SolidHack 2024](https://hack.solidjs.com). New changes will be pushed to the [next](https://github.com/swordev/dreamkit/tree/next) branch (https://next.dreamkit.dev).
-If you want to support the project, you have the possibility to do so [here](https://hack.solidjs.com).
+This project was created for [SolidHack 2024](https://hack.solidjs.com).
 
 ## Packages
 
