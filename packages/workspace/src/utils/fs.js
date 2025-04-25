@@ -32,6 +32,18 @@ export async function readJSONFile(path) {
 
 /**
  * @param {string} path
+ * @returns {Promise<string|undefined>}
+ */
+export async function tryReadFile(path) {
+  try {
+    return (await readFile(path)).toString();
+  } catch (_) {
+    return;
+  }
+}
+
+/**
+ * @param {string} path
  * @returns {Promise<any>}
  */
 export async function tryReadJSONFile(path) {

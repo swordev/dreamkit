@@ -1,6 +1,10 @@
 // @ts-check
-import { readJSONFile, tryReadJSONFile, writeJSONFile } from "./utils/fs.js";
-import { getTSConfigReferences } from "./utils/tsconfig.js";
+import {
+  readJSONFile,
+  tryReadFile,
+  tryReadJSONFile,
+  writeJSONFile,
+} from "./utils/fs.js";
 import { existsSync } from "fs";
 import { readdir, writeFile } from "fs/promises";
 import { join } from "path";
@@ -14,20 +18,36 @@ async function findPackages() {
   for (const folder of pkgFolders) {
     const dir = `${packagesDir}/${folder}`;
     const manifestPath = `${dir}/package.json`;
+    const srcPath = `${dir}/src`;
     const manifest = await readJSONFile(manifestPath);
+    const files = [
+      ...(await readdir(dir)),
+      ...(existsSync(srcPath) ? await readdir(srcPath) : []),
+    ];
     packages.push({
       dir,
+      name: manifest.name,
       manifestPath,
       manifest,
       folder,
+      isRoot: false,
+      isTypeScript: files.some(
+        (file) =>
+          (file.endsWith(".ts") || file.endsWith(".tsx")) &&
+          !file.endsWith(".d.ts"),
+      ),
     });
   }
+  const manifest = await readJSONFile("./package.json");
   return [
     {
       dir: ".",
       folder: ".",
-      manifest: await readJSONFile("./package.json"),
+      name: manifest.name,
+      manifest: manifest,
       manifestPath: "./package.json",
+      isRoot: true,
+      isTypeScript: true,
     },
     ...packages,
   ];
@@ -42,8 +62,6 @@ export async function postinstall(inputFilter) {
     : undefined;
 
   const packages = await findPackages();
-  const rootTsconfig = await readJSONFile("tsconfig.build.json");
-  const rootReferences = [];
 
   const workspacePath = join(process.cwd(), "workspace.mjs");
   /** @type {import("./index.js").WorkspaceHandler|undefined} */
@@ -54,53 +72,32 @@ export async function postinstall(inputFilter) {
   for (const pkg of packages) {
     if (filter && !filter.includes(pkg.folder)) continue;
 
-    const config = pkg.manifest["x-dreamkit"] || {};
-
     console.info(`- ${pkg.folder}`);
 
-    if (config.profile === "lib") {
-      const prevBuildConfig = await tryReadJSONFile(
-        `${pkg.dir}/tsconfig.build.json`,
-      );
-      const tsconfigTpl = {
-        root: {
-          path: `${pkg.dir}/tsconfig.json`,
-          data: {
-            compilerOptions: { noEmit: true, rootDir: "." },
-            extends: "./tsconfig.build.json",
-            include: ["src", "test"],
-          },
-        },
-        build: {
-          path: `${pkg.dir}/tsconfig.build.json`,
-          data: {
-            ...prevBuildConfig,
-            extends: "@dreamkit/tsconfig/lib.json",
-            references: getTSConfigReferences(pkg.manifest),
-          },
-        },
-      };
+    const result =
+      (await workspace?.({ pkg: pkg, packages, isRoot: pkg.isRoot })) || {};
+    const files = { ...result.files };
 
-      rootReferences.push({ path: tsconfigTpl.build.path });
-      await writeJSONFile(tsconfigTpl.root.path, tsconfigTpl.root.data);
-      await writeJSONFile(tsconfigTpl.build.path, tsconfigTpl.build.data);
-    }
+    for (const file in files) {
+      const filePath = join(pkg.dir, file);
+      const value = files[file];
+      const isJSON = filePath.endsWith(".json") || filePath.endsWith(".jsonc");
+      const prev =
+        typeof value === "function" && value.length
+          ? isJSON
+            ? tryReadJSONFile(filePath)
+            : tryReadFile(filePath)
+          : undefined;
 
-    if (workspace) {
-      const result =
-        (await workspace(pkg.manifest, { ...pkg, packages })) || {};
-      for (const file in result.files || {}) {
-        const filePath = join(pkg.dir, file);
-        const fileContents = result.files?.[file];
-        if (typeof fileContents === "object" && !!fileContents) {
-          await writeJSONFile(filePath, fileContents);
-        } else if (typeof fileContents === "string") {
-          await writeFile(filePath, fileContents);
+      const next = typeof value === "function" ? value(prev) : value;
+
+      if (next !== undefined && next !== false) {
+        if (isJSON) {
+          await writeJSONFile(filePath, next);
+        } else {
+          await writeFile(filePath, next);
         }
       }
     }
   }
-
-  rootTsconfig.references = rootReferences;
-  await writeJSONFile("tsconfig.build.json", rootTsconfig);
 }
