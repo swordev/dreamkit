@@ -36,8 +36,5 @@
   "devDependencies": {
     "@dreamkit/tsconfig": "workspace:*",
     "@types/debug": "^4.1.12"
-  },
-  "x-dreamkit": {
-    "profile": "lib"
   }
 }
