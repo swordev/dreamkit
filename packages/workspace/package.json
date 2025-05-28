@@ -23,6 +23,7 @@
     "./*": "./src/*"
   },
   "module": "./src/index.js",
+  "types": "./src/index.d.ts",
   "bin": "./src/bin.js",
   "files": [
     "src"
