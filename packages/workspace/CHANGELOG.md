@@ -1,5 +1,11 @@
 # @dreamkit/workspace
 
+## 0.0.5
+
+### Patch Changes
+
+- [`2713b36`](https://github.com/swordev/dreamkit/commit/2713b36d8fcd9dff6e80d8c0d4f554ac46210e60) Thanks [@juanrgm](https://github.com/juanrgm)! - Remove profiles.
+
 ## 0.0.4
 
 ### Patch Changes
