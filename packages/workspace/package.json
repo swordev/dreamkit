@@ -29,7 +29,7 @@
     "src"
   ],
   "devDependencies": {
-    "@types/node": "^22.14.1",
+    "@types/node": "^22.15.27",
     "pkg-types": "^2.1.0"
   }
 }

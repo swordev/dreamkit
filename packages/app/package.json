@@ -31,7 +31,7 @@
     "@dreamkit/kind": "workspace:*",
     "@dreamkit/schema": "workspace:*",
     "@dreamkit/utils": "workspace:*",
-    "debug": "^4.4.0"
+    "debug": "^4.4.1"
   },
   "devDependencies": {
     "@dreamkit/tsconfig": "workspace:*",
