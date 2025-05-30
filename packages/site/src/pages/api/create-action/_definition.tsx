@@ -5,6 +5,7 @@ declare module "dreamkit/definitions" {
       (...args: any[]): any;
     };
     readonly id: number;
+    readonly args: any[];
     readonly result: any | undefined;
     readonly running: boolean;
     readonly error: Error | undefined;
