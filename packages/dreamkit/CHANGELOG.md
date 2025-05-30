@@ -1,5 +1,19 @@
 # dreamkit
 
+## 0.0.18
+
+### Patch Changes
+
+- [`20a8cee`](https://github.com/swordev/dreamkit/commit/20a8cee1d4fd6e5d10461be48d16c8dc2655c7ba) Thanks [@juanrgm](https://github.com/juanrgm)! - Add `ActionErrorBoundary` component
+
+- [`db9c53e`](https://github.com/swordev/dreamkit/commit/db9c53ebb5df1eab940b7902e4fcc2b0af4d18f3) Thanks [@juanrgm](https://github.com/juanrgm)! - Add `ClickAwayListener`
+
+- Updated dependencies [[`f22b958`](https://github.com/swordev/dreamkit/commit/f22b958b22296cc2d5dfdabb00d33bd3164d848d), [`20a8cee`](https://github.com/swordev/dreamkit/commit/20a8cee1d4fd6e5d10461be48d16c8dc2655c7ba), [`db9c53e`](https://github.com/swordev/dreamkit/commit/db9c53ebb5df1eab940b7902e4fcc2b0af4d18f3)]:
+  - @dreamkit/node-app@0.0.4
+  - @dreamkit/solid@0.0.12
+  - @dreamkit/app@0.0.9
+  - @dreamkit/dev@0.0.17
+
 ## 0.0.17
 
 ### Patch Changes
