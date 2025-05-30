@@ -6,4 +6,5 @@ export {
   ActionErrorBoundary,
   useActionManager,
   type LinkComponent,
+  ClickAwayListener,
 } from "@dreamkit/solid";
