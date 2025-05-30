@@ -1,5 +1,11 @@
 # @dreamkit/workspace
 
+## 0.0.6
+
+### Patch Changes
+
+- [`f22b958`](https://github.com/swordev/dreamkit/commit/f22b958b22296cc2d5dfdabb00d33bd3164d848d) Thanks [@juanrgm](https://github.com/juanrgm)! - Update deps
+
 ## 0.0.5
 
 ### Patch Changes
