@@ -7,6 +7,7 @@ module.exports = {
   plugins: [
     require.resolve("@trivago/prettier-plugin-sort-imports"),
     require.resolve("prettier-plugin-sort-json"),
-    require.resolve("prettier-plugin-packagejson"),
+    // https://github.com/matzkoh/prettier-plugin-packagejson/issues/225#issuecomment-2879629267
+    // require.resolve("prettier-plugin-packagejson"),
   ],
 };

@@ -10,12 +10,12 @@
     "build": "tsc -b tsconfig.build.json --verbose",
     "build:site": "pnpm run --filter @dreamkit/site build",
     "build:solid-start-app": "pnpm run --filter solid-start-app build",
-    "check:format": "prettier --cache --check .",
+    "check:format": "prettier --check .",
     "check:unused": "knip",
     "clean": "node packages/workspace/src/bin.js clean",
     "dev:site": "pnpm run --filter @dreamkit/site dev",
     "dev:solid-start-app": "pnpm run --filter solid-start-app dev",
-    "format": "prettier --cache --write .",
+    "format": "prettier --write .",
     "postinstall": "node packages/workspace/src/bin.js postinstall",
     "prepare": "husky",
     "preview": "pnpm run --filter @dreamkit/site preview",
@@ -26,7 +26,7 @@
   },
   "lint-staged": {
     "*.{json,js,ts,jsx,tsx,html,md}": [
-      "prettier --cache --check --ignore-unknown"
+      "prettier --check --ignore-unknown"
     ]
   },
   "prettier": "@dreamkit/prettier-config",
