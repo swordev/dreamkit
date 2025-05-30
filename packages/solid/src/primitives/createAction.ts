@@ -45,7 +45,7 @@ export type ActionResult<
     (
       input: () => IsAny<T> extends true ? any : Parameters<T>[0],
     ): ActionResult<() => ReturnType<T>, SourceT>;
-    (...args: Parameters<T>): ActionResult<() => ReturnType<T>>;
+    (...args: Parameters<T>): ActionResult<() => ReturnType<T>, SourceT>;
   };
   readonly id: number;
   readonly isErrorUsed: boolean;
