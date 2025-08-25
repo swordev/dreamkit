@@ -244,4 +244,9 @@ describe("IocContext.register", () => {
     expect(ctx.registry.size).toBe(1);
     expect(ctx.registry.get(A)).toBe(config2);
   });
+  it("use value as key", () => {
+    const ctx = context.fork();
+    const a = new A();
+    expect(ctx.register(a).resolve(A)).toBe(a);
+  });
 });

@@ -59,6 +59,7 @@ export class IocContext {
     data: IocRegistryValue<K, this>,
   ): this;
   register(items: IocRegistryData): this;
+  register(value: unknown): this;
   register(...args: any[]): this {
     const set = (key: IocRegistryKey, data: IocRegistryValue) => {
       this.registry.set(key, data);
@@ -66,9 +67,13 @@ export class IocContext {
     if (args.length === 2) {
       const [key, data] = args as [IocRegistryKey, IocRegistryValue];
       set(key, data);
-    } else {
+    } else if (Array.isArray(args[0])) {
       const [items] = args as [IocRegistryData];
       for (const [key, data] of items) set(key, data);
+    } else {
+      const [value] = args as [unknown];
+      const Constructor = (value as any).constructor;
+      set(Constructor, { value });
     }
     return this;
   }
