@@ -60,12 +60,15 @@ export class IocContext {
   ): this;
   register(items: IocRegistryData): this;
   register(...args: any[]): this {
+    const set = (key: IocRegistryKey, data: IocRegistryValue) => {
+      this.registry.set(key, data);
+    };
     if (args.length === 2) {
       const [key, data] = args as [IocRegistryKey, IocRegistryValue];
-      this.registry.set(key, data);
+      set(key, data);
     } else {
       const [items] = args as [IocRegistryData];
-      for (const [key, data] of items) this.registry.set(key, data);
+      for (const [key, data] of items) set(key, data);
     }
     return this;
   }
