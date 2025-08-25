@@ -48,6 +48,12 @@ describe("IocContext.register", () => {
     expect(ctx.resolve(func1)()).toEqual([1, 2]);
   });
 });
+describe("IocContext.registerSelf", () => {
+  it("return self context", () => {
+    const $context = context.fork();
+    expect($context.registerSelf().resolve(IocContext)).toBe($context);
+  });
+});
 
 describe("IocContext.resolve", () => {
   it("return undefined", () => {
