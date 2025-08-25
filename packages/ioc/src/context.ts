@@ -1,4 +1,4 @@
-import { isIocClass, type IocClass, type UnsafeIocClass } from "./class.js";
+import { IocClass, isIocClass, type UnsafeIocClass } from "./class.js";
 import { IocFunc, isIocFunc, type UnsafeIocFunc } from "./func.js";
 import {
   type InferIocParams,
@@ -13,7 +13,7 @@ import {
   type IocRegistryKey,
   type IocRegistryValue,
 } from "./registry.js";
-import { iocKind } from "./utils/kind.js";
+import { iocKind, KindMap } from "./utils/kind.js";
 import { capitalize } from "./utils/string.js";
 import type { AbstractConstructor, Constructor } from "./utils/ts.js";
 import { is } from "@dreamkit/kind";
@@ -45,8 +45,10 @@ export class IocContext {
     iocKind(this, "IocContext");
   }
   readonly registry: IocRegistry<IocContext>;
+  protected listeners: KindMap<IocRegistryKey, any[]>;
   constructor(readonly options: IocContextOptions = {}) {
     this.registry = this.options.registry ?? new IocRegistry();
+    this.listeners = new KindMap();
   }
   protected getConstructor(): IocContextConstructor {
     return this.constructor as any;
@@ -165,7 +167,14 @@ export class IocContext {
     }
     return params;
   }
-  protected $find(input: IocRegistryKey) {
+  protected getListeners(input: IocRegistryKey) {
+    const value = this.listeners.get(input);
+    if (value !== undefined) return value;
+    for (const [key, listeners] of this.listeners.entries()) {
+      if (is(input, key as any)) return listeners;
+    }
+  }
+  protected get(input: IocRegistryKey) {
     const value = this.registry.get(input);
     if (value !== undefined) return value;
     for (const [key, value] of this.registry.entries()) {
@@ -176,12 +185,22 @@ export class IocContext {
       }
     }
   }
+  findListeners(input: IocRegistryKey): ((value: any) => any)[] {
+    let context: IocContext | undefined = this;
+    const listeners: ((value: any) => any)[] = [];
+    while (context) {
+      let data = context.getListeners(input);
+      if (data) listeners.push(...data);
+      context = context.options.parentContainer;
+    }
+    return listeners;
+  }
   find(
     input: IocRegistryKey,
   ): IocRegistryValue<IocRegistryKey, IocContext> | undefined {
     let context: IocContext | undefined = this;
     while (context) {
-      let data = context.$find(input);
+      let data = context.get(input);
       if (data === undefined) data = context.registry.get(fallbackKey);
       if (data !== undefined) return data;
       context = context.options.parentContainer;
@@ -249,6 +268,31 @@ export class IocContext {
       return new IocError(`Unknown object is not registered: ${input}`);
     }
   }
+  on<T extends AbstractConstructor>(
+    constructor: T,
+    listener: (value: InstanceType<T>) => void,
+  ): this;
+  on<T extends (...args: any[]) => any>(
+    constructor: T,
+    listener: (value: (...args: Parameters<T>) => ReturnType<T>) => void,
+  ): this;
+  on<T>(constructor: T, listener: (value: T) => void): this;
+  on(key: IocRegistryKey, listener: (value: any) => void): this {
+    const listeners = this.listeners.get(key);
+    if (!listeners) this.listeners.set(key, []);
+    this.listeners.get(key)!.push(listener);
+    return this;
+  }
+  off(key: IocRegistryKey, listener?: (value: any) => any): this {
+    if (!listener) {
+      this.listeners.delete(key);
+    } else {
+      const listeners = this.listeners.get(key);
+      const index = listeners?.indexOf(listener) ?? -1;
+      if (listeners && index !== -1) listeners.splice(index, 1);
+    }
+    return this;
+  }
   resolve<T extends AbstractConstructor>(
     constructor: T,
     options?: RequiredResolveOptions,
@@ -279,6 +323,14 @@ export class IocContext {
   ) {
     const { onResolveIocObject } = this.options;
     const result = this.resolveKey(input as any, options.parent);
+    if (result) {
+      const listeners = this.findListeners(input as any);
+      for (const listener of listeners) {
+        const response = listener(result.value);
+        if (response === undefinedValueKey) return;
+        if (response !== undefined) return response;
+      }
+    }
     if (result) {
       return result.value;
     } else if (isIocClass(input)) {

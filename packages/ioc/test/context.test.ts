@@ -1,3 +1,4 @@
+import { undefinedValueKey } from "../src/context.js";
 import { IocClass, IocContext, IocFunc, context } from "../src/index.js";
 import { kind, kindOf } from "@dreamkit/kind";
 import { describe, expect, it } from "vitest";
@@ -48,6 +49,82 @@ describe("IocContext.register", () => {
     expect(ctx.resolve(func1)()).toEqual([1, 2]);
   });
 });
+
+describe("IocContext.on", () => {
+  it("override the value", () => {
+    class A {
+      value = "a";
+    }
+
+    expect(
+      context
+        .fork()
+        .register(A, { value: new A() })
+        .on(A, (a) => {
+          a.value += "2";
+        })
+        .resolve(A).value,
+    ).toBe("a2");
+
+    expect(
+      context
+        .fork()
+        .register(A, { value: new A() })
+        .on(A, () => undefinedValueKey)
+        .resolve(A),
+    ).toBe(undefined);
+
+    expect(
+      context
+        .fork()
+        .register(A, { value: new A() })
+        .on(A, () => 123)
+        .resolve(A),
+    ).toBe(123);
+  });
+});
+
+describe("IocContext.off", () => {
+  class A {
+    constructor(public value: number) {}
+  }
+  class B {
+    constructor(public value: number) {}
+  }
+  it("unregister the listener", () => {
+    const listener = () => new A(2);
+    const $ctx = context
+      .fork()
+      .register(A, { value: new A(1) })
+      .register(B, { value: new B(1) })
+      .on(A, listener)
+      .on(B, () => new B(3));
+    expect($ctx.resolve(A).value).toBe(2);
+    expect($ctx.resolve(B).value).toBe(3);
+    $ctx.off(A);
+    expect($ctx.resolve(A).value).toBe(1);
+    expect($ctx.resolve(B).value).toBe(3);
+  });
+  it("unregister all listeners", () => {
+    const $ctx = context
+      .fork()
+      .register(A, { value: new A(1) })
+      .on(A, (a) => {
+        a.value++;
+      })
+      .on(A, (a) => {
+        a.value++;
+      });
+    expect($ctx.resolve(A).value).toBe(3);
+
+    expect($ctx["getListeners"](A)?.length).toBe(2);
+    expect($ctx.resolve(A).value).toBe(5);
+    $ctx.off(A);
+    expect($ctx["getListeners"](A)?.length).toBe(undefined);
+    expect($ctx.resolve(A).value).toBe(5);
+  });
+});
+
 describe("IocContext.registerSelf", () => {
   it("return self context", () => {
     const $context = context.fork();
