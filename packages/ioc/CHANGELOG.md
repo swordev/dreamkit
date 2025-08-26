@@ -1,5 +1,15 @@
 # @dreamkit/ioc
 
+## 0.1.0
+
+### Minor Changes
+
+- [`e0091c4`](https://github.com/swordev/dreamkit/commit/e0091c4ed12226fd69dfeb6c2a05d967cb3ab101) Thanks [@juanrgm](https://github.com/juanrgm)! - Register using values
+
+- [`8947f4d`](https://github.com/swordev/dreamkit/commit/8947f4d573c82103e9bb3c1dacc004985abf7c17) Thanks [@juanrgm](https://github.com/juanrgm)! - Add `registerSelf` method
+
+- [`f62a7e2`](https://github.com/swordev/dreamkit/commit/f62a7e2689639f4a15f1d948531554d7f1e3f3fb) Thanks [@juanrgm](https://github.com/juanrgm)! - Add resolve listeners
+
 ## 0.0.3
 
 ### Patch Changes
