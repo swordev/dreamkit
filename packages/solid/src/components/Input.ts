@@ -14,6 +14,8 @@ import {
 } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
+export type { InputType };
+
 export type InputProps<T extends InputType = InputType> = Omit<
   ComponentProps<"input">,
   "value" | "onChange" | "type"

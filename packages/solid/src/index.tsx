@@ -1,6 +1,6 @@
 export { $route } from "./$route.js";
 export { $serverApi } from "./$serverApi.js";
-export { Input } from "./components/Input.js";
+export { Input, type InputProps, type InputType } from "./components/Input.js";
 export { Link } from "./components/Link.js";
 export { ActionErrorBoundary } from "./components/ActionErrorBoundary.js";
 export {
