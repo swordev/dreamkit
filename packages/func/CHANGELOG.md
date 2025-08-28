@@ -1,5 +1,11 @@
 # @dreamkit/func
 
+## 0.0.6
+
+### Patch Changes
+
+- [`d992cff`](https://github.com/swordev/dreamkit/commit/d992cff00ba8ad0d0a2687a4e58d17a38e5fc2d4) Thanks [@juanrgm](https://github.com/juanrgm)! - Add static option
+
 ## 0.0.5
 
 ### Patch Changes
