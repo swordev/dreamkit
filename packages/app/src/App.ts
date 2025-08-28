@@ -178,10 +178,8 @@ export class App {
   protected onUnknownObject(id: string, value: unknown) {
     console.warn("Unknown object", { id, value, kinds: getKinds(value) });
   }
-  async add(input: Record<string, any> | any[]): Promise<void> {
-    let loadSettingsHandler = false;
-    const services: AppService[] = [];
-    const settings: SettingsConstructor[] = [];
+
+  protected resolveEntry(input: Record<string, any> | any[]) {
     const objects = Array.isArray(input)
       ? input.reduce(
           (result, value, index) => {
@@ -190,7 +188,30 @@ export class App {
           },
           {} as Record<string, any>,
         )
-      : input;
+      : { ...input };
+    const isPlainObject = (input: any): input is Record<string, any> =>
+      !!input && typeof input === "object";
+    const entries = Object.entries(objects).flatMap(
+      ([id, value]): [string, any][] => {
+        if (isPlainObject(value) || Array.isArray(value)) {
+          return Object.entries(this.resolveEntry(value)).map(
+            ([childId, childValue]) => [
+              id === "default" ? childId : `${id}:${childId}`,
+              childValue,
+            ],
+          );
+        }
+        return [[id, value]];
+      },
+    );
+    return Object.fromEntries(entries);
+  }
+
+  async add(input: Record<string, any> | any[]): Promise<void> {
+    let loadSettingsHandler = false;
+    const services: AppService[] = [];
+    const settings: SettingsConstructor[] = [];
+    const objects = this.resolveEntry(input);
     for (const [id, value] of Object.entries(objects)) {
       if (isRoute(value)) {
         this.routes.add(value);
