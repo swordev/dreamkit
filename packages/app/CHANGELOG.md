@@ -1,5 +1,19 @@
 # @dreamkit/app
 
+## 0.0.12
+
+### Patch Changes
+
+- [`231057a`](https://github.com/swordev/dreamkit/commit/231057a2b06980b241c03922b6102cfdd6772029) Thanks [@juanrgm](https://github.com/juanrgm)! - Resolve entry deeply
+
+- [`4cc210a`](https://github.com/swordev/dreamkit/commit/4cc210a38a5c499aaa00d8796ce26043ab41bd0b) Thanks [@juanrgm](https://github.com/juanrgm)! - Remove api entries
+
+- [`272d42a`](https://github.com/swordev/dreamkit/commit/272d42af0e8e8c40f2c43dd86b24881892bd31dc) Thanks [@juanrgm](https://github.com/juanrgm)! - Fix settings handler resolution
+
+- Updated dependencies [[`c3161b3`](https://github.com/swordev/dreamkit/commit/c3161b3431e5a9373879d5c7c862143d179ee656)]:
+  - @dreamkit/ioc@0.2.0
+  - @dreamkit/func@0.0.7
+
 ## 0.0.11
 
 ### Patch Changes
