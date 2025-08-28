@@ -269,7 +269,7 @@ export class App {
     return requestContext;
   }
 
-  async request(request: Request): Promise<Response | undefined> {
+  async request(request: Request): Promise<any> {
     const context = this.createRequestContext(request);
     log("request", context.resolve(RequestUrl).pathname);
     for (const middleware of this.middlewares) {
@@ -285,7 +285,7 @@ export class App {
     });
     if (!handler) return;
     const options = constructor.options;
-    let value = await handler.get(constructor);
+    let value = handler.get(constructor);
     if (options.optional && !options.generate && !value) return;
     const generated = options.generate?.(value || {}) || {};
     if (Object.keys(generated).length) {
