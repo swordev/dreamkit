@@ -36,7 +36,7 @@ const fallbackKey = Symbol("fallback");
 export const undefinedValueKey = Symbol("undefined");
 export const ignoreValueKey = Symbol("ignore");
 
-type RequiredResolveOptions = { parent?: unknown };
+type RequiredResolveOptions = { parent?: unknown; abstract?: boolean };
 type OptionalResolveOptions = RequiredResolveOptions & { optional: true };
 type ResolveOptions = RequiredResolveOptions & { optional?: boolean };
 
@@ -333,12 +333,12 @@ export class IocContext {
     }
     if (result) {
       return result.value;
-    } else if (isIocClass(input)) {
+    } else if (!options.abstract && isIocClass(input)) {
       if (!onResolveIocObject || onResolveIocObject(input)) {
         const params = this.resolveParamsFromObject(input);
         return new input(params);
       }
-    } else if (isIocFunc(input)) {
+    } else if (!options.abstract && isIocFunc(input)) {
       if (!onResolveIocObject || onResolveIocObject(input)) {
         const params = this.resolveParamsFromObject(input);
         return input.bind(params as any);

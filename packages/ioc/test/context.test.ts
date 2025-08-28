@@ -136,6 +136,27 @@ describe("IocContext.resolve", () => {
   it("return undefined", () => {
     expect(context.resolve(IocContext, { optional: true })).toBeUndefined();
   });
+
+  it("with abstract option", () => {
+    abstract class Handler extends IocClass({}) {}
+    class AppHandler extends Handler {}
+    const ctx = context.fork();
+    expect(
+      ctx.resolve(Handler, {
+        optional: true,
+      }),
+    ).toBeInstanceOf(Handler);
+    expect(
+      ctx.resolve(Handler, {
+        optional: true,
+        abstract: true,
+      }),
+    ).toBeUndefined();
+    ctx.register(Handler, { value: new AppHandler() });
+    expect(
+      ctx.resolve(Handler, { optional: true, abstract: true }),
+    ).toBeInstanceOf(AppHandler);
+  });
   it("throw error", () => {
     const ctx = context.fork();
     class A {}
