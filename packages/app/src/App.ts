@@ -43,6 +43,7 @@ export class App {
   readonly middlewares = new Set<MiddlewareConstructor>();
   readonly settings = new Set<SettingsConstructor>();
   readonly api = new Map<string, Func>();
+  protected apiRef = new Map<string, string>();
   public settingsHandler: SettingsHandlerConstructor | undefined;
   public sessionHandler: SessionHandlerConstructor | undefined;
   protected listeners = {
@@ -112,6 +113,10 @@ export class App {
         this.settingsHandler = undefined;
       } else if (isSessionHandler(value)) {
         this.sessionHandler = undefined;
+      } else if (isApi(value)) {
+        const path = this.apiRef.get(id);
+        this.apiRef.delete(id);
+        if (path) this.api.delete(path);
       }
       for (const cb of this.listeners.remove) await cb({ id, value });
       for (const cb of this.listeners.change)
@@ -238,7 +243,9 @@ export class App {
       } else if (isSessionHandler(value)) {
         this.sessionHandler = value;
       } else if (isApi(value)) {
-        this.api.set(this.normalizeApiPath(id), value);
+        const path = this.normalizeApiPath(id);
+        this.api.set(path, value);
+        this.apiRef.set(id, path);
       } else {
         this.onUnknownObject(id, value);
       }
@@ -381,6 +388,7 @@ export class App {
     this.middlewares.clear();
     this.settings.clear();
     this.api.clear();
+    this.apiRef.clear();
     this.settingsHandler = undefined;
     this.sessionHandler = undefined;
   }
