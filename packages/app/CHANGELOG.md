@@ -1,5 +1,16 @@
 # @dreamkit/app
 
+## 0.0.11
+
+### Patch Changes
+
+- [`d992cff`](https://github.com/swordev/dreamkit/commit/d992cff00ba8ad0d0a2687a4e58d17a38e5fc2d4) Thanks [@juanrgm](https://github.com/juanrgm)! - Add static option
+
+- [`7e65318`](https://github.com/swordev/dreamkit/commit/7e65318dfbf83e9144447b15a97ea553b46a621d) Thanks [@juanrgm](https://github.com/juanrgm)! - Save api objects
+
+- Updated dependencies [[`d992cff`](https://github.com/swordev/dreamkit/commit/d992cff00ba8ad0d0a2687a4e58d17a38e5fc2d4)]:
+  - @dreamkit/func@0.0.6
+
 ## 0.0.10
 
 ### Patch Changes
