@@ -33,6 +33,7 @@ export type SettingsData<
 export type SettingsOptions<T extends SettingsData = SettingsData> = T & {
   generate?: (input: Record<string, unknown>) => InferType<T["params"] & {}>;
   optional?: boolean;
+  static?: Record<string, any>;
 };
 
 export type MergeSettingsData<
@@ -151,6 +152,7 @@ export class SettingsBuilder<
         super(params);
       }
     }
+    if (this.options.static) Object.assign(CustomSettings, this.options.static);
     return CustomSettings;
   } as any;
 }

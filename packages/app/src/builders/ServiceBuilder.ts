@@ -11,7 +11,9 @@ export type ServiceData<TSelf extends ServiceSelf = ServiceSelf> = {
   self?: TSelf;
 };
 
-export type ServiceOptions<T extends ServiceData = ServiceData> = T & {};
+export type ServiceOptions<T extends ServiceData = ServiceData> = T & {
+  static?: Record<string, any>;
+};
 
 export type MergeServiceData<
   D1 extends ServiceData,
@@ -63,6 +65,8 @@ export class ServiceBuilder<T extends ServiceData = {}> {
     return this.clone({ self: value }) as any;
   }
   create(): IocClass<T["self"] & {}, Service> {
-    return ServiceClass(this.options.self || {}) as any;
+    const Class = ServiceClass(this.options.self || {}) as any;
+    if (this.options.static) Object.assign(Class, this.options.static);
+    return Class;
   }
 }

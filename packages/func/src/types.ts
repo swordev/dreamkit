@@ -42,6 +42,7 @@ export type FuncOptions<T extends FuncData = FuncData> = T & {
     },
   ) => any;
   cache?: { key?: string };
+  static?: Record<string, any>;
 };
 
 export type MergeFuncData<

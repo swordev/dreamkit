@@ -34,6 +34,7 @@ export type SessionTimeLife = {
 
 export type SessionOptions<T extends SessionData = SessionData> = T & {
   timelife?: SessionTimeLife;
+  static?: Record<string, any>;
 };
 
 export type MergeSessionData<
@@ -136,6 +137,7 @@ export class SessionBuilder<
         super(params);
       }
     }
+    if (this.options.static) Object.assign(CustomSession, this.options.static);
     return CustomSession;
   } as any;
 }

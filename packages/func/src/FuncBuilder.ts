@@ -115,6 +115,7 @@ export class FuncBuilder<T extends FuncData = FuncData> {
     Object.assign(func, meta);
     kindFunc(func);
     if (this.options.onCreate) return this.options.onCreate(func as any) as any;
+    if (this.options.static) Object.assign(func, this.options.static);
     return func as any;
   }
 }

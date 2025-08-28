@@ -1,9 +1,4 @@
-import {
-  createIocClass,
-  IocClass,
-  IocParams,
-  IocParamsUserConfig,
-} from "@dreamkit/ioc";
+import { createIocClass, IocClass, IocParamsUserConfig } from "@dreamkit/ioc";
 import { createKind } from "@dreamkit/kind";
 import type { Constructor, Merge } from "@dreamkit/utils/ts.js";
 
@@ -16,8 +11,9 @@ export type MiddlewareData<TSelf extends MiddlewareSelf = MiddlewareSelf> = {
   self?: TSelf;
 };
 
-export type MiddlewareOptions<T extends MiddlewareData = MiddlewareData> =
-  T & {};
+export type MiddlewareOptions<T extends MiddlewareData = MiddlewareData> = T & {
+  static?: Record<string, any>;
+};
 
 export type MergeMiddlewareData<
   D1 extends MiddlewareData,
@@ -60,6 +56,8 @@ export class MiddlewareBuilder<T extends MiddlewareData = {}> {
     return this.clone({ self: value }) as any;
   }
   create(): IocClass<T["self"] & {}, Middleware> {
-    return MiddlewareClass(this.options.self || {}) as any;
+    const Class = MiddlewareClass(this.options.self || {}) as any;
+    if (this.options.static) Object.assign(Class, this.options.static);
+    return Class;
   }
 }

@@ -70,6 +70,7 @@ export type RouteOptions<T extends RouteData = RouteData> = T & {
   routeDefinition?: (options: RouteOptions) => any;
   createComponent?: (options: RouteOptions, props: any) => any;
   filePath?: string;
+  static?: Record<string, any>;
 };
 
 export type InferRouteParams<T extends RouteData> = [undefined] extends [
@@ -197,6 +198,7 @@ export class RouteBuilder<T extends RouteData = RouteData> {
     kindRoute(result);
     Object.assign(result, {
       $options: self.options,
+      ...self.options.static,
     });
     return result as any;
   }) as any;
