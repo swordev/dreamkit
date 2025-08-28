@@ -119,6 +119,10 @@ export class App {
       this.objects.delete(id);
     }
   }
+  async removeAll() {
+    await this.stop();
+    this.clear();
+  }
   protected addService(service: ServiceConstructor): AppService {
     const item: AppService = {
       name: service.prototype.name ?? service.name ?? "anonymous",
@@ -343,5 +347,15 @@ export class App {
     for (const settings of this.settings) this.removeSettings(settings);
     if (errors.length) throw new AggregateError(errors, "App stop failed");
     (this as any).started = false;
+  }
+  clear() {
+    this.objects.clear();
+    this.routes.clear();
+    this.services.clear();
+    this.middlewares.clear();
+    this.settings.clear();
+    this.api.clear();
+    this.settingsHandler = undefined;
+    this.sessionHandler = undefined;
   }
 }
