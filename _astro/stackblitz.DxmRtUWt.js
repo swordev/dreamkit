@@ -133,7 +133,7 @@ export default defineConfig({
     "@solidjs/meta": "^0.29.4",
     "@solidjs/router": "^0.15.3",
     "@solidjs/start": "^1.1.3",
-    "dreamkit": "^0.0.19",
+    "dreamkit": "^0.0.20",
     "solid-js": "^1.9.5",
     "vinxi": "^0.5.4"
   },
