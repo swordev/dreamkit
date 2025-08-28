@@ -26,8 +26,8 @@ import {
 } from "./handlers/SettingsHandler.js";
 import { isRoute, kindApp } from "./utils/kind.js";
 import { log } from "./utils/log.js";
-import { IocBaseClass, normalizeIocParams } from "@dreamkit/ioc";
-import { getKinds, is } from "@dreamkit/kind";
+import { type Func } from "@dreamkit/func";
+import { getKinds } from "@dreamkit/kind";
 import { merge } from "@dreamkit/utils/object.js";
 
 export class App {
@@ -42,6 +42,7 @@ export class App {
   readonly services = new Set<AppService>();
   readonly middlewares = new Set<MiddlewareConstructor>();
   readonly settings = new Set<SettingsConstructor>();
+  readonly api = new Map<string, Func>();
   public settingsHandler: SettingsHandlerConstructor | undefined;
   public sessionHandler: SessionHandlerConstructor | undefined;
   protected listeners = {
@@ -145,7 +146,34 @@ export class App {
     item.started = false;
     log("service stopped", { name });
   }
+  protected normalizeApiPath(path: string) {
+    return (
+      "/" +
+      path
+        .split(/[:/]/)
+        .map((value) => {
+          if (
+            value === "index.ts" ||
+            value === "index.js" ||
+            value === "." ||
+            !value.length
+          ) {
+            return undefined;
+          } else if (value.endsWith(".ts") || value.endsWith(".js")) {
+            const parts = value.split(".");
+            return parts.slice(0, -1).join(".");
+          } else {
+            return value;
+          }
+        })
+        .filter(Boolean)
+        .join("/")
+    );
+  }
 
+  protected onUnknownObject(id: string, value: unknown) {
+    console.warn("Unknown object", { id, value, kinds: getKinds(value) });
+  }
   async add(input: Record<string, any> | any[]): Promise<void> {
     let loadSettingsHandler = false;
     const services: AppService[] = [];
@@ -185,10 +213,9 @@ export class App {
       } else if (isSessionHandler(value)) {
         this.sessionHandler = value;
       } else if (isApi(value)) {
-        // Not implemented (using solid start actions)
-        continue;
+        this.api.set(this.normalizeApiPath(id), value);
       } else {
-        console.warn("Unknown object", { id, value, kinds: getKinds(value) });
+        this.onUnknownObject(id, value);
       }
 
       /*
