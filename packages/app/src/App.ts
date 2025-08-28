@@ -243,7 +243,7 @@ export class App {
     }
     if (this.started) {
       if (loadSettingsHandler)
-        await this.context.resolve(SettingsHandler).load();
+        await this.context.resolve(SettingsHandler, { abstract: true }).load();
       for (const setting of settings) await this.registerSettings(setting);
       for (const service of services) await this.startService(service);
     }
@@ -282,6 +282,7 @@ export class App {
   protected async initSettingsValue(constructor: SettingsConstructor) {
     const handler = this.context.resolve(SettingsHandler, {
       optional: true,
+      abstract: true,
     });
     if (!handler) return;
     const options = constructor.options;
@@ -321,7 +322,10 @@ export class App {
   }
 
   protected seettingsHandler(): SettingsHandler | undefined {
-    return this.context.resolve(SettingsHandler, { optional: true });
+    return this.context.resolve(SettingsHandler, {
+      optional: true,
+      abstract: true,
+    });
   }
   async start() {
     log("starting app");
