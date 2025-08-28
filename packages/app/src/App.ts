@@ -325,6 +325,7 @@ export class App {
   }
   async start() {
     log("starting app");
+    if (this.started) throw new Error("App is already started");
     (this as any).started = true;
     await this.registerAllSettings();
     for (const item of this.services) await this.startService(item);
