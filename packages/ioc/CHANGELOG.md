@@ -1,5 +1,11 @@
 # @dreamkit/ioc
 
+## 0.2.0
+
+### Minor Changes
+
+- [`c3161b3`](https://github.com/swordev/dreamkit/commit/c3161b3431e5a9373879d5c7c862143d179ee656) Thanks [@juanrgm](https://github.com/juanrgm)! - Add `abstract` option
+
 ## 0.1.0
 
 ### Minor Changes
