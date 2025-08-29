@@ -1,5 +1,11 @@
 # @dreamkit/kind
 
+## 0.0.4
+
+### Patch Changes
+
+- [`069fedf`](https://github.com/swordev/dreamkit/commit/069fedf9869aed1b257e1c207f5a041dcde2c0b9) Thanks [@juanrgm](https://github.com/juanrgm)! - Rebuild using new tsconfigs
+
 ## 0.0.3
 
 ### Patch Changes

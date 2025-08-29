@@ -1,5 +1,15 @@
 # @dreamkit/schema
 
+## 0.0.7
+
+### Patch Changes
+
+- [`069fedf`](https://github.com/swordev/dreamkit/commit/069fedf9869aed1b257e1c207f5a041dcde2c0b9) Thanks [@juanrgm](https://github.com/juanrgm)! - Rebuild using new tsconfigs
+
+- Updated dependencies [[`069fedf`](https://github.com/swordev/dreamkit/commit/069fedf9869aed1b257e1c207f5a041dcde2c0b9)]:
+  - @dreamkit/utils@0.0.7
+  - @dreamkit/kind@0.0.4
+
 ## 0.0.6
 
 ### Patch Changes
