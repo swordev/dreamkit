@@ -1,5 +1,15 @@
 # dreamkit
 
+## 0.0.23
+
+### Patch Changes
+
+- Updated dependencies [[`52effe3`](https://github.com/swordev/dreamkit/commit/52effe3bebe861f317a51bf3e5525708c6d04ddf)]:
+  - @dreamkit/app@0.0.14
+  - @dreamkit/dev@0.0.22
+  - @dreamkit/node-app@0.0.9
+  - @dreamkit/solid@0.0.17
+
 ## 0.0.22
 
 ### Patch Changes
