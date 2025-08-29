@@ -281,13 +281,14 @@ export class App {
     const context = new RequestContext({
       parentContainer: this.context,
     });
+    const host = request.headers.get("host") ?? "localhost";
     const requestContext = context
       .register(RequestContext, { value: context })
       .register(Request, { value: request })
       .register(Headers, { value: request.headers })
       .register(ResponseHeaders, { value: new ResponseHeaders() })
       .register(RequestUrl, {
-        value: new RequestUrl(request.url, "http://localhost"),
+        value: new RequestUrl(request.url, `http://${host}`),
       });
     if (this.sessionHandler)
       requestContext.register(SessionHandler, {
@@ -297,13 +298,19 @@ export class App {
     return requestContext;
   }
 
-  async request(request: Request): Promise<any> {
-    const context = this.createRequestContext(request);
+  async request(request: Request, context?: RequestContext): Promise<any> {
+    if (!context) context = this.createRequestContext(request);
     log("request", context.resolve(RequestUrl).pathname);
     for (const middleware of this.middlewares) {
       const $md = context.resolve(middleware);
       const response = await $md.onRequest();
-      if (response) return response;
+      if (response && response instanceof Response) {
+        const headers = context.resolve(ResponseHeaders);
+        for (const [name, value] of headers.entries()) {
+          response.headers.set(name, value);
+        }
+      }
+      return response;
     }
   }
 
