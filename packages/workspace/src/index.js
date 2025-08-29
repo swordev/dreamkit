@@ -6,3 +6,4 @@ export {
   getTSConfigReferences,
   getRootTSConfigReferences,
 } from "./utils/tsconfig.js";
+export { defineGitConfig, definePackageJSON, defineTSConfig } from "pkg-types";

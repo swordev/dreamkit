@@ -1,4 +1,6 @@
-import { PackageJson } from "pkg-types";
+import type { PackageJson, TSConfig } from "pkg-types";
+
+export { defineGitConfig, definePackageJSON, defineTSConfig } from "pkg-types";
 
 export type Package = {
   dir: string;
