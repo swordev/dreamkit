@@ -5,18 +5,18 @@ import {
   tryReadJSONFile,
   writeJSONFile,
 } from "./utils/fs.js";
+import { findPackageDirs } from "./utils/pkg.js";
 import { existsSync } from "fs";
 import { readdir, writeFile } from "fs/promises";
-import { join } from "path";
+import { basename, join } from "path";
 
 /** @return {Promise<import("./index.js").Package[]>} */
-async function findPackages() {
-  const packagesDir = "./packages";
-  const pkgFolders = await readdir(packagesDir);
+export async function findPackages() {
+  const pkgDirs = await findPackageDirs(process.cwd());
   /** @type {import("./index.js").Package[]} */
   const packages = [];
-  for (const folder of pkgFolders) {
-    const dir = `${packagesDir}/${folder}`;
+  for (const dir of pkgDirs) {
+    const folder = basename(dir);
     const manifestPath = `${dir}/package.json`;
     const srcPath = `${dir}/src`;
     const manifest = await readJSONFile(manifestPath);
