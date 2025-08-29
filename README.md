@@ -30,6 +30,7 @@ If you want to support the project, you have the possibility to do so [here](htt
 | [@dreamkit/node-app](./packages/node-app)   | [![npm-badge-dreamkit_node-app]](https://www.npmjs.com/package/@dreamkit/node-app)   | DreamKit application for Node.js.                      |
 | [@dreamkit/schema](./packages/schema)       | [![npm-badge-dreamkit_schema]](https://www.npmjs.com/package/@dreamkit/schema)       | Validation and management of typed schemas.            |
 | [@dreamkit/solid](./packages/solid)         | [![npm-badge-dreamkit_solid]](https://www.npmjs.com/package/@dreamkit/solid)         | DreamKit tools for Solid.                              |
+| [@dreamkit/tsconfig](./packages/tsconfig)   | [![npm-badge-dreamkit_tsconfig]](https://www.npmjs.com/package/@dreamkit/tsconfig)   | DreamKit TypeScript configuration.                     |
 | [@dreamkit/utils](./packages/utils)         | [![npm-badge-dreamkit_utils]](https://www.npmjs.com/package/@dreamkit/utils)         | A collection of utilities for DreamKit.                |
 | [@dreamkit/workspace](./packages/workspace) | [![npm-badge-dreamkit_workspace]](https://www.npmjs.com/package/@dreamkit/workspace) | Tool for managing monorepos.                           |
 
@@ -42,6 +43,7 @@ If you want to support the project, you have the possibility to do so [here](htt
 [npm-badge-dreamkit_node-app]: https://img.shields.io/npm/v/@dreamkit/node-app
 [npm-badge-dreamkit_schema]: https://img.shields.io/npm/v/@dreamkit/schema
 [npm-badge-dreamkit_solid]: https://img.shields.io/npm/v/@dreamkit/solid
+[npm-badge-dreamkit_tsconfig]: https://img.shields.io/npm/v/@dreamkit/tsconfig
 [npm-badge-dreamkit_utils]: https://img.shields.io/npm/v/@dreamkit/utils
 [npm-badge-dreamkit_workspace]: https://img.shields.io/npm/v/@dreamkit/workspace
 
