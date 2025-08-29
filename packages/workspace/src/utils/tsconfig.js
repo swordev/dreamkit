@@ -49,12 +49,10 @@ export function createTSConfigFiles(options) {
   const presets = ["base", "build", "publish", "solid", "vite"];
   const extendsValue = (
     Array.isArray(options.extends)
-      ? options.extends
-      : Object.keys(
-          Object.entries(options.extends || {}).filter(
-            ([, enabled]) => enabled,
-          ),
-        )
+      ? options.extends.filter((name) => typeof name === "string")
+      : Object.entries(options.extends || {})
+          .filter(([, enabled]) => enabled)
+          .map(([name]) => name)
   ).map((name) =>
     presets.includes(name) ? `@dreamkit/tsconfig/${name}.json` : name,
   );

@@ -53,7 +53,7 @@ export declare const defineConfig: (handler: WorkspaceHandler) => any;
 export declare const createTSConfigFiles: (options: {
   packages: Package[];
   pkg: Package;
-  extends?: Record<string, boolean> | string[];
+  extends?: Record<string, boolean> | (string | false)[];
   root?: TSConfig;
   base?: TSConfig;
   build?: TSConfig;
