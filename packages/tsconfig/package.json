@@ -20,7 +20,7 @@
   "sideEffects": false,
   "type": "module",
   "exports": {
-    ".": "./lib.json",
+    ".": "./base.json",
     "./*": "./*"
   },
   "files": [

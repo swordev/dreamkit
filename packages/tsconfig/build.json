@@ -2,13 +2,12 @@
   "compilerOptions": {
     "strict": true,
     "composite": true,
-    "declaration": true,
-    "declarationMap": true,
-    "target": "ES2022",
-    "module": "Node16",
     "rootDir": "${configDir}/src",
     "outDir": "${configDir}/lib",
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "module": "Node16",
+    "moduleResolution": "Node16",
+    "target": "ES2022"
   },
   "include": ["${configDir}/src"]
 }

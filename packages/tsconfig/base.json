@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "noEmit": true,
+    "rootDir": "."
+  },
+  "include": [
+    "${configDir}/src",
+    "${configDir}/test",
+    "${configDir}/styled-system"
+  ]
+}
