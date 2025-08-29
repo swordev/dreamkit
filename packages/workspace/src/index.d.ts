@@ -10,6 +10,7 @@ export type Package = {
   manifest: PackageJson;
   isRoot: boolean;
   isTypeScript: boolean;
+  deps: string[];
 };
 
 export type WorkspaceHandlerResult = {
@@ -49,3 +50,11 @@ export declare const getRootTSConfigReferences: (
   },
 ) => { path: string }[];
 export declare const defineConfig: (handler: WorkspaceHandler) => any;
+export declare const createTSConfigFiles: (options: {
+  packages: Package[];
+  pkg: Package;
+  extends?: Record<string, boolean> | string[];
+  root?: TSConfig;
+  base?: TSConfig;
+  build?: TSConfig;
+}) => Record<string, any>;

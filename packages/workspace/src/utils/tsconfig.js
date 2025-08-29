@@ -1,6 +1,13 @@
+// @ts-check
 /**
  * @param {import("./../index.js").Package} pkg
  * @param {{ fileName?: string, exclude?: string[] }} [options]
+ */
+import { defineTSConfig } from "pkg-types";
+
+/**
+ * @param {Parameters<typeof import("./../index.js").getTSConfigReferences>[0]} pkg
+ * @param {Parameters<typeof import("./../index.js").getTSConfigReferences>[1]} [options]
  */
 
 export function getTSConfigReferences(pkg, options) {
@@ -28,7 +35,49 @@ export function getRootTSConfigReferences(packages, options) {
     .filter((pkg) => !pkg.isRoot && pkg.isTypeScript)
     .filter(
       (pkg) =>
-        !options?.exclude || !options.exclude.includes(pkg.manifest.name),
+        !options?.exclude || !options.exclude.includes(pkg.manifest.name ?? ""),
     )
     .map((pkg) => ({ path: `${pkg.dir}/${fileName}` }));
+}
+
+/**
+ * @param {Parameters<typeof import("./../index.js").createTSConfigFiles>[0]} options
+ */
+
+export function createTSConfigFiles(options) {
+  const { pkg, packages } = options;
+  const presets = ["base", "build", "publish", "solid", "vite"];
+  const extendsValue = (
+    Array.isArray(options.extends)
+      ? options.extends
+      : Object.keys(
+          Object.entries(options.extends || {}).filter(
+            ([, enabled]) => enabled,
+          ),
+        )
+  ).map((name) =>
+    presets.includes(name) ? `@dreamkit/tsconfig/${name}.json` : name,
+  );
+  /** @type {Record<string, any>} */
+  const files = {};
+  if (pkg.isRoot) {
+    files["tsconfig.build.json"] = defineTSConfig({
+      include: [],
+      references: getRootTSConfigReferences(packages),
+      ...options.base,
+    });
+  } else if (pkg.isTypeScript) {
+    files["tsconfig.json"] = defineTSConfig({
+      extends: ["@dreamkit/tsconfig", "./tsconfig.build.json"],
+      ...options.base,
+    });
+    files["tsconfig.build.json"] = defineTSConfig({
+      references: getTSConfigReferences(pkg, {
+        exclude: ["@dreamkit/tsconfig"],
+      }),
+      extends: ["@dreamkit/tsconfig/build.json", ...extendsValue],
+      ...options.build,
+    });
+  }
+  return files;
 }

@@ -19,18 +19,26 @@ export async function findPackages() {
     const folder = basename(dir);
     const manifestPath = `${dir}/package.json`;
     const srcPath = `${dir}/src`;
+    /** @type {import("pkg-types").PackageJson} */
     const manifest = await readJSONFile(manifestPath);
     const files = [
       ...(await readdir(dir)),
       ...(existsSync(srcPath) ? await readdir(srcPath) : []),
     ];
+    const deps = Object.keys({
+      ...manifest.dependencies,
+      ...manifest.devDependencies,
+      ...manifest.peerDependencies,
+      ...manifest.optionalDependencies,
+    });
     packages.push({
       dir,
-      name: manifest.name,
+      name: manifest.name ?? "",
       manifestPath,
       manifest,
       folder,
       isRoot: false,
+      deps,
       isTypeScript: files.some(
         (file) =>
           (file.endsWith(".ts") || file.endsWith(".tsx")) &&
@@ -39,6 +47,12 @@ export async function findPackages() {
     });
   }
   const manifest = await readJSONFile("./package.json");
+  const deps = Object.keys({
+    ...manifest.dependencies,
+    ...manifest.devDependencies,
+    ...manifest.peerDependencies,
+    ...manifest.optionalDependencies,
+  });
   return [
     {
       dir: ".",
@@ -47,6 +61,7 @@ export async function findPackages() {
       manifest: manifest,
       manifestPath: "./package.json",
       isRoot: true,
+      deps,
       isTypeScript: true,
     },
     ...packages,
