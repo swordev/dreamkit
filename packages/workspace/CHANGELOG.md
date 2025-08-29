@@ -1,5 +1,11 @@
 # @dreamkit/workspace
 
+## 0.1.1
+
+### Patch Changes
+
+- [`eab8646`](https://github.com/swordev/dreamkit/commit/eab86466e938f3fd893377ba3768c85837d606ef) Thanks [@juanrgm](https://github.com/juanrgm)! - Fix `createTSConfigFiles`
+
 ## 0.1.0
 
 ### Minor Changes
