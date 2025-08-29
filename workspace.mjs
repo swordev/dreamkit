@@ -1,43 +1,28 @@
 // @ts-check
-import {
-  defineConfig,
-  getRootTSConfigReferences,
-  getTSConfigReferences,
-} from "@dreamkit/workspace";
+import { createTSConfigFiles, defineConfig } from "@dreamkit/workspace";
 import { readFileSync } from "fs";
 import { markdownTable } from "markdown-table";
 
 const readmePackageTpl = readFileSync("./docs/readme-package.tpl.md", "utf8");
 
 export default defineConfig(({ pkg, packages }) => {
-  if (!pkg.isRoot && !pkg.manifest.files)
+  if (!pkg.manifest.private && !pkg.manifest.files)
     throw new Error('"files" field is required');
+  if (pkg.manifest.private && !pkg.isRoot) return;
   if (pkg.name === "@dreamkit/site") return;
   return {
     files: {
+      ...createTSConfigFiles({
+        packages: packages.filter(
+          (pkg) => !(pkg.manifest.private || pkg.name === "@dreamkit/site"),
+        ),
+        pkg,
+        extends: ["publish"],
+      }),
       ...(pkg.isRoot && {
-        "tsconfig.build.json": {
-          include: [],
-          references: getRootTSConfigReferences(packages, {
-            exclude: ["@dreamkit/site"],
-          }),
-        },
         "README.md": renderRootReadme(packages),
       }),
       ...(!pkg.isRoot && {
-        ...(pkg.isTypeScript && {
-          "tsconfig.json": {
-            compilerOptions: { noEmit: true, rootDir: "." },
-            extends: "./tsconfig.build.json",
-            include: ["src", "test"],
-          },
-          "tsconfig.build.json": {
-            extends: "@dreamkit/tsconfig/lib.json",
-            references: getTSConfigReferences(pkg, {
-              exclude: ["@dreamkit/tsconfig"],
-            }),
-          },
-        }),
         "README.md": readmePackageTpl
           .replaceAll("{packageName}", pkg.name ?? "")
           .replaceAll("{packageDescription}", pkg.manifest.description ?? ""),

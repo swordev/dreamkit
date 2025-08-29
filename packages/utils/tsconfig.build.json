@@ -1,1 +1,7 @@
-{ "extends": "@dreamkit/tsconfig/lib.json", "references": [] }
+{
+  "extends": [
+    "@dreamkit/tsconfig/build.json",
+    "@dreamkit/tsconfig/publish.json"
+  ],
+  "references": []
+}
