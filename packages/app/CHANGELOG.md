@@ -1,5 +1,11 @@
 # @dreamkit/app
 
+## 0.0.14
+
+### Patch Changes
+
+- [`52effe3`](https://github.com/swordev/dreamkit/commit/52effe3bebe861f317a51bf3e5525708c6d04ddf) Thanks [@juanrgm](https://github.com/juanrgm)! - Fix response headers
+
 ## 0.0.13
 
 ### Patch Changes
