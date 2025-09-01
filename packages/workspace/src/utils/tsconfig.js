@@ -3,14 +3,16 @@
  * @param {import("./../index.js").Package} pkg
  * @param {{ fileName?: string, exclude?: string[] }} [options]
  */
+import { join, relative } from "path";
 import { defineTSConfig } from "pkg-types";
 
 /**
  * @param {Parameters<typeof import("./../index.js").getTSConfigReferences>[0]} pkg
- * @param {Parameters<typeof import("./../index.js").getTSConfigReferences>[1]} [options]
+ * @param {Parameters<typeof import("./../index.js").getTSConfigReferences>[1]} packages
+ * @param {Parameters<typeof import("./../index.js").getTSConfigReferences>[2]} [options]
  */
 
-export function getTSConfigReferences(pkg, options) {
+export function getTSConfigReferences(pkg, packages, options) {
   const deps = {
     ...pkg.manifest.dependencies,
     ...pkg.manifest.devDependencies,
@@ -20,9 +22,17 @@ export function getTSConfigReferences(pkg, options) {
   return Object.entries(deps)
     .filter(([name, ver]) => ver === "workspace:*")
     .filter(([name]) => !options?.exclude || !options.exclude.includes(name))
-    .map(([name]) => ({
-      path: `../${name.split("/").pop()}/${fileName}`,
-    }));
+    .map(([name]) => {
+      const depPkg = packages.find((pkg) => pkg.name === name);
+
+      if (!depPkg)
+        throw new Error(`Workspace package (${name}) not found in ${pkg.name}`);
+
+      const absPath = join(depPkg.dir, fileName);
+      const path = relative(pkg.dir, absPath).replaceAll("\\", "/");
+
+      return { path };
+    });
 }
 
 /**
@@ -70,7 +80,7 @@ export function createTSConfigFiles(options) {
       ...options.base,
     });
     files["tsconfig.build.json"] = defineTSConfig({
-      references: getTSConfigReferences(pkg, {
+      references: getTSConfigReferences(pkg, packages, {
         exclude: ["@dreamkit/tsconfig"],
       }),
       extends: ["@dreamkit/tsconfig/build.json", ...extendsValue],

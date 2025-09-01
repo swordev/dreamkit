@@ -37,6 +37,7 @@ export type WorkspaceHandler = (data: {
 
 export declare const getTSConfigReferences: (
   pkg: Package,
+  packages: Package[],
   options?: {
     fileName?: string;
     exclude?: string[];
