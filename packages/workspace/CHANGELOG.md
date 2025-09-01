@@ -1,5 +1,11 @@
 # @dreamkit/workspace
 
+## 0.1.2
+
+### Patch Changes
+
+- [`bc4f826`](https://github.com/swordev/dreamkit/commit/bc4f826aa3b83c837b1237175a5c5599244bad87) Thanks [@juanrgm](https://github.com/juanrgm)! - Update dependencies
+
 ## 0.1.1
 
 ### Patch Changes

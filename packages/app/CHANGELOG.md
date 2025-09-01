@@ -1,5 +1,13 @@
 # @dreamkit/app
 
+## 0.0.15
+
+### Patch Changes
+
+- [`0032f92`](https://github.com/swordev/dreamkit/commit/0032f92ddb84f78964974ed1109711848de44f7d) Thanks [@juanrgm](https://github.com/juanrgm)! - Register sessions
+
+- [`bc4f826`](https://github.com/swordev/dreamkit/commit/bc4f826aa3b83c837b1237175a5c5599244bad87) Thanks [@juanrgm](https://github.com/juanrgm)! - Update dependencies
+
 ## 0.0.14
 
 ### Patch Changes
