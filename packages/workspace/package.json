@@ -32,6 +32,6 @@
     "pkg-types": "^2.3.0"
   },
   "devDependencies": {
-    "@types/node": "^22.15.27"
+    "@types/node": "^24.3.0"
   }
 }

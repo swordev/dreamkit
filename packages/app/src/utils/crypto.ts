@@ -1,5 +1,5 @@
 // https://medium.com/@tony.infisical/guide-to-web-crypto-api-for-encryption-decryption-1a2c698ebc25
-import { fromBase64, toBase64 } from "./buffer.js";
+import { fromBase64, toArrayBuffer, toBase64 } from "./buffer.js";
 
 export const algorithm = {
   name: "AES-GCM",
@@ -7,7 +7,9 @@ export const algorithm = {
 };
 
 export function random(length: number): string {
-  return toBase64(crypto.getRandomValues(new Uint8Array(length)));
+  return toBase64(
+    toArrayBuffer(crypto.getRandomValues(new Uint8Array(length))),
+  );
 }
 
 export function generateIv(): string {
@@ -21,7 +23,9 @@ export function generateKey(): string {
 export function parseSecrets(
   ...input: (string | ArrayBuffer)[]
 ): ArrayBuffer[] {
-  return input.map((v) => (typeof v === "string" ? fromBase64(v) : v));
+  return input.map((v) =>
+    typeof v === "string" ? toArrayBuffer(fromBase64(v)) : v,
+  );
 }
 
 export async function encrypt(

@@ -31,14 +31,14 @@
   "dependencies": {
     "@astrojs/check": "^0.9.4",
     "@astrojs/solid-js": "^5.1.0",
-    "@astrojs/starlight": "^0.34.3",
+    "@astrojs/starlight": "^0.35.2",
     "@stackblitz/sdk": "^1.11.0",
-    "astro": "^5.8.1",
-    "better-sqlite3": "^11.10.0",
+    "astro": "^5.13.5",
+    "better-sqlite3": "^12.2.0",
     "client-zip": "^2.5.0",
     "dreamkit": "workspace:*",
-    "solid-js": "^1.9.7",
-    "typescript": "^5.8.3"
+    "solid-js": "^1.9.9",
+    "typescript": "^5.9.2"
   },
   "devDependencies": {
     "@types/better-sqlite3": "^7.6.13"
