@@ -11,6 +11,7 @@ import {
   isService,
   ServiceConstructor,
 } from "./builders/ServiceBuilder.js";
+import { Session, SessionConstructor } from "./builders/SessionBuilder.js";
 import { isSettings, SettingsConstructor } from "./builders/SettingsBuilder.js";
 import { AppContext } from "./contexts/AppContext.js";
 import { RequestContext } from "./contexts/RequestContext.js";
@@ -289,6 +290,14 @@ export class App {
       .register(ResponseHeaders, { value: new ResponseHeaders() })
       .register(RequestUrl, {
         value: new RequestUrl(request.url, `http://${host}`),
+      })
+      .register(Session, {
+        useFactory: (ctx, Session) => {
+          const sessionHandler = ctx.resolve(SessionHandler);
+          const data = sessionHandler.get(Session as SessionConstructor);
+          if (!data) return;
+          return new (Session as SessionConstructor)(data);
+        },
       });
     if (this.sessionHandler)
       requestContext.register(SessionHandler, {
