@@ -1,5 +1,11 @@
 # @dreamkit/workspace
 
+## 0.1.3
+
+### Patch Changes
+
+- [`5f06fba`](https://github.com/swordev/dreamkit/commit/5f06fba8501e59554de3e70652d9ff23f9a2820c) Thanks [@juanrgm](https://github.com/juanrgm)! - Fix tsconfig references
+
 ## 0.1.2
 
 ### Patch Changes
