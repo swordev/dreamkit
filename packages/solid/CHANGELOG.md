@@ -1,5 +1,15 @@
 # @dreamkit/solid
 
+## 0.0.19
+
+### Patch Changes
+
+- [`1f43c84`](https://github.com/swordev/dreamkit/commit/1f43c84d3ae451a1f49d0764e06e217368bd5582) Thanks [@juanrgm](https://github.com/juanrgm)! - Drop internal resolution
+
+- Updated dependencies [[`fc163f3`](https://github.com/swordev/dreamkit/commit/fc163f310e7a85f4a346955591c480e86c3c9f8a), [`25b78d5`](https://github.com/swordev/dreamkit/commit/25b78d50dc9aea8b7247c14932e870e1b26856bd)]:
+  - @dreamkit/ioc@0.3.0
+  - @dreamkit/app@0.0.16
+
 ## 0.0.18
 
 ### Patch Changes
