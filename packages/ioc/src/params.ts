@@ -149,6 +149,15 @@ export class IocParamBuilder<T extends IocParamData = IocParamData> {
       ...options,
     });
   }
+  protected getKey(): IocRegistryKey {
+    return (
+      "key" in this.options ? this.options.key : this.options.value
+    ) as IocRegistryKey;
+  }
+  protected isConfigurable(): boolean {
+    for (const _ in this.options.configurable) return true;
+    return false;
+  }
   key(value: IocRegistryKey): this {
     return this.clone({ key: value }) as any;
   }

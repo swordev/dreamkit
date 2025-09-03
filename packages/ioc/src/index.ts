@@ -4,7 +4,8 @@ export {
   createIocClass,
   type InferParamsUserConfig,
 } from "./class.js";
-export { IocContext, IocError, context } from "./context.js";
+export { IocContext, context } from "./context.js";
+export { IocError } from "./error.js";
 export { IocFunc } from "./func.js";
 export {
   normalizeIocParams,

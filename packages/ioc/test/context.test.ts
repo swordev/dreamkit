@@ -167,6 +167,33 @@ describe("IocContext.resolve", () => {
     class B {}
     expect(() => context.resolve(B)).toThrowError();
   });
+
+  it("throw error due to sync", () => {
+    const ctx = context.fork();
+    class A {}
+    ctx.register(A, {
+      async useFactory() {
+        return new A();
+      },
+    });
+    expect(() => context.resolve(A)).toThrowError();
+  });
+
+  it("resolve async factory", async () => {
+    class A {
+      constructor(readonly value: number) {}
+    }
+
+    const a = await context
+      .fork()
+      .register(A, {
+        async useFactory() {
+          return new A(1);
+        },
+      })
+      .resolveAsync(A);
+    expect(a.value).toBe(1);
+  });
   it("resolve to value", () => {
     const ctx = context.fork();
     class A {}

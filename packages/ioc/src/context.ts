@@ -1,11 +1,13 @@
-import { IocClass, isIocClass, type UnsafeIocClass } from "./class.js";
-import { IocFunc, isIocFunc, type UnsafeIocFunc } from "./func.js";
+import { IocClass, isIocClass } from "./class.js";
+import { createKeyError, IocError } from "./error.js";
+import { IocFunc, isIocFunc } from "./func.js";
 import {
-  type InferIocParams,
-  type IocParams,
-  type IocParamsUserConfig,
   normalizeIocParams,
   isIocObject,
+  IocParamBuilder,
+  type IocParamsConfig,
+  type IocParamsUserConfig,
+  type IocParams,
 } from "./params.js";
 import {
   IocRegistry,
@@ -13,6 +15,7 @@ import {
   type IocRegistryKey,
   type IocRegistryValue,
 } from "./registry.js";
+import { ensureSync } from "./utils/async.js";
 import { iocKind, KindMap } from "./utils/kind.js";
 import { capitalize } from "./utils/string.js";
 import type { AbstractConstructor, Constructor } from "./utils/ts.js";
@@ -28,8 +31,6 @@ export type IocContextConstructor = Constructor<
   [IocContextOptions],
   IocContext
 >;
-
-export class IocError extends Error {}
 
 const fallbackKey = Symbol("fallback");
 
@@ -108,64 +109,52 @@ export class IocContext {
       ...options,
     });
   }
-  resolveParamsFromObject<T extends UnsafeIocFunc | UnsafeIocClass>(
-    input: T,
-  ): InferIocParams<T> {
-    if (!isIocClass(input) && !isIocFunc(input))
-      throw new IocError(
-        `The input is not derived from IocBase/IocFunc: ${input}`,
-      );
-    const $constructor = input as IocClass | IocFunc;
-    const params = $constructor.$ioc.params;
-    const registry = $constructor.$ioc.registry;
-    return this.resolveParams(params, registry, input) as any;
+  protected createParam(
+    param: IocParamBuilder,
+    options: {
+      parent?: unknown;
+      context?: IocContext;
+      async?: boolean;
+    } = {},
+  ) {
+    const { parent } = options;
+    const context = options.context ?? this;
+    return param["isConfigurable"]()
+      ? this.createConfigurableParam(param, { parent, context })
+      : context.dynamicResolve(
+          param["getKey"](),
+          { parent, optional: param.options.optional },
+          { async: options.async },
+        );
   }
-  resolveParams<T extends IocParamsUserConfig>(
-    input: T,
-    registry?: IocRegistryData,
-    parent?: UnsafeIocFunc | UnsafeIocClass,
-  ): IocParams<T> {
-    const params: IocParams<T> = {} as any;
-    const config = normalizeIocParams(input);
-    const self = registry ? this.fork().register(registry) : this;
-    for (const name in config) {
-      const paramConfig = config[name];
-      const registerKey = (
-        "key" in paramConfig.options
-          ? paramConfig.options.key
-          : paramConfig.options.value
-      ) as IocRegistryKey;
-      const configurable = !!Object.keys(paramConfig.options.configurable || {})
-        .length;
-      if (configurable) {
-        (params as any)[name] = (
-          configurableParams: Record<string, unknown>,
-        ) => {
-          if (!isIocObject(registerKey))
-            throw new Error(`Register key is not a IOC object`);
-          const ctx = self.fork();
-          for (const paramName in configurableParams) {
-            const paramKey =
-              registerKey.$ioc.params[paramName] ??
-              registerKey.$ioc.params[capitalize(paramName)];
-            if (!paramKey)
-              throw new Error(`Configurable param key not found: ${paramName}`);
-            const paramValue = configurableParams[paramName];
-            ctx.register(paramKey, { value: paramValue });
-          }
-          return ctx.resolve(registerKey, {
-            parent,
-            optional: paramConfig.options.optional as true,
-          });
-        };
-      } else {
-        (params as any)[name] = self.resolve(registerKey, {
-          parent,
-          optional: paramConfig.options.optional as true,
-        });
+  protected createConfigurableParam(
+    param: IocParamBuilder,
+    options: {
+      context: IocContext;
+      parent?: unknown;
+    },
+  ) {
+    const registerKey = param["getKey"]();
+    return (configurableParams: Record<string, unknown>) => {
+      if (!isIocObject(registerKey))
+        throw new IocError(`Register key is not a IOC object`);
+      const ctx = options.context.fork();
+      for (const paramName in configurableParams) {
+        const paramKey =
+          registerKey.$ioc.params[paramName] ??
+          registerKey.$ioc.params[capitalize(paramName)];
+        if (!paramKey)
+          throw new IocError(`Configurable param key not found: ${paramName}`);
+        const paramValue = configurableParams[paramName];
+        ctx.register(paramKey, { value: paramValue });
       }
-    }
-    return params;
+      return ensureSync(
+        ctx.resolve(registerKey, {
+          parent: options.parent,
+          optional: param.options.optional as true,
+        }),
+      );
+    };
   }
   protected getListeners(input: IocRegistryKey) {
     const value = this.listeners.get(input);
@@ -212,62 +201,19 @@ export class IocContext {
   undef() {
     return undefinedValueKey;
   }
-  protected resolveValue(
-    input: IocRegistryKey,
-    data: IocRegistryValue<IocRegistryKey, IocContext>,
-    parent?: unknown,
-  ): { value: unknown } | undefined {
-    let value: any;
-    const resolve =
-      !data.onlyIf ||
-      (typeof data.onlyIf === "function"
-        ? data.onlyIf(this.fork().register(input, { value: ignoreValueKey }))
-        : data.onlyIf.every((key) => this.find(key)));
 
-    if (resolve) {
-      if (data.value === ignoreValueKey) {
-        return;
-      } else if (data.value !== undefined) {
-        return { value: data.value };
-      } else if (data.useFactory) {
-        value = data.useFactory(
-          this.fork().register(input, { value: ignoreValueKey }),
-          input,
-          parent,
-        );
-      } else if (data.useClass) {
-        value = this.fork()
-          .register(input, { value: ignoreValueKey })
-          .resolve(data.useClass, { parent });
-      }
-      if (value === ignoreValueKey) {
-        return;
-      } else if (value === undefinedValueKey) {
-        return { value: undefined };
-      } else if (value !== undefined) {
-        if (data.value === undefined && data.singleton) data.value = value;
-        return { value };
-      }
-    }
+  protected shouldBeResolved(
+    input: any,
+    key: IocRegistryValue<IocRegistryKey, IocContext>,
+  ) {
+    return (
+      !key.onlyIf ||
+      (typeof key.onlyIf === "function"
+        ? key.onlyIf(this.fork().register(input, { value: ignoreValueKey }))
+        : key.onlyIf.every((key) => this.find(key)))
+    );
   }
-  resolveKey(
-    input: IocRegistryKey,
-    parent?: unknown,
-  ): { value: unknown } | undefined {
-    const data = this.find(input);
-    if (data !== undefined) {
-      return this.resolveValue(input, data, parent);
-    }
-  }
-  protected createKeyError(input: IocRegistryKey) {
-    if (typeof input === "symbol") {
-      return new IocError(`Symbol is not registered: ${input.toString()}`);
-    } else if (typeof input === "function") {
-      return new IocError(`Class is not registered: ${input.name}`);
-    } else {
-      return new IocError(`Unknown object is not registered: ${input}`);
-    }
-  }
+
   on<T extends AbstractConstructor>(
     constructor: T,
     listener: (value: InstanceType<T>) => void,
@@ -292,6 +238,126 @@ export class IocContext {
       if (listeners && index !== -1) listeners.splice(index, 1);
     }
     return this;
+  }
+  protected callListeners(key: any, value: any) {
+    const listeners = this.findListeners(key);
+    for (const listener of listeners) {
+      const response = listener(value);
+      if (response === undefinedValueKey) return;
+      if (response !== undefined) return response;
+    }
+    return value;
+  }
+
+  protected resolveWithRegistryData(
+    input: any,
+    data: IocRegistryValue,
+    options: {
+      parent?: any;
+      async?: boolean;
+    },
+  ) {
+    const { parent } = options;
+    if (data.value !== undefined) {
+      return data.value;
+    } else if (data.useFactory) {
+      return data.useFactory(
+        this.fork().register(input, { value: ignoreValueKey }),
+        input as any,
+        parent,
+      );
+    } else if (data.useClass) {
+      const ctx = this.fork().register(input as any, { value: ignoreValueKey });
+      return ctx.dynamicResolve(
+        data.useClass,
+        { parent },
+        { async: options.async },
+      );
+    }
+  }
+
+  protected tryParseResolvedValue(
+    input: any,
+    key: IocRegistryValue,
+    value: unknown,
+  ) {
+    if (value === ignoreValueKey) {
+      return { value: undefined };
+    } else if (value === undefinedValueKey) {
+      return { value: this.callListeners(input, undefined) };
+    } else if (value !== undefined) {
+      if (key.value === undefined && key.singleton) key.value = value;
+      return { value: this.callListeners(input, value) };
+    }
+  }
+
+  protected tryParseIocObject(
+    input: unknown,
+    options: ResolveOptions = {},
+  ):
+    | {
+        params: IocParamsConfig;
+        paramOptions: { context: IocContext; parent: unknown };
+        create: (params: Record<string, any>) => any;
+      }
+    | undefined {
+    let iocObject!: IocClass | IocFunc;
+    let create!: (params: any) => any;
+
+    if (!options.abstract && isIocClass(input)) {
+      iocObject = input;
+      create = (params: any) => new input(params);
+    } else if (!options.abstract && isIocFunc(input)) {
+      iocObject = input;
+      create = (params: any) => input.bind(params);
+    } else if (!options.optional) {
+      throw createKeyError(input as IocRegistryKey);
+    } else {
+      return;
+    }
+
+    const { onResolveIocObject } = this.options;
+    const context = iocObject.$ioc.registry
+      ? this.fork().register(iocObject.$ioc.registry)
+      : this;
+    if (!onResolveIocObject || onResolveIocObject(input)) {
+      return {
+        paramOptions: { context, parent: input },
+        params: normalizeIocParams(iocObject.$ioc.params),
+        create,
+      };
+    }
+  }
+
+  protected dynamicResolve(
+    input: IocRegistryKey,
+    options: ResolveOptions = {},
+    dynamicOptions: {
+      async?: boolean;
+    } = {},
+  ) {
+    return dynamicOptions.async
+      ? this.resolveAsync(input, options)
+      : this.resolve(input, options);
+  }
+  resolveParams<T extends IocParamsUserConfig>(input: T): IocParams<T> {
+    const config = normalizeIocParams(input);
+    const params: Record<string, any> = {};
+    for (const name in config) {
+      params[name] = ensureSync(this.createParam(config[name]));
+    }
+    return params as any;
+  }
+
+  async resolveAsyncParams<T extends IocParamsUserConfig>(
+    input: T,
+  ): Promise<IocParams<T>> {
+    const config = normalizeIocParams(input);
+    const params: Record<string, any> = {};
+    for (const name in config) {
+      params[name] = await this.createParam(config[name]);
+    }
+    return params as any;
   }
   resolve<T extends AbstractConstructor>(
     constructor: T,
@@ -321,30 +387,78 @@ export class IocContext {
     input: Constructor | ((...args: any[]) => any) | IocRegistryKey,
     options: ResolveOptions = {},
   ) {
-    const { onResolveIocObject } = this.options;
-    const result = this.resolveKey(input as any, options.parent);
-    if (result) {
-      const listeners = this.findListeners(input as any);
-      for (const listener of listeners) {
-        const response = listener(result.value);
-        if (response === undefinedValueKey) return;
-        if (response !== undefined) return response;
-      }
+    const data = this.find(input as any);
+
+    if (data && this.shouldBeResolved(input, data)) {
+      const value = ensureSync(
+        this.resolveWithRegistryData(input, data, { parent: options.parent }),
+      );
+      const result = this.tryParseResolvedValue(input, data, value);
+      if (result) return result.value;
     }
-    if (result) {
-      return result.value;
-    } else if (!options.abstract && isIocClass(input)) {
-      if (!onResolveIocObject || onResolveIocObject(input)) {
-        const params = this.resolveParamsFromObject(input);
-        return new input(params);
+
+    const object = this.tryParseIocObject(input, options);
+
+    if (object) {
+      const params: Record<string, any> = {};
+      for (const name in object.params) {
+        params[name] = ensureSync(
+          this.createParam(object.params[name], object.paramOptions),
+        );
       }
-    } else if (!options.abstract && isIocFunc(input)) {
-      if (!onResolveIocObject || onResolveIocObject(input)) {
-        const params = this.resolveParamsFromObject(input);
-        return input.bind(params as any);
+      return object.create(params);
+    }
+  }
+  resolveAsync<T extends AbstractConstructor>(
+    constructor: T,
+    options?: RequiredResolveOptions,
+  ): Promise<InstanceType<T>>;
+  resolveAsync<T extends AbstractConstructor>(
+    constructor: T,
+    options: OptionalResolveOptions,
+  ): Promise<InstanceType<T> | undefined>;
+  resolveAsync<T extends (...args: any[]) => any>(
+    func: T,
+    options?: RequiredResolveOptions,
+  ): Promise<(...args: Parameters<T>) => ReturnType<T>>;
+  resolveAsync<T extends (...args: any[]) => any>(
+    func: T,
+    options: OptionalResolveOptions,
+  ): Promise<(...args: Parameters<T>) => ReturnType<T> | undefined>;
+  resolveAsync<T = unknown>(
+    key: Exclude<IocRegistryKey, Constructor>,
+    options?: RequiredResolveOptions,
+  ): Promise<T>;
+  resolveAsync<T = unknown>(
+    key: Exclude<IocRegistryKey, Constructor>,
+    options: OptionalResolveOptions,
+  ): Promise<T>;
+  async resolveAsync(
+    input: Constructor | ((...args: any[]) => any) | IocRegistryKey,
+    options: ResolveOptions = {},
+  ) {
+    const data = this.find(input as any);
+
+    if (data && this.shouldBeResolved(input, data)) {
+      const value = await this.resolveWithRegistryData(input, data, {
+        parent: options.parent,
+        async: true,
+      });
+      const result = this.tryParseResolvedValue(input, data, value);
+      if (result) return result.value;
+    }
+
+    const object = this.tryParseIocObject(input, options);
+
+    if (object) {
+      const params: Record<string, any> = {};
+      for (const name in object.params) {
+        params[name] = await this.createParam(object.params[name], {
+          ...object.paramOptions,
+          async: true,
+        });
       }
-    } else if (!options.optional) {
-      throw this.createKeyError(input as IocRegistryKey);
+      return object.create(params);
     }
   }
 }
