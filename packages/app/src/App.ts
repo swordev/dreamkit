@@ -292,9 +292,9 @@ export class App {
         value: new RequestUrl(request.url, `http://${host}`),
       })
       .register(Session, {
-        useFactory: (ctx, Session) => {
+        useFactory: async (ctx, Session) => {
           const sessionHandler = ctx.resolve(SessionHandler);
-          const data = sessionHandler.get(Session as SessionConstructor);
+          const data = await sessionHandler.get(Session as SessionConstructor);
           if (!data) return;
           return new (Session as SessionConstructor)(data);
         },
