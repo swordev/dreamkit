@@ -282,7 +282,7 @@ export class IocContext {
     value: unknown,
   ) {
     if (value === ignoreValueKey) {
-      return { value: undefined };
+      return;
     } else if (value === undefinedValueKey) {
       return { value: this.callListeners(input, undefined) };
     } else if (value !== undefined) {

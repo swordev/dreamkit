@@ -303,6 +303,17 @@ describe("IocContext.resolve", () => {
         .resolve(Counter),
     ).toBeInstanceOf(Counter);
   });
+
+  it("ignore the key", () => {
+    class Client extends IocClass({}) {}
+    class NodeClient extends Client {}
+    expect(
+      context
+        .fork()
+        .register(Client, { useFactory: (ctx) => ctx.resolve(NodeClient) })
+        .resolve(Client),
+    ).toBeInstanceOf(NodeClient);
+  });
 });
 
 describe("IocContext.resolveParams", () => {
