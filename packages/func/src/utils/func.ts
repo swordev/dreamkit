@@ -1,5 +1,5 @@
 import { FuncOptions } from "../types.js";
-import { context, IocContext } from "@dreamkit/ioc";
+import { IocContext } from "@dreamkit/ioc";
 import { kindOf } from "@dreamkit/kind";
 import { ObjectType, ObjectTypeProps, s } from "@dreamkit/schema";
 
@@ -19,19 +19,6 @@ export function cloneFuncOptions(prev: FuncOptions, next: FuncOptions) {
     },
     register: [...(prev.register || []), ...(next.register || [])],
   };
-}
-
-export function resolveFuncSelfContext(
-  options: FuncOptions,
-  input: { self: any },
-): IocContext | undefined {
-  if (options.self) {
-    if (kindOf(input.self, IocContext)) {
-      return input.self;
-    } else if (input.self === globalThis) {
-      return context;
-    }
-  }
 }
 
 export function resolveFuncParams(

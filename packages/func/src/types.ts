@@ -31,16 +31,12 @@ export type FuncData<
 
 export type FuncOptions<T extends FuncData = FuncData> = T & {
   register?: IocRegistryData;
-  context?: (options: FuncOptions) => IocContext;
   onCreate?: (func: Func) => Func;
-  onCall?: (
-    options: FuncCallOptions,
-    data: {
-      context: IocContext;
-      callback: (this: any, params: any) => any;
-      params: Record<string, any>;
-    },
-  ) => any;
+  onCall?: (data: {
+    callback: (this: any, params: any) => any;
+    params: Record<string, any>;
+    options: FuncCallOptions;
+  }) => any;
   cache?: { key?: string };
   static?: Record<string, any>;
 };

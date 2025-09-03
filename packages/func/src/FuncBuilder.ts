@@ -9,11 +9,7 @@ import type {
   InferFuncParams,
   MergeFuncData,
 } from "./types.js";
-import {
-  cloneFuncOptions,
-  resolveFuncParams,
-  resolveFuncSelfContext,
-} from "./utils/func.js";
+import { cloneFuncOptions, resolveFuncParams } from "./utils/func.js";
 import { kindFunc } from "./utils/kind.js";
 import {
   IocFunc,
@@ -78,21 +74,16 @@ export class FuncBuilder<T extends FuncData = FuncData> {
       });
       const paramsType = $this.options.params as ObjectType | undefined;
       paramsType?.assert(params);
-      const context = resolveFuncSelfContext($this.options, {
-        self: $this.options.context?.($this.options) || this,
-      });
-      if (context && $this.options.onCall) {
-        return $this.options.onCall($this.options as FuncOptions<any>, {
-          context,
+      if ($this.options.onCall) {
+        return $this.options.onCall({
           callback: body,
           params,
+          options: $this.options as FuncOptions<any>,
         });
+      } else {
+        const $cb: (params: any) => any = body.bind(this as any);
+        return $cb(params);
       }
-      const self: any = context
-        ? context.resolveParams($this.options.self || {})
-        : this;
-      const $cb = body.bind(self) as any;
-      return $cb(params);
     });
     const meta: FuncMeta = {
       title: $this.options.title,
