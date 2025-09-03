@@ -1,5 +1,14 @@
 # @dreamkit/func
 
+## 0.0.9
+
+### Patch Changes
+
+- [`1f43c84`](https://github.com/swordev/dreamkit/commit/1f43c84d3ae451a1f49d0764e06e217368bd5582) Thanks [@juanrgm](https://github.com/juanrgm)! - Drop internal resolution
+
+- Updated dependencies [[`fc163f3`](https://github.com/swordev/dreamkit/commit/fc163f310e7a85f4a346955591c480e86c3c9f8a)]:
+  - @dreamkit/ioc@0.3.0
+
 ## 0.0.8
 
 ### Patch Changes

@@ -1,5 +1,15 @@
 # @dreamkit/dev
 
+## 0.0.24
+
+### Patch Changes
+
+- [`1f43c84`](https://github.com/swordev/dreamkit/commit/1f43c84d3ae451a1f49d0764e06e217368bd5582) Thanks [@juanrgm](https://github.com/juanrgm)! - Drop internal resolution
+
+- Updated dependencies [[`25b78d5`](https://github.com/swordev/dreamkit/commit/25b78d50dc9aea8b7247c14932e870e1b26856bd)]:
+  - @dreamkit/app@0.0.16
+  - @dreamkit/node-app@0.0.11
+
 ## 0.0.23
 
 ### Patch Changes

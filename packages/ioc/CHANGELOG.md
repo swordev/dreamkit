@@ -1,5 +1,11 @@
 # @dreamkit/ioc
 
+## 0.3.0
+
+### Minor Changes
+
+- [`fc163f3`](https://github.com/swordev/dreamkit/commit/fc163f310e7a85f4a346955591c480e86c3c9f8a) Thanks [@juanrgm](https://github.com/juanrgm)! - Add resolve async
+
 ## 0.2.1
 
 ### Patch Changes
