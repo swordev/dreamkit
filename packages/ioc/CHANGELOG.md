@@ -1,5 +1,11 @@
 # @dreamkit/ioc
 
+## 0.3.1
+
+### Patch Changes
+
+- [`2402fc4`](https://github.com/swordev/dreamkit/commit/2402fc4c5b3f2dfc696da048d873d146dcf9e1a6) Thanks [@juanrgm](https://github.com/juanrgm)! - Fix resolve with factory
+
 ## 0.3.0
 
 ### Minor Changes
