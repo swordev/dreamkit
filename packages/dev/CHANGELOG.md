@@ -1,5 +1,15 @@
 # @dreamkit/dev
 
+## 0.0.26
+
+### Patch Changes
+
+- [`544d07e`](https://github.com/swordev/dreamkit/commit/544d07eb003d0a6a8b4ae6a7ef46ac9d1a14b627) Thanks [@juanrgm](https://github.com/juanrgm)! - Refactor prepare settings
+
+- Updated dependencies [[`544d07e`](https://github.com/swordev/dreamkit/commit/544d07eb003d0a6a8b4ae6a7ef46ac9d1a14b627)]:
+  - @dreamkit/app@0.0.18
+  - @dreamkit/node-app@0.0.13
+
 ## 0.0.25
 
 ### Patch Changes

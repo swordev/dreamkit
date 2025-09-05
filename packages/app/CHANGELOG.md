@@ -1,5 +1,11 @@
 # @dreamkit/app
 
+## 0.0.18
+
+### Patch Changes
+
+- [`544d07e`](https://github.com/swordev/dreamkit/commit/544d07eb003d0a6a8b4ae6a7ef46ac9d1a14b627) Thanks [@juanrgm](https://github.com/juanrgm)! - Refactor prepare settings
+
 ## 0.0.17
 
 ### Patch Changes

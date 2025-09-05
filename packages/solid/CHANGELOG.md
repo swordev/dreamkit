@@ -1,5 +1,14 @@
 # @dreamkit/solid
 
+## 0.0.21
+
+### Patch Changes
+
+- [`79e4a7b`](https://github.com/swordev/dreamkit/commit/79e4a7bbcd6b563a7fb9f9228ec4467a9b5666ef) Thanks [@juanrgm](https://github.com/juanrgm)! - Fix server api
+
+- Updated dependencies [[`544d07e`](https://github.com/swordev/dreamkit/commit/544d07eb003d0a6a8b4ae6a7ef46ac9d1a14b627)]:
+  - @dreamkit/app@0.0.18
+
 ## 0.0.20
 
 ### Patch Changes
