@@ -332,7 +332,8 @@ export class App {
     const options = constructor.options;
     let value = handler.get(constructor);
     if (options.optional && !options.generate && !value) return;
-    const generated = options.generate?.(value || {}) || {};
+    let generated: Record<string, any> = {};
+    if (options.generate) generated = options.generate(value || {}) || {};
     if (Object.keys(generated).length) {
       value = merge({ ...value }, generated);
       await handler.set(constructor, value);
@@ -341,13 +342,16 @@ export class App {
   }
 
   protected async registerAllSettings() {
-    const settingsHandler = this.seettingsHandler();
+    const settingsHandler = this.resolveSettingsHandler();
     if (settingsHandler) {
-      settingsHandler.autoSave = false;
-      await settingsHandler.load();
+      try {
+        settingsHandler.autoSave = false;
+        await settingsHandler.load();
+        for (const st of this.settings) await this.registerSettings(st);
+      } finally {
+        settingsHandler.autoSave = true;
+      }
     }
-    for (const st of this.settings) await this.registerSettings(st);
-    return await settingsHandler?.save();
   }
 
   protected async registerSettings(constructor: SettingsConstructor) {
@@ -365,17 +369,22 @@ export class App {
     this.context.unregister(constructor);
   }
 
-  protected seettingsHandler(): SettingsHandler | undefined {
+  protected resolveSettingsHandler(): SettingsHandler | undefined {
     return this.context.resolve(SettingsHandler, {
       optional: true,
       abstract: true,
     });
   }
+  protected async prepare() {
+    await this.registerAllSettings();
+    const settingsHandler = await this.resolveSettingsHandler()?.save();
+    return { settingsHandler };
+  }
   async start() {
     log("starting app");
     if (this.started) throw new Error("App is already started");
+    await this.prepare();
     (this as any).started = true;
-    await this.registerAllSettings();
     for (const item of this.services) await this.startService(item);
   }
 

@@ -14,5 +14,6 @@ export async function generateSettings(
   await $app.add(
     [...server.app.settings, server.app.settingsHandler].filter(Boolean),
   );
-  return (await $app["registerAllSettings"]()) || {};
+  const result = await $app["prepare"]();
+  return result.settingsHandler || {};
 }
