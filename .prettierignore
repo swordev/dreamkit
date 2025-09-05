@@ -1,5 +1,6 @@
 .pnpm-store
 *.tsbuildinfo
+app.config.timestamp_*.js
 packages/*/dist
 packages/*/lib
 pnpm-lock.yaml
