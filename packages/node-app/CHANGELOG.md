@@ -1,5 +1,12 @@
 # @dreamkit/node-app
 
+## 0.0.13
+
+### Patch Changes
+
+- Updated dependencies [[`544d07e`](https://github.com/swordev/dreamkit/commit/544d07eb003d0a6a8b4ae6a7ef46ac9d1a14b627)]:
+  - @dreamkit/app@0.0.18
+
 ## 0.0.12
 
 ### Patch Changes
