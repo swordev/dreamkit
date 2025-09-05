@@ -2,12 +2,12 @@ import { $api, App, ResponseHeaders } from "@dreamkit/app";
 import { getRequestEvent } from "solid-js/web";
 
 export const $serverApi = $api["clone"]({
-  onCall: async ({ callback, params }) => {
+  onCall: async ({ callback, params, options }) => {
     const event = getRequestEvent()!;
-    const $callback = await App.instance()
+    const self = await App.instance()
       .createRequestContext(event.request)
       .register(ResponseHeaders, { value: event.response.headers })
-      .resolveAsync(callback);
-    return $callback(params);
+      .resolveAsyncParams(options.self);
+    return callback.bind(self)(params);
   },
 });
