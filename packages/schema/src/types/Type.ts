@@ -85,6 +85,9 @@ export abstract class Type<
     self["context"] = context;
     return self;
   }
+  path(): string[] {
+    return this.context?.path ?? [];
+  }
   title(value: string | undefined): this {
     return this.clone({ title: value } as any);
   }
