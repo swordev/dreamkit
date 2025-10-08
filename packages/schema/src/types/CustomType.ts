@@ -1,7 +1,7 @@
 import * as $ from "./utils.js";
 
 export type SelfCustomTypeOptions<T> = {
-  assert: (input: any) => input is T;
+  assert?: (input: any) => input is T;
   onCast?: (input: any) => any;
   onRegex?: () => RegExp;
   onJsonSchema?: () => $.JSONSchema7;
@@ -34,7 +34,7 @@ export class CustomType<
   protected override onValidate(value: unknown, context: $.TypeContext) {
     const val = this.validation(value, context);
     if (!val.next()) return val.errors;
-    if (!this.options.assert(value))
+    if (this.options.assert && !this.options.assert(value))
       return val.addTypeError(this.options.expected);
     return val.end();
   }

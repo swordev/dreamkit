@@ -30,4 +30,8 @@ describe("custom.test", () => {
     expect(arrayBuffer.test(new ArrayBuffer(8))).toBe(true);
     expect(arrayBuffer.test(null)).toBe(true);
   });
+  it("without assert", () => {
+    const special = s.custom<{ value: string }>();
+    expect(special.test(1)).toBe(true);
+  });
 });

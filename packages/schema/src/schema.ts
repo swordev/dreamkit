@@ -44,7 +44,7 @@ export class Schema {
     return new FileType(this.typeOptions);
   }
   custom<T>(
-    assert: SelfCustomTypeOptions<T>["assert"],
+    assert?: SelfCustomTypeOptions<T>["assert"],
     options?: Omit<SelfCustomTypeOptions<T>, "assert">,
   ): CustomType<T>;
   custom<T>(options: SelfCustomTypeOptions<T>): CustomType<T>;
@@ -55,6 +55,9 @@ export class Schema {
         Omit<SelfCustomTypeOptions<T>, "assert">,
       ];
       return new CustomType<T>({ assert, ...options });
+    } else if (args.length === 2) {
+      const [, options] = args as [any, SelfCustomTypeOptions<T>];
+      return new CustomType<T>(options);
     } else {
       const [options] = args as [SelfCustomTypeOptions<T>];
       return new CustomType<T>(options);
