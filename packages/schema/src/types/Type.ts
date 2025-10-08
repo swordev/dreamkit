@@ -17,7 +17,7 @@ export type TypeConstructor<T extends Type = Type> = {
 
 export type TypeOptions<O = {}> = TypeFlag.Options & {
   title?: string;
-  refine?: (input: any) => boolean;
+  refine?: (input: any) => boolean | TypeAssertErrorData[];
 } & O;
 
 export type Context = {
@@ -101,7 +101,9 @@ export abstract class Type<
   required(): Type<D, TypeFlag.Required<F>> {
     return this.clone({ nullable: undefined, optional: undefined } as any);
   }
-  refine(refine: (input: InferType<this>) => boolean): this {
+  refine(
+    refine: (input: InferType<this>) => boolean | TypeAssertErrorData[],
+  ): this {
     return this.clone({ refine } as any);
   }
   protected validation<C extends string>(input: unknown, context: TypeContext) {

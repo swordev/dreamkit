@@ -54,7 +54,7 @@ export class TypeValidation<C extends string = any> {
     return this.errors;
   }
   end() {
-    if (this.type.options.refine) {
+    if (this.type.options.refine && !this.errors.length) {
       const result = this.type.options.refine(this.value);
       if (Array.isArray(result)) return result;
       if (!result) return this.add("refine" as any);

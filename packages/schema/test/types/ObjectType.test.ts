@@ -341,3 +341,58 @@ describe("object.prop", () => {
     expectTypeOf(o.prop.address.id()).toEqualTypeOf<NumberType>();
   });
 });
+
+describe("object.refine", () => {
+  it("check other value", () => {
+    const o = s
+      .object({
+        username: s.string(),
+        password: s.string(),
+        confirmPassword: s.string(),
+      })
+      .refine((input) => {
+        const path = o.prop.confirmPassword().path();
+        if (input.password !== input.confirmPassword)
+          return [{ path, code: "invalid" }];
+        return true;
+      });
+    expect(
+      o.validate({
+        username: "a",
+        password: "b",
+        confirmPassword: "c",
+      }),
+    ).toMatchObject([
+      {
+        path: o.prop.confirmPassword().path(),
+        code: "invalid",
+      },
+    ]);
+    expect(
+      o.validate({
+        username: "a",
+        password: "b",
+        confirmPassword: "b",
+      }),
+    ).toMatchObject([]);
+  });
+
+  it("execute if no errors", () => {
+    let executed = false;
+    const o = s
+      .object({
+        a: s.string(),
+        b: s.string(),
+      })
+      .refine(() => {
+        executed = true;
+        return true;
+      });
+
+    expect(o.test({ a: "a", b: "b" })).toBe(true);
+    expect(executed).toBe(true);
+    executed = false;
+    expect(o.test({ a: "a", b: 2 })).toBe(false);
+    expect(executed).toBe(false);
+  });
+});
