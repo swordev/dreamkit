@@ -1,6 +1,8 @@
+// @ts-check
 import { listPNPMPackagePaths } from "./pnpm.js";
 import { existsSync } from "fs";
-import { relative } from "path";
+import { readdir } from "fs/promises";
+import { join, relative } from "path";
 
 /**
  * @param {string} root
