@@ -11,7 +11,12 @@ import { readFile, writeFile } from "fs/promises";
 
 export async function formatWithConfig(source, options) {
   const cwd = options?.cwd ?? process.cwd();
-  const prettier = await import("prettier");
+  /** @type {(typeof import('prettier'))|undefined } */
+  let prettier;
+  try {
+    prettier = await import("prettier");
+  } catch (_) {}
+  if (!prettier) return source;
   const config = await prettier.resolveConfig(cwd, {
     useCache: true,
   });
