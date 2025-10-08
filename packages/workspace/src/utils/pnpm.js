@@ -1,3 +1,4 @@
+// @ts-check
 import { spawnSync } from "child_process";
 
 /**
