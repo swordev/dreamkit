@@ -1,5 +1,5 @@
 // @ts-check
-import { findPackageDirs } from "./utils/pkg.js";
+import { findPackageDirs } from "../utils/pkg.js";
 import { readdir, rm, rmdir } from "fs/promises";
 import { basename, join } from "path";
 

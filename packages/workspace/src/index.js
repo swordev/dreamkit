@@ -1,6 +1,6 @@
 // @ts-check
-export { clean } from "./clean.js";
-export { postinstall } from "./postinstall.js";
+export { clean } from "./actions/clean.js";
+export { postinstall } from "./actions/postinstall.js";
 export { defineConfig } from "./defineConfig.js";
 export {
   getTSConfigReferences,

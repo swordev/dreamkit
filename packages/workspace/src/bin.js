@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // @ts-check
-import { clean } from "./clean.js";
-import { postinstall } from "./postinstall.js";
+import { clean } from "./actions/clean.js";
+import { postinstall } from "./actions/postinstall.js";
 
 const [action, filter] = process.argv.slice(2);
 

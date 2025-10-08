@@ -4,16 +4,16 @@ import {
   tryReadFile,
   tryReadJSONFile,
   writeJSONFile,
-} from "./utils/fs.js";
-import { findPackageDirs } from "./utils/pkg.js";
+} from "../utils/fs.js";
+import { findPackageDirs } from "../utils/pkg.js";
 import { existsSync } from "fs";
 import { readdir, writeFile } from "fs/promises";
 import { basename, join } from "path";
 
-/** @return {Promise<import("./index.js").Package[]>} */
+/** @return {Promise<import("../index.js").Package[]>} */
 export async function findPackages() {
   const pkgDirs = await findPackageDirs(process.cwd());
-  /** @type {import("./index.js").Package[]} */
+  /** @type {import("../index.js").Package[]} */
   const packages = [];
   for (const dir of pkgDirs) {
     const folder = basename(dir);
@@ -79,7 +79,7 @@ export async function postinstall(inputFilter) {
   const packages = await findPackages();
 
   const workspacePath = join(process.cwd(), "workspace.mjs");
-  /** @type {import("./index.js").WorkspaceHandler|undefined} */
+  /** @type {import("../index.js").WorkspaceHandler|undefined} */
   let workspace;
   if (existsSync(workspacePath))
     workspace = (await import(`file://${workspacePath}`)).default;
