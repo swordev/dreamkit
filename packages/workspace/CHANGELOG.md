@@ -1,5 +1,21 @@
 # @dreamkit/workspace
 
+## 0.2.0
+
+### Minor Changes
+
+- [`11e9fbb`](https://github.com/swordev/dreamkit/commit/11e9fbbf486f247b95188cbad3144aa8214fdd4e) Thanks [@juanrgm](https://github.com/juanrgm)! - Rename action
+
+- [`e453382`](https://github.com/swordev/dreamkit/commit/e4533821014af2a795a6ac2ffbaa0d2f97ad5c94) Thanks [@juanrgm](https://github.com/juanrgm)! - Add init action
+
+### Patch Changes
+
+- [`552d310`](https://github.com/swordev/dreamkit/commit/552d31026c9409f0826a61af65d564fab9b617ab) Thanks [@juanrgm](https://github.com/juanrgm)! - Update dependencies
+
+- [`3e75791`](https://github.com/swordev/dreamkit/commit/3e75791007a4be16ded76f40b4e25e4f3edc104a) Thanks [@juanrgm](https://github.com/juanrgm)! - Fix package dirs detection
+
+- [`9fd97b9`](https://github.com/swordev/dreamkit/commit/9fd97b93080e7f0caedc5bc9b4bf16ba79740a65) Thanks [@juanrgm](https://github.com/juanrgm)! - Format optionally
+
 ## 0.1.3
 
 ### Patch Changes
