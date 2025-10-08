@@ -59,3 +59,7 @@ export declare const createTSConfigFiles: (options: {
   base?: TSConfig;
   build?: TSConfig;
 }) => Record<string, any>;
+
+export declare function gen(): Promise<void>;
+export declare function init(): Promise<void>;
+export declare function clean(): Promise<void>;

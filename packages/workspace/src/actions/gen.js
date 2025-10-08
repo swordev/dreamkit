@@ -71,7 +71,7 @@ export async function findPackages() {
 /**
  * @param {string} inputFilter
  */
-export async function postinstall(inputFilter) {
+export async function gen(inputFilter) {
   const filter = inputFilter
     ? inputFilter.split(",").map((v) => v.trim())
     : undefined;
