@@ -1,5 +1,13 @@
 # @dreamkit/schema
 
+## 0.0.8
+
+### Patch Changes
+
+- [`f7b18b8`](https://github.com/swordev/dreamkit/commit/f7b18b83e32f59cc0823d9c31afb6f97f299b523) Thanks [@juanrgm](https://github.com/juanrgm)! - Fix refine option
+
+- [`f4a2188`](https://github.com/swordev/dreamkit/commit/f4a2188556de3e64cf378943cc7660a96ca55583) Thanks [@juanrgm](https://github.com/juanrgm)! - Allow optional assert
+
 ## 0.0.7
 
 ### Patch Changes

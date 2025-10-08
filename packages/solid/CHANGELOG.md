@@ -1,5 +1,17 @@
 # @dreamkit/solid
 
+## 0.0.22
+
+### Patch Changes
+
+- [`552d310`](https://github.com/swordev/dreamkit/commit/552d31026c9409f0826a61af65d564fab9b617ab) Thanks [@juanrgm](https://github.com/juanrgm)! - Update dependencies
+
+- [`4446545`](https://github.com/swordev/dreamkit/commit/44465452a783eae3190ae2a5c963408ce3ef28b0) Thanks [@juanrgm](https://github.com/juanrgm)! - Implement `onChange` in controlled value
+
+- Updated dependencies [[`552d310`](https://github.com/swordev/dreamkit/commit/552d31026c9409f0826a61af65d564fab9b617ab), [`f7b18b8`](https://github.com/swordev/dreamkit/commit/f7b18b83e32f59cc0823d9c31afb6f97f299b523), [`f4a2188`](https://github.com/swordev/dreamkit/commit/f4a2188556de3e64cf378943cc7660a96ca55583)]:
+  - @dreamkit/app@0.0.19
+  - @dreamkit/schema@0.0.8
+
 ## 0.0.21
 
 ### Patch Changes
