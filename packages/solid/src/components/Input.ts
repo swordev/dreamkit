@@ -22,7 +22,6 @@ export type InputProps<T extends InputType = InputType> = Omit<
 > &
   ControlledValueProps<InputValue<T>> & {
     type: T;
-    onChange?: (value: InputValue<T>) => void;
     onNativeChange?: ComponentProps<"input">["onChange"];
   };
 
@@ -59,7 +58,6 @@ export function Input(inProps: any) {
             (element.type ?? "text") as InputType,
             element,
             [value, setValue, controlled] as any,
-            props.onChange,
           );
           if (typeof props.ref === "function") (props.ref as any)(element);
         },

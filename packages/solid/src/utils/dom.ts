@@ -44,7 +44,6 @@ export class InputControl<T extends InputType> {
     readonly type: T,
     readonly input: HTMLInputElement,
     readonly controlled: ControlledValue<InputValue<T>>,
-    readonly onChange?: (value: InputValue<T>) => void,
   ) {
     const [, , isControlled] = this.controlled;
     if (isControlled && this.hasControlledValueAttr())
@@ -97,7 +96,6 @@ export class InputControl<T extends InputType> {
     this.valueEvent = false;
     try {
       setValue(() => nextValue);
-      this.onChange?.(nextValue);
       if (isControlled && !this.valueEvent) this.setValue(untrack(value)!);
     } finally {
       this.valueEvent = false;

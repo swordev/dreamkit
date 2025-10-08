@@ -9,6 +9,7 @@ import {
 export type ControlledValueProps<T = unknown> = {
   value?: T | (() => T | undefined) | undefined;
   defaultValue?: T | undefined;
+  onChange?: (value: T) => void;
 };
 
 export type ControlledValue<T = unknown> = [
@@ -48,9 +49,14 @@ export function createControlledValue<T = unknown>(
     }, true);
   }
 
-  const setValue: Setter<T | undefined> = controlled
-    ? ((() => {}) as any)
-    : setValueState;
+  const setValue = (...args: any[]) => {
+    if (!controlled) return setValueState(...(args as any));
+    if (props.onChange) {
+      let [newValue] = args;
+      if (typeof newValue === "function") newValue = newValue();
+      props.onChange(newValue);
+    }
+  };
 
   return [value, setValue, controlled];
 }
