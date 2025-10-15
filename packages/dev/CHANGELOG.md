@@ -1,5 +1,15 @@
 # @dreamkit/dev
 
+## 0.0.28
+
+### Patch Changes
+
+- [`9727785`](https://github.com/swordev/dreamkit/commit/97277854f56ca74e871ed673f580200cf0e53099) Thanks [@juanrgm](https://github.com/juanrgm)! - Update dependencies
+
+- Updated dependencies [[`9745ec7`](https://github.com/swordev/dreamkit/commit/9745ec713b16cdede8896aa325d3f2fa1f668e1f)]:
+  - @dreamkit/app@0.0.20
+  - @dreamkit/node-app@0.0.15
+
 ## 0.0.27
 
 ### Patch Changes
