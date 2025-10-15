@@ -37,10 +37,10 @@
     "@dreamkit/prettier-config": "workspace:*",
     "@dreamkit/workspace": "workspace:*",
     "husky": "^9.1.7",
-    "knip": "^5.64.2",
-    "lint-staged": "^16.2.3",
+    "knip": "^5.65.0",
+    "lint-staged": "^16.2.4",
     "markdown-table": "^3.0.4",
-    "npm-check-updates": "^19.0.0",
+    "npm-check-updates": "^19.1.1",
     "prettier": "^3.6.2",
     "typescript": "^5.9.3",
     "vitest": "^3.2.4"

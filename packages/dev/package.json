@@ -46,7 +46,7 @@
     "commander": "^14.0.1",
     "debug": "^4.4.3",
     "es-module-lexer": "^1.7.0",
-    "esbuild": "^0.25.10",
+    "esbuild": "^0.25.11",
     "glob": "^11.0.3",
     "rollup": "^4.52.4",
     "vite-plugin-solid": "^2.11.9",
@@ -55,9 +55,9 @@
   "devDependencies": {
     "@dreamkit/tsconfig": "workspace:*",
     "@types/debug": "^4.1.12",
-    "@types/node": "^24.7.0",
+    "@types/node": "^24.7.2",
     "vinxi": "^0.5.8",
-    "vite": "^7.1.9"
+    "vite": "^7.1.10"
   },
   "peerDependencies": {
     "@types/node": "^24.0.0",
