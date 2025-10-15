@@ -1,3 +1,4 @@
+import { EJSON } from "./EJSON.js";
 import { RequestUrl } from "./RequestUrl.js";
 import { ResponseHeaders } from "./ResponseHeaders.js";
 import { isApi } from "./builders/ApiBuilder.js";
@@ -6,6 +7,7 @@ import {
   MiddlewareConstructor,
 } from "./builders/MiddlewareBuilder.js";
 import { Route } from "./builders/RouteBuilder.js";
+import { Serializer } from "./builders/SerializerBuilder.js";
 import {
   AppService,
   isService,
@@ -28,7 +30,7 @@ import {
 import { isRoute, kindApp } from "./utils/kind.js";
 import { log } from "./utils/log.js";
 import { type Func } from "@dreamkit/func";
-import { getKinds } from "@dreamkit/kind";
+import { getKinds, kindOf } from "@dreamkit/kind";
 import { merge } from "@dreamkit/utils/object.js";
 
 export class App {
@@ -44,6 +46,7 @@ export class App {
   readonly middlewares = new Set<MiddlewareConstructor>();
   readonly settings = new Set<SettingsConstructor>();
   readonly api = new Map<string, Func>();
+  readonly serializers = new Set<Serializer>();
   protected apiRef = new Map<string, string>();
   public settingsHandler: SettingsHandlerConstructor | undefined;
   public sessionHandler: SessionHandlerConstructor | undefined;
@@ -118,6 +121,8 @@ export class App {
         const path = this.apiRef.get(id);
         this.apiRef.delete(id);
         if (path) this.api.delete(path);
+      } else if (kindOf(value, Serializer)) {
+        this.serializers.delete(value);
       }
       for (const cb of this.listeners.remove) await cb({ id, value });
       for (const cb of this.listeners.change)
@@ -247,6 +252,8 @@ export class App {
         const path = this.normalizeApiPath(id);
         this.api.set(path, value);
         this.apiRef.set(id, path);
+      } else if (kindOf(value, Serializer)) {
+        this.serializers.add(value);
       } else {
         this.onUnknownObject(id, value);
       }
@@ -285,6 +292,7 @@ export class App {
     const host = request.headers.get("host") ?? "localhost";
     const requestContext = context
       .register(RequestContext, { value: context })
+      .register(EJSON, { value: new EJSON([...this.serializers]) })
       .register(Request, { value: request })
       .register(Headers, { value: request.headers })
       .register(ResponseHeaders, { value: new ResponseHeaders() })

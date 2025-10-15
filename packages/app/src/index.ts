@@ -4,6 +4,7 @@ export { isRoute, isApp } from "./utils/kind.js";
 export { isApi } from "./builders/ApiBuilder.js";
 export { App } from "./App.js";
 export { defineRoutePath, routePath } from "./routePath.js";
+export { EJSON, type EJSONEncodedObject } from "./EJSON.js";
 // contexts
 export { AppContext } from "./contexts/AppContext.js";
 export { RequestContext } from "./contexts/RequestContext.js";
@@ -11,6 +12,7 @@ export { RequestContext } from "./contexts/RequestContext.js";
 export { $api } from "./objects/$api.js";
 export { $route } from "./objects/$route.js";
 export { $middleware } from "./objects/$middleware.js";
+export { $serializer } from "./objects/$serializer.js";
 export { $service } from "./objects/$service.js";
 export { $session } from "./objects/$session.js";
 export { $schema } from "./objects/$schema.js";
@@ -36,6 +38,11 @@ export {
   type MiddlewareOptions,
   type MiddlewareData,
 } from "./builders/MiddlewareBuilder.js";
+export {
+  Serializer,
+  type SerializerData,
+  isSerializer,
+} from "./builders/SerializerBuilder.js";
 export {
   Service,
   type ServiceConstructor,
@@ -65,3 +72,5 @@ export {
 // presets
 export { ClientSessionHandler } from "./presets/ClientSessionHandler.js";
 export { ClientSessionSettings } from "./presets/ClientSessionSettings.js";
+export { errorSerializer } from "./presets/errorSerializer.js";
+export { dateSerializer } from "./presets/dateSerializer.js";
