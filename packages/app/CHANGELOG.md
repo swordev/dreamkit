@@ -1,5 +1,11 @@
 # @dreamkit/app
 
+## 0.0.20
+
+### Patch Changes
+
+- [`9745ec7`](https://github.com/swordev/dreamkit/commit/9745ec713b16cdede8896aa325d3f2fa1f668e1f) Thanks [@juanrgm](https://github.com/juanrgm)! - Add EJSON
+
 ## 0.0.19
 
 ### Patch Changes
