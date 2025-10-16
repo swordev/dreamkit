@@ -31,6 +31,10 @@ export class EJSON {
     this.#serializers = this.serializers.filter((s) => s.config.key !== name);
     this.#serializersValue = undefined;
   }
+  clear() {
+    this.#serializers = [];
+    this.#serializersValue = undefined;
+  }
   encode(input: any): any {
     if (isPlainObject(input)) {
       const object: Record<string, any> = {};

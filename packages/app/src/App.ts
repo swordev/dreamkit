@@ -421,6 +421,7 @@ export class App {
     this.settings.clear();
     this.api.clear();
     this.apiRef.clear();
+    this.context.resolve(EJSON).clear();
     this.settingsHandler = undefined;
     this.sessionHandler = undefined;
   }
