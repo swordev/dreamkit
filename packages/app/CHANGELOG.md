@@ -1,5 +1,11 @@
 # @dreamkit/app
 
+## 0.0.22
+
+### Patch Changes
+
+- [`9aa3767`](https://github.com/swordev/dreamkit/commit/9aa37670c00e45af08066ed5298765d8365383bd) Thanks [@juanrgm](https://github.com/juanrgm)! - Add serializer
+
 ## 0.0.21
 
 ### Patch Changes
