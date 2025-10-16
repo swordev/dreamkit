@@ -53,8 +53,8 @@ export class EJSON {
           } satisfies EJSONEncodedObject;
         }
       }
-      return input;
     }
+    return input;
   }
   decode(input: any): any {
     if (isPlainObject(input)) {
