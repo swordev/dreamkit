@@ -1,5 +1,11 @@
 # @dreamkit/app
 
+## 0.0.23
+
+### Patch Changes
+
+- [`fa4492b`](https://github.com/swordev/dreamkit/commit/fa4492bad965166e88df80f4462e87ac29ac2680) Thanks [@juanrgm](https://github.com/juanrgm)! - Fix EJSON encoder
+
 ## 0.0.22
 
 ### Patch Changes
