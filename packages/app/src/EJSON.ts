@@ -12,7 +12,7 @@ function isEJSONObject(
 export class EJSON {
   #serializers: Serializer[] = [];
   #serializersValue: readonly Serializer[] | undefined;
-  protected get serializers(): readonly Serializer[] {
+  get serializers(): readonly Serializer[] {
     if (!this.#serializersValue)
       this.#serializersValue = [...this.#serializers].sort(
         (a, b) => (b.config.priority || 0) - (a.config.priority || 0),
@@ -23,6 +23,7 @@ export class EJSON {
     this.#serializers = [...serializers];
   }
   add(serializer: Serializer) {
+    this.remove(serializer.config.key);
     this.#serializers.push(serializer);
     this.#serializersValue = undefined;
   }

@@ -46,7 +46,6 @@ export class App {
   readonly middlewares = new Set<MiddlewareConstructor>();
   readonly settings = new Set<SettingsConstructor>();
   readonly api = new Map<string, Func>();
-  readonly serializers = new Set<Serializer>();
   protected apiRef = new Map<string, string>();
   public settingsHandler: SettingsHandlerConstructor | undefined;
   public sessionHandler: SessionHandlerConstructor | undefined;
@@ -58,9 +57,9 @@ export class App {
     >(),
   };
   constructor() {
-    this.context = new AppContext().register(App, {
-      value: this,
-    });
+    this.context = new AppContext()
+      .register(App, { value: this })
+      .register(EJSON, { value: new EJSON([]) });
     this.context.register(AppContext, { value: this.context });
   }
   static instance(): App {
@@ -122,7 +121,7 @@ export class App {
         this.apiRef.delete(id);
         if (path) this.api.delete(path);
       } else if (kindOf(value, Serializer)) {
-        this.serializers.delete(value);
+        this.context.resolve(EJSON).remove(value.config.key);
       }
       for (const cb of this.listeners.remove) await cb({ id, value });
       for (const cb of this.listeners.change)
@@ -251,7 +250,7 @@ export class App {
         this.api.set(path, value);
         this.apiRef.set(id, path);
       } else if (kindOf(value, Serializer)) {
-        this.serializers.add(value);
+        this.context.resolve(EJSON).add(value);
       } else {
         this.onUnknownObject(id, value);
       }
@@ -290,7 +289,6 @@ export class App {
     const host = request.headers.get("host") ?? "localhost";
     const requestContext = context
       .register(RequestContext, { value: context })
-      .register(EJSON, { value: new EJSON([...this.serializers]) })
       .register(Request, { value: request })
       .register(Headers, { value: request.headers })
       .register(ResponseHeaders, { value: new ResponseHeaders() })
