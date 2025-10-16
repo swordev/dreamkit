@@ -1,4 +1,5 @@
 import { $serializer } from "../objects/$serializer.js";
+import { TypeAssertError } from "@dreamkit/schema";
 
 export const errorSerializer = $serializer.create({
   key: "Error",
@@ -18,4 +19,12 @@ export const dateSerializer = $serializer.create({
   is: (input) => input instanceof Date,
   to: (input) => input.toISOString(),
   from: (input) => new Date(input),
+});
+
+export const typeAssertErrorSerializer = $serializer.create({
+  key: "TypeAssertError",
+  priority: -1,
+  is: (input) => input instanceof TypeAssertError,
+  to: (input) => input.errors,
+  from: (input) => new TypeAssertError(input),
 });
