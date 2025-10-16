@@ -31,7 +31,7 @@ import { isRoute, kindApp } from "./utils/kind.js";
 import { log } from "./utils/log.js";
 import { type Func } from "@dreamkit/func";
 import { getKinds, kindOf } from "@dreamkit/kind";
-import { merge } from "@dreamkit/utils/object.js";
+import { isPlainObject, merge } from "@dreamkit/utils/object.js";
 
 export class App {
   static {
@@ -200,8 +200,6 @@ export class App {
           {} as Record<string, any>,
         )
       : { ...input };
-    const isPlainObject = (input: any): input is Record<string, any> =>
-      !!input && typeof input === "object";
     const entries = Object.entries(objects).flatMap(
       ([id, value]): [string, any][] => {
         if (isPlainObject(value) || Array.isArray(value)) {

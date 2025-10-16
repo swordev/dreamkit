@@ -1,6 +1,5 @@
 import { checkTypeFlags } from "../flags.js";
 import { InferType } from "../infer.js";
-import { isPlainObject } from "../utils/object.js";
 import type {
   AssignInput,
   AssignObjectType,
@@ -12,6 +11,7 @@ import type {
 } from "./../utils/object-type.js";
 import * as $ from "./utils.js";
 import { kindOf } from "@dreamkit/kind";
+import { isPlainObject } from "@dreamkit/utils/object.js";
 import { createProxy } from "@dreamkit/utils/proxy.js";
 import { Any } from "@dreamkit/utils/ts.js";
 
