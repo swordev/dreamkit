@@ -1,9 +1,6 @@
 import { $serializer } from "../objects/$serializer.js";
 
-export const errorSerializer = $serializer.create<
-  Error,
-  { name: string; message: string }
->({
+export const errorSerializer = $serializer.create({
   key: "Error",
   priority: -1,
   is: (input) => input instanceof Error,
@@ -13,4 +10,12 @@ export const errorSerializer = $serializer.create<
     error.name = input.name;
     return error;
   },
+});
+
+export const dateSerializer = $serializer.create({
+  key: "Date",
+  priority: -1,
+  is: (input) => input instanceof Date,
+  to: (input) => input.toISOString(),
+  from: (input) => new Date(input),
 });

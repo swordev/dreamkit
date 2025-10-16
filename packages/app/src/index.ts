@@ -72,5 +72,4 @@ export {
 // presets
 export { ClientSessionHandler } from "./presets/ClientSessionHandler.js";
 export { ClientSessionSettings } from "./presets/ClientSessionSettings.js";
-export { errorSerializer } from "./presets/errorSerializer.js";
-export { dateSerializer } from "./presets/dateSerializer.js";
+export * from "./presets/serializers.js";
