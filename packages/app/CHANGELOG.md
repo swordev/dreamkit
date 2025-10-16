@@ -1,5 +1,16 @@
 # @dreamkit/app
 
+## 0.0.21
+
+### Patch Changes
+
+- [`beb9acc`](https://github.com/swordev/dreamkit/commit/beb9acc40bd70f3ef5e6498f22dd6670d34d433e) Thanks [@juanrgm](https://github.com/juanrgm)! - Add compatibility with namespaces
+
+- Updated dependencies [[`beb9acc`](https://github.com/swordev/dreamkit/commit/beb9acc40bd70f3ef5e6498f22dd6670d34d433e)]:
+  - @dreamkit/schema@0.0.9
+  - @dreamkit/utils@0.0.8
+  - @dreamkit/func@0.0.12
+
 ## 0.0.20
 
 ### Patch Changes

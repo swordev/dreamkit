@@ -1,5 +1,13 @@
 # @dreamkit/func
 
+## 0.0.12
+
+### Patch Changes
+
+- Updated dependencies [[`beb9acc`](https://github.com/swordev/dreamkit/commit/beb9acc40bd70f3ef5e6498f22dd6670d34d433e)]:
+  - @dreamkit/schema@0.0.9
+  - @dreamkit/utils@0.0.8
+
 ## 0.0.11
 
 ### Patch Changes
