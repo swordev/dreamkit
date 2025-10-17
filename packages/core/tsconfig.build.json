@@ -1,0 +1,13 @@
+{
+  "extends": [
+    "@dreamkit/tsconfig/build.json",
+    "@dreamkit/tsconfig/publish.json"
+  ],
+  "references": [
+    { "path": "../app/tsconfig.build.json" },
+    { "path": "../ioc/tsconfig.build.json" },
+    { "path": "../kind/tsconfig.build.json" },
+    { "path": "../func/tsconfig.build.json" },
+    { "path": "../schema/tsconfig.build.json" }
+  ]
+}

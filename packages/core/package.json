@@ -1,11 +1,19 @@
 {
-  "name": "@dreamkit/app",
-  "version": "0.0.23",
-  "description": "Set of utils to create applications.",
+  "name": "@dreamkit/core",
+  "version": "0.0.1",
+  "description": "Core of DreamKit.",
+  "keywords": [
+    "type-safe",
+    "typescript",
+    "routing",
+    "controlled",
+    "app",
+    "framework"
+  ],
   "homepage": "https://dreamkit.dev",
   "repository": {
     "type": "git",
-    "url": "https://github.com/swordev/dreamkit/tree/main/packages/app"
+    "url": "https://github.com/swordev/dreamkit/tree/main/packages/core"
   },
   "license": "MIT",
   "author": "Juanra GM",
@@ -27,15 +35,13 @@
     "lib"
   ],
   "dependencies": {
-    "@dreamkit/func": "workspace:*",
+    "@dreamkit/app": "workspace:*",
     "@dreamkit/ioc": "workspace:*",
     "@dreamkit/kind": "workspace:*",
-    "@dreamkit/schema": "workspace:*",
-    "@dreamkit/utils": "workspace:*",
-    "debug": "^4.4.3"
+    "@dreamkit/func": "workspace:*",
+    "@dreamkit/schema": "workspace:*"
   },
   "devDependencies": {
-    "@dreamkit/tsconfig": "workspace:*",
-    "@types/debug": "^4.1.12"
+    "@dreamkit/tsconfig": "workspace:*"
   }
 }

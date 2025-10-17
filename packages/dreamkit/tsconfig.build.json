@@ -4,12 +4,9 @@
     "@dreamkit/tsconfig/publish.json"
   ],
   "references": [
-    { "path": "../app/tsconfig.build.json" },
-    { "path": "../dev/tsconfig.build.json" },
-    { "path": "../ioc/tsconfig.build.json" },
-    { "path": "../kind/tsconfig.build.json" },
+    { "path": "../core/tsconfig.build.json" },
     { "path": "../node-app/tsconfig.build.json" },
-    { "path": "../schema/tsconfig.build.json" },
+    { "path": "../dev/tsconfig.build.json" },
     { "path": "../solid/tsconfig.build.json" }
   ]
 }

@@ -1,9 +1,5 @@
-import {
-  $serializer,
-  dateSerializer,
-  EJSON,
-  errorSerializer,
-} from "../src/index.js";
+import { $serializer, EJSON } from "../src/index.js";
+import { dateSerializer, errorSerializer } from "../src/presets/serializers.js";
 import { describe, expect, it } from "vitest";
 
 describe("EJSON", () => {

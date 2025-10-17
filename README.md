@@ -23,6 +23,7 @@ If you want to support the project, you have the possibility to do so [here](htt
 | Name                                        | Version                                                                              | Description                                            |
 | ------------------------------------------- | ------------------------------------------------------------------------------------ | ------------------------------------------------------ |
 | [@dreamkit/app](./packages/app)             | [![npm-badge-dreamkit_app]](https://www.npmjs.com/package/@dreamkit/app)             | Set of utils to create applications.                   |
+| [@dreamkit/core](./packages/core)           | [![npm-badge-dreamkit_core]](https://www.npmjs.com/package/@dreamkit/core)           | Core of DreamKit.                                      |
 | [@dreamkit/dev](./packages/dev)             | [![npm-badge-dreamkit_dev]](https://www.npmjs.com/package/@dreamkit/dev)             | Development tools for DreamKit.                        |
 | [@dreamkit/func](./packages/func)           | [![npm-badge-dreamkit_func]](https://www.npmjs.com/package/@dreamkit/func)           | Functions builder with IoC and input validation.       |
 | [@dreamkit/ioc](./packages/ioc)             | [![npm-badge-dreamkit_ioc]](https://www.npmjs.com/package/@dreamkit/ioc)             | A simple and lightweight IoC container for TypeScript. |
@@ -36,6 +37,7 @@ If you want to support the project, you have the possibility to do so [here](htt
 
 [npm-badge-dreamkit]: https://img.shields.io/npm/v/dreamkit
 [npm-badge-dreamkit_app]: https://img.shields.io/npm/v/@dreamkit/app
+[npm-badge-dreamkit_core]: https://img.shields.io/npm/v/@dreamkit/core
 [npm-badge-dreamkit_dev]: https://img.shields.io/npm/v/@dreamkit/dev
 [npm-badge-dreamkit_func]: https://img.shields.io/npm/v/@dreamkit/func
 [npm-badge-dreamkit_ioc]: https://img.shields.io/npm/v/@dreamkit/ioc

@@ -1,4 +1,5 @@
-import { App, EJSON, errorSerializer } from "../src/index.js";
+import { App, EJSON } from "../src/index.js";
+import { errorSerializer } from "../src/presets/index.js";
 import { describe, expect, it } from "vitest";
 
 describe("App.add", () => {
