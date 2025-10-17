@@ -23,4 +23,9 @@ export {
   type AnyTypeOptions,
   type MinimalAnyType,
 } from "./AnyType.js";
+export {
+  CustomType,
+  type CustomTypeOptions,
+  type MinimalCustomType,
+} from "./CustomType.js";
 export { Type } from "./Type.js";

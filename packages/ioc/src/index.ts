@@ -2,14 +2,21 @@ export {
   IocBaseClass,
   IocClass,
   createIocClass,
+  isIocClass,
   type InferParamsUserConfig,
 } from "./class.js";
-export { IocContext, context } from "./context.js";
+export {
+  IocContext,
+  context,
+  ignoreValueKey,
+  undefinedValueKey,
+} from "./context.js";
 export { IocError } from "./error.js";
-export { IocFunc } from "./func.js";
+export { IocFunc, isIocFunc } from "./func.js";
 export {
   normalizeIocParams,
   iocParam,
+  IocParamBuilder,
   type IocParams,
   type IocParamsUserConfig,
   type IocBind,
