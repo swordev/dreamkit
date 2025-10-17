@@ -1,5 +1,11 @@
 # @dreamkit/func
 
+## 0.0.14
+
+### Patch Changes
+
+- [`5fc12db`](https://github.com/swordev/dreamkit/commit/5fc12db80675222cbbaf8d9dc7824b3ce2eb7a77) Thanks [@juanrgm](https://github.com/juanrgm)! - Add compatibility with any type
+
 ## 0.0.13
 
 ### Patch Changes
