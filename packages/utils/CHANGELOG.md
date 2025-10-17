@@ -1,5 +1,11 @@
 # @dreamkit/utils
 
+## 0.0.9
+
+### Patch Changes
+
+- [`b1e8a73`](https://github.com/swordev/dreamkit/commit/b1e8a7311ade79056df288f98bc78e9fced5e0b0) Thanks [@juanrgm](https://github.com/juanrgm)! - Add `deps` and `priority` options to services
+
 ## 0.0.8
 
 ### Patch Changes
