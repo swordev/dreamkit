@@ -44,12 +44,13 @@ export class App {
   readonly started = false;
   readonly context: AppContext;
   readonly objects = new Map<string, any>();
+  readonly objectsPath = new Map<string, string>();
+  readonly unknownObjectIds = new Set<string>();
   readonly routes = new Set<Route>();
   readonly services = new Set<AppService>();
   readonly middlewares = new Set<MiddlewareConstructor>();
   readonly settings = new Set<SettingsConstructor>();
   readonly api = new Map<string, Func>();
-  protected apiRef = new Map<string, string>();
   public settingsHandler: SettingsHandlerConstructor | undefined;
   public sessionHandler: SessionHandlerConstructor | undefined;
   protected listeners = {
@@ -104,6 +105,8 @@ export class App {
     for (const id of ids) {
       const value = this.objects.get(id);
       if (!value) throw new Error(`Object not found: ${id}`);
+      const path = this.objectsPath.get(id);
+      this.objectsPath.delete(id);
       if (isRoute(value)) {
         this.routes.delete(value);
       } else if (isService(value)) {
@@ -120,8 +123,6 @@ export class App {
       } else if (isSessionHandler(value)) {
         this.sessionHandler = undefined;
       } else if (isApi(value)) {
-        const path = this.apiRef.get(id);
-        this.apiRef.delete(id);
         if (path) this.api.delete(path);
       } else if (kindOf(value, Serializer)) {
         this.context.resolve(EJSON).remove(value.config.key);
@@ -130,6 +131,7 @@ export class App {
       for (const cb of this.listeners.change)
         await cb({ id, value, action: "remove" });
       this.objects.delete(id);
+      this.unknownObjectIds.delete(id);
     }
   }
   async removeAll() {
@@ -164,20 +166,19 @@ export class App {
     item.started = false;
     log("service stopped", { name });
   }
-  protected normalizeApiPath(path: string) {
+  protected normalizeObjectPath(path: string) {
     return (
       "/" +
       path
         .split(/[:/]/)
         .map((value) => {
           if (
-            value === "index.ts" ||
-            value === "index.js" ||
+            /^index\.[mc]?([jt]s)x?$/.test(value) ||
             value === "." ||
             !value.length
           ) {
             return undefined;
-          } else if (value.endsWith(".ts") || value.endsWith(".js")) {
+          } else if (/\.[mc]?([jt]s)x?$/.test(value)) {
             const parts = value.split(".");
             return parts.slice(0, -1).join(".");
           } else {
@@ -187,10 +188,6 @@ export class App {
         .filter(Boolean)
         .join("/")
     );
-  }
-
-  protected onUnknownObject(id: string, value: unknown) {
-    console.warn("Unknown object", { id, value, kinds: getKinds(value) });
   }
 
   protected resolveEntry(input: Record<string, any> | any[]) {
@@ -225,6 +222,8 @@ export class App {
     const settings: SettingsConstructor[] = [];
     const objects = this.resolveEntry(input);
     for (const [id, value] of Object.entries(objects)) {
+      const path = this.normalizeObjectPath(id);
+      this.objectsPath.set(id, path);
       if (isRoute(value)) {
         this.routes.add(value);
       } else if (isService(value)) {
@@ -250,13 +249,11 @@ export class App {
       } else if (isSessionHandler(value)) {
         this.sessionHandler = value;
       } else if (isApi(value)) {
-        const path = this.normalizeApiPath(id);
         this.api.set(path, value);
-        this.apiRef.set(id, path);
       } else if (kindOf(value, Serializer)) {
         this.context.resolve(EJSON).add(value);
       } else {
-        this.onUnknownObject(id, value);
+        this.unknownObjectIds.add(id);
       }
 
       /*
@@ -424,12 +421,13 @@ export class App {
   }
   clear() {
     this.objects.clear();
+    this.objectsPath.clear();
+    this.unknownObjectIds.clear();
     this.routes.clear();
     this.services.clear();
     this.middlewares.clear();
     this.settings.clear();
     this.api.clear();
-    this.apiRef.clear();
     this.context.resolve(EJSON).clear();
     this.settingsHandler = undefined;
     this.sessionHandler = undefined;
