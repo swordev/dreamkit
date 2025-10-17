@@ -1,5 +1,11 @@
 # @dreamkit/ioc
 
+## 0.3.2
+
+### Patch Changes
+
+- [`08d2f37`](https://github.com/swordev/dreamkit/commit/08d2f3752a65620588231643397cc1e587061aec) Thanks [@juanrgm](https://github.com/juanrgm)! - Export types
+
 ## 0.3.1
 
 ### Patch Changes
