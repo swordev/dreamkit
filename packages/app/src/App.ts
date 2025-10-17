@@ -34,7 +34,7 @@ import { isRoute, kindApp } from "./utils/kind.js";
 import { log } from "./utils/log.js";
 import { type Func } from "@dreamkit/func";
 import { getKinds, kindOf } from "@dreamkit/kind";
-import { isPlainObject, merge } from "@dreamkit/utils/object.js";
+import { isPlainObject, merge, sortByDeps } from "@dreamkit/utils/object.js";
 
 export class App {
   static {
@@ -141,6 +141,7 @@ export class App {
       name: service.prototype.name ?? service.name ?? "anonymous",
       service,
       started: false,
+      options: (service as any).$options,
     };
     this.services.add(item);
     return item;
@@ -392,7 +393,15 @@ export class App {
     if (this.started) throw new Error("App is already started");
     await this.prepare();
     (this as any).started = true;
-    for (const item of this.services) await this.startService(item);
+    const services = sortByDeps(
+      [...this.services].map((item) => ({
+        item,
+        value: item.service,
+        deps: item.options.deps,
+        priority: item.options.priority,
+      })),
+    );
+    for (const { item } of services) await this.startService(item);
   }
 
   async stop() {

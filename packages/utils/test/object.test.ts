@@ -1,4 +1,4 @@
-import { isPlainObject } from "../lib/object";
+import { isPlainObject, sortByDeps } from "../lib/object";
 import * as module from "./module";
 import { describe, expect, it } from "vitest";
 
@@ -31,5 +31,74 @@ describe("isPlainObject", () => {
     expect(isPlainObject("")).toBe(false);
     expect(isPlainObject("string")).toBe(false);
     expect(isPlainObject(1n)).toBe(false);
+  });
+});
+
+describe("sortByDeps", () => {
+  it("throw error by circular dep", () => {
+    expect(() =>
+      sortByDeps([
+        { value: "a", deps: ["b"] },
+        { value: "b", deps: ["a"] },
+      ]),
+    ).toThrowError();
+  });
+
+  it("throw error by missing dep", () => {
+    expect(() =>
+      sortByDeps([{ value: "a" }, { value: "b", deps: ["x"] }]),
+    ).toThrowError();
+  });
+
+  it("sort by deps", () => {
+    expect(
+      sortByDeps([
+        {
+          value: "a",
+          deps: ["b", "c"],
+        },
+        {
+          value: "b",
+        },
+        {
+          value: "c",
+        },
+      ]).map((v) => v.value),
+    ).toEqual(["b", "c", "a"]);
+  });
+
+  it("sort by deps and priority", () => {
+    expect(
+      sortByDeps([
+        {
+          value: "http",
+          priority: -1,
+        },
+        {
+          value: "migrator",
+          deps: ["db"],
+        },
+        {
+          value: "db",
+        },
+        {
+          value: "logger",
+          priority: 1,
+        },
+      ]).map((v) => v.value),
+    ).toEqual(["logger", "db", "migrator", "http"]);
+
+    expect(
+      sortByDeps([
+        {
+          value: "a",
+          priority: -1,
+        },
+        {
+          value: "b",
+          priority: 1,
+        },
+      ]).map((v) => v.value),
+    ).toEqual(["b", "a"]);
   });
 });

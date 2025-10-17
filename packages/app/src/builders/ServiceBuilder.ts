@@ -9,6 +9,8 @@ export const [kindService, isService] = createKind<ServiceConstructor>(
 export type ServiceSelf = IocParamsUserConfig | undefined;
 export type ServiceData<TSelf extends ServiceSelf = ServiceSelf> = {
   self?: TSelf;
+  deps?: ServiceConstructor[];
+  priority?: number;
 };
 
 export type ServiceOptions<T extends ServiceData = ServiceData> = T & {
@@ -27,6 +29,7 @@ export type AppService = {
   service: ServiceConstructor;
   started: boolean;
   shutdown?: Shutdown;
+  options: ServiceOptions;
 };
 
 export abstract class Service {
@@ -64,8 +67,15 @@ export class ServiceBuilder<T extends ServiceData = {}> {
   ): ServiceBuilder<MergeServiceData<T, { self: TSelf }>> {
     return this.clone({ self: value }) as any;
   }
+  deps(deps: ServiceConstructor[]): this {
+    return this.clone({ deps }) as any;
+  }
+  priority(priority: number): this {
+    return this.clone({ priority }) as any;
+  }
   create(): IocClass<T["self"] & {}, Service> {
     const Class = ServiceClass(this.options.self || {}) as any;
+    Object.assign(Class, { $options: this.options });
     if (this.options.static) Object.assign(Class, this.options.static);
     return Class;
   }
