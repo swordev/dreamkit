@@ -21,7 +21,7 @@
     "preview": "pnpm run --filter @dreamkit/site preview",
     "publish": "changeset publish",
     "test": "vitest --run",
-    "update:deps": "ncu -ws --root",
+    "update:deps": "ncu -w --root",
     "watch": "tsc -b tsconfig.build.json -w"
   },
   "lint-staged": {
@@ -37,7 +37,7 @@
     "@dreamkit/prettier-config": "workspace:*",
     "@dreamkit/workspace": "workspace:*",
     "husky": "^9.1.7",
-    "knip": "^5.65.0",
+    "knip": "^5.66.0",
     "lint-staged": "^16.2.4",
     "markdown-table": "^3.0.4",
     "npm-check-updates": "^19.1.1",

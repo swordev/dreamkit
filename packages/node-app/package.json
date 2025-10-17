@@ -35,6 +35,6 @@
   },
   "devDependencies": {
     "@dreamkit/tsconfig": "workspace:*",
-    "@types/node": "^24.7.2"
+    "@types/node": "^24.8.1"
   }
 }

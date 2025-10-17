@@ -55,7 +55,7 @@
   "devDependencies": {
     "@dreamkit/tsconfig": "workspace:*",
     "@types/debug": "^4.1.12",
-    "@types/node": "^24.7.2",
+    "@types/node": "^24.8.1",
     "vinxi": "^0.5.8",
     "vite": "^7.1.10"
   },
