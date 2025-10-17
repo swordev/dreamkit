@@ -11,11 +11,12 @@ import type {
   ExactType,
   InferType,
   MinimalObjectType,
+  MinimalType,
   ObjectType,
   ObjectTypeProps,
 } from "@dreamkit/schema";
 
-export type FuncParams = MinimalObjectType | undefined;
+export type FuncParams = MinimalType | undefined;
 export type FuncSelf = IocParamsUserConfig | undefined;
 export type FuncTitle = string | undefined;
 
@@ -47,21 +48,21 @@ export type MergeFuncData<
 > = Merge<FuncData, D1, D2>;
 
 export type InferFuncParams<A extends FuncParams | ObjectTypeProps> =
-  A extends MinimalObjectType
+  A extends MinimalType
     ? InferType<A>
     : A extends ObjectTypeProps
       ? InferType<MinimalObjectType<A>>
       : undefined;
 
 export type ResolveParamsType<A extends FuncParams | ObjectTypeProps> =
-  A extends MinimalObjectType
+  A extends MinimalType
     ? A
     : A extends ObjectTypeProps
       ? ObjectType<A>
       : undefined;
 
 export type FuncMeta<T extends FuncData = FuncData, R = any> = {
-  readonly params: TryPick<TryPick<T, "params">, "props">;
+  readonly params: TryPick<TryPick<T, "params">, "props", TryPick<T, "params">>;
   readonly $self: TryPick<T, "self", {}>;
   readonly title: TryPick<T, "title">;
   $clone: () => Func;

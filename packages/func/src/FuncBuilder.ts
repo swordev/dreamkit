@@ -17,8 +17,8 @@ import {
   IocRegistryKey,
   IocRegistryValue,
 } from "@dreamkit/ioc";
-import { getKinds, kind } from "@dreamkit/kind";
-import { ObjectType, ObjectTypeProps, s } from "@dreamkit/schema";
+import { getKinds, kind, kindOf } from "@dreamkit/kind";
+import { ObjectType, ObjectTypeProps, Type } from "@dreamkit/schema";
 
 export class FuncBuilder<T extends FuncData = FuncData> {
   readonly data: T;
@@ -72,7 +72,7 @@ export class FuncBuilder<T extends FuncData = FuncData> {
       const params = resolveFuncParams($this.options, {
         params: inParams ?? {},
       });
-      const paramsType = $this.options.params as ObjectType | undefined;
+      const paramsType = $this.options.params as Type | undefined;
       paramsType?.assert(params);
       if ($this.options.onCall) {
         return $this.options.onCall({
@@ -88,7 +88,9 @@ export class FuncBuilder<T extends FuncData = FuncData> {
     const meta: FuncMeta = {
       title: $this.options.title,
       get params() {
-        return $this.options.params?.props as any;
+        if (kindOf($this.options.params, ObjectType))
+          return $this.options.params.props as any;
+        return $this.options.params;
       },
       get $self() {
         return $this.options.self || {};

@@ -1,17 +1,19 @@
 import { FuncOptions } from "../types.js";
-import { IocContext } from "@dreamkit/ioc";
-import { kindOf } from "@dreamkit/kind";
-import { ObjectType, ObjectTypeProps, s } from "@dreamkit/schema";
+import { ObjectTypeProps, s, Type } from "@dreamkit/schema";
+import { isPlainObject } from "@dreamkit/utils/object.js";
 
-export function cloneFuncOptions(prev: FuncOptions, next: FuncOptions) {
+export function cloneFuncOptions(
+  prev: FuncOptions,
+  next: FuncOptions,
+): FuncOptions {
   return {
     ...prev,
     ...next,
     params:
       "params" in next
-        ? next.params === undefined || kindOf(next.params, ObjectType)
-          ? next.params
-          : (s.object(next.params as any as ObjectTypeProps) as any)
+        ? isPlainObject(next.params)
+          ? s.object(next.params as ObjectTypeProps)
+          : next.params
         : prev.params,
     self: {
       ...prev.self,
@@ -24,9 +26,8 @@ export function cloneFuncOptions(prev: FuncOptions, next: FuncOptions) {
 export function resolveFuncParams(
   options: FuncOptions,
   input: { params?: unknown },
-) {
-  const params: any = options.params
-    ? (options.params as any as ObjectType).safeParse(input.params as any)
+): any {
+  return options.params
+    ? (options.params as Type).safeParse(input.params)
     : input.params;
-  return params;
 }

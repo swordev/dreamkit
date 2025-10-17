@@ -1,11 +1,13 @@
-import { createKind, kindOf } from "@dreamkit/kind";
-import {
+import { createKind } from "@dreamkit/kind";
+import type {
   InferType,
-  MinimalObjectType,
+  MinimalType,
   ObjectType,
   ObjectTypeProps,
-  s,
+  Type,
 } from "@dreamkit/schema";
+import { s } from "@dreamkit/schema";
+import { isPlainObject } from "@dreamkit/utils/object.js";
 import type { Merge, throwError } from "@dreamkit/utils/ts.js";
 
 export const [kindSettings, isSettings] = createKind<SettingsConstructor>(
@@ -13,7 +15,7 @@ export const [kindSettings, isSettings] = createKind<SettingsConstructor>(
 );
 
 export type SettingsName = string | undefined;
-export type SettingsParams = MinimalObjectType | undefined;
+export type SettingsParams = MinimalType | undefined;
 export type InferSettingsParams<T extends { params?: SettingsParams }> =
   InferType<T["params"] & {}>;
 export type SettingsDefaults<TParams extends SettingsParams = SettingsParams> =
@@ -60,7 +62,7 @@ export abstract class Settings<T extends SettingsData = SettingsData> {
   }
   update(params: InferSettingsParams<T>) {
     const options = (this.constructor as SettingsConstructor).options;
-    const errors = (options.params as ObjectType).validate(params);
+    const errors = (options.params as Type).validate(params);
     if (errors.length)
       throw new Error(
         `Invalid '${options.name}' settings: ${JSON.stringify(errors, null, 2)}`,
@@ -95,9 +97,9 @@ export class SettingsBuilder<
       ...next,
       params:
         "params" in next
-          ? next.params === undefined || kindOf(next.params, ObjectType)
-            ? next.params
-            : (s.object(next.params as any as ObjectTypeProps) as any)
+          ? isPlainObject(next.params)
+            ? s.object(next.params as ObjectTypeProps)
+            : next.params
           : prev.params,
     } as any) as any;
   }

@@ -1,5 +1,6 @@
 import { $func } from "./../src/$func.ts";
 import { context } from "@dreamkit/ioc";
+import { s } from "@dreamkit/schema";
 import { describe, expect, it } from "vitest";
 
 describe("$func", () => {
@@ -59,5 +60,31 @@ describe("$func", () => {
 
     const resolvedFunc = await ctx.resolveAsync(fetch);
     await expect(resolvedFunc()).resolves.toBe(1);
+  });
+  it("create with object param", async () => {
+    const params = { value: s.number() };
+    const func = $func.params(params).create((o) => o.value * 2);
+    expect(func.params.value).toBe(params.value);
+    // @ts-expect-error
+    expect(() => func({ value: "2" })).toThrowError();
+    expect(func({ value: 2 })).toBe(4);
+  });
+  it("create with number param", async () => {
+    const params = s.number();
+    const func = $func.params(params).create((value) => value * 2);
+    expect(func.$options.params).toBe(params);
+    expect(func.params).toBe(params);
+    // @ts-expect-error
+    expect(() => func("2")).toThrowError();
+    expect(func(2)).toBe(4);
+  });
+  it("create with custom param", async () => {
+    const params = s.custom<{ value: number }>();
+    const func = $func.params(params).create((o) => o.value * 2);
+    expect(func.$options.params).toBe(params);
+    expect(func.params).toBe(params);
+    // @ts-expect-error
+    expect(func("2")).toBe(NaN);
+    expect(func({ value: 2 })).toBe(4);
   });
 });
