@@ -9,6 +9,8 @@ export const [kindMiddleware, isMiddleware] = createKind<MiddlewareConstructor>(
 export type MiddlewareSelf = IocParamsUserConfig | undefined;
 export type MiddlewareData<TSelf extends MiddlewareSelf = MiddlewareSelf> = {
   self?: TSelf;
+  deps?: MiddlewareConstructor[];
+  priority?: number;
 };
 
 export type MiddlewareOptions<T extends MiddlewareData = MiddlewareData> = T & {
@@ -27,7 +29,9 @@ export abstract class Middleware {
   abstract onRequest(): any;
 }
 
-export type MiddlewareConstructor = Constructor<Middleware>;
+export type MiddlewareConstructor = Constructor<Middleware> & {
+  $options: MiddlewareOptions;
+};
 
 const MiddlewareClass = createIocClass(Middleware);
 
@@ -55,8 +59,15 @@ export class MiddlewareBuilder<T extends MiddlewareData = {}> {
   ): MiddlewareBuilder<MergeMiddlewareData<T, { self: TSelf }>> {
     return this.clone({ self: value }) as any;
   }
+  deps(deps: MiddlewareConstructor[]): this {
+    return this.clone({ deps }) as any;
+  }
+  priority(priority: number): this {
+    return this.clone({ priority }) as any;
+  }
   create(): IocClass<T["self"] & {}, Middleware> {
     const Class = MiddlewareClass(this.options.self || {}) as any;
+    Object.assign(Class, { $options: this.options });
     if (this.options.static) Object.assign(Class, this.options.static);
     return Class;
   }

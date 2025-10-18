@@ -49,6 +49,7 @@ export class App {
   readonly routes = new Set<Route>();
   readonly services = new Set<AppService>();
   readonly middlewares = new Set<MiddlewareConstructor>();
+  protected sortedMiddlewares: MiddlewareConstructor[] | undefined;
   readonly settings = new Set<SettingsConstructor>();
   readonly api = new Map<string, Func>();
   public settingsHandler: SettingsHandlerConstructor | undefined;
@@ -115,6 +116,7 @@ export class App {
         await this.stopService(item);
       } else if (isMiddleware(value)) {
         this.middlewares.delete(value);
+        this.sortedMiddlewares = undefined;
       } else if (isSettings(value)) {
         this.removeSettings(value);
       } else if (isSettingsHandler(value)) {
@@ -232,6 +234,7 @@ export class App {
         this.services.add(item);
       } else if (isMiddleware(value)) {
         this.middlewares.add(value);
+        this.sortedMiddlewares = undefined;
       } else if (isSettings(value)) {
         this.settings.add(value);
         settings.push(value);
@@ -312,10 +315,22 @@ export class App {
     return requestContext;
   }
 
+  private getSortedMiddlewares() {
+    if (this.sortedMiddlewares) return this.sortedMiddlewares;
+    this.sortedMiddlewares = sortByDeps(
+      [...this.middlewares].map((value) => ({
+        value,
+        deps: value.$options.deps,
+        priority: value.$options.priority,
+      })),
+    ).map((item) => item.value);
+    return this.sortedMiddlewares;
+  }
+
   async request(request: Request, context?: RequestContext): Promise<any> {
     if (!context) context = this.createRequestContext(request);
     log("request", context.resolve(RequestUrl).pathname);
-    for (const middleware of this.middlewares) {
+    for (const middleware of this.getSortedMiddlewares()) {
       const $md = context.resolve(middleware);
       const response = await $md.onRequest();
       if (response && response instanceof Response) {
@@ -426,6 +441,7 @@ export class App {
     this.routes.clear();
     this.services.clear();
     this.middlewares.clear();
+    this.sortedMiddlewares = undefined;
     this.settings.clear();
     this.api.clear();
     this.context.resolve(EJSON).clear();
