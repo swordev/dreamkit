@@ -323,8 +323,8 @@ export class App {
         for (const [name, value] of headers.entries()) {
           response.headers.set(name, value);
         }
+        return response;
       }
-      return response;
     }
   }
 
