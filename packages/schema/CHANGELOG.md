@@ -1,5 +1,11 @@
 # @dreamkit/schema
 
+## 0.0.12
+
+### Patch Changes
+
+- [`560ddd4`](https://github.com/swordev/dreamkit/commit/560ddd46d1e95bae3bf5fb346fedc3681fc8b7b1) Thanks [@juanrgm](https://github.com/juanrgm)! - Add `partial` method
+
 ## 0.0.11
 
 ### Patch Changes
