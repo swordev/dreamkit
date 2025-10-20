@@ -6,7 +6,7 @@ import {
   isMiddleware,
   type MiddlewareConstructor,
 } from "./builders/MiddlewareBuilder.js";
-import { Route } from "./builders/RouteBuilder.js";
+import { type Route } from "./builders/RouteBuilder.js";
 import { Serializer } from "./builders/SerializerBuilder.js";
 import {
   isService,
@@ -33,7 +33,7 @@ import {
 import { isRoute, kindApp } from "./utils/kind.js";
 import { log } from "./utils/log.js";
 import { type Func } from "@dreamkit/func";
-import { getKinds, kindOf } from "@dreamkit/kind";
+import { kindOf } from "@dreamkit/kind";
 import { isPlainObject, merge, sortByDeps } from "@dreamkit/utils/object.js";
 
 export class App {
@@ -61,11 +61,12 @@ export class App {
       (data: { id: string; value: unknown; action: "add" | "remove" }) => any
     >(),
   };
-  constructor() {
+  constructor(input?: Record<string, any> | any[]) {
     this.context = new AppContext()
       .register(App, { value: this })
       .register(EJSON, { value: new EJSON([]) });
     this.context.register(AppContext, { value: this.context });
+    if (input) this.addSync(input);
   }
   static instance(): App {
     const value = (globalThis as any)[App.instanceKey];
@@ -102,8 +103,9 @@ export class App {
     }
     throw new Error("Object not found");
   }
-  async remove(ids: string[]): Promise<void> {
-    for (const id of ids) {
+  async remove(items: any[]): Promise<void> {
+    for (const item of items) {
+      const id = typeof item === "string" ? item : this.getObjectId(item);
       const value = this.objects.get(id);
       if (!value) throw new Error(`Object not found: ${id}`);
       const path = this.objectsPath.get(id);
@@ -218,10 +220,7 @@ export class App {
     return Object.fromEntries(entries);
   }
 
-  async add(input: Record<string, any> | any[]): Promise<void> {
-    let loadSettingsHandler = false;
-    const services: AppService[] = [];
-    const settings: SettingsConstructor[] = [];
+  private *addSync(input: Record<string, any> | any[]) {
     const objects = this.resolveEntry(input);
     for (const [id, value] of Object.entries(objects)) {
       const path = this.normalizeObjectPath(id);
@@ -230,16 +229,13 @@ export class App {
         this.routes.add(value);
       } else if (isService(value)) {
         const item = this.addService(value);
-        services.push(item);
         this.services.add(item);
       } else if (isMiddleware(value)) {
         this.middlewares.add(value);
         this.sortedMiddlewares = undefined;
       } else if (isSettings(value)) {
         this.settings.add(value);
-        settings.push(value);
       } else if (isSettingsHandler(value)) {
-        loadSettingsHandler = true;
         this.settingsHandler = value;
         this.context.register(SettingsHandler, {
           singleton: true,
@@ -259,27 +255,32 @@ export class App {
         this.unknownObjectIds.add(id);
       }
 
-      /*
-      // [review] require create a dependency for removing
-      
-      if (is(value, IocBaseClass)) {
-        const params = normalizeIocParams(value.$ioc.params);
-        for (const key in params) {
-          const { value } = params[key].options;
-          if (isSettings(value)) {
-            this.settings.add(value);
-            settings.push(value);
-          }
-        }
-      }*/
-
       this.objects.set(id, value);
+
+      yield { id, value };
+    }
+  }
+
+  async add(input: Record<string, any> | any[]): Promise<void> {
+    const settingsHandler = this.settingsHandler;
+    const services: AppService[] = [];
+    const settings: SettingsConstructor[] = [];
+    for (const { id, value } of this.addSync(input)) {
+      if (this.started) {
+        if (isService(value)) {
+          const lastService = [...this.services][this.services.size - 1];
+          services.push(lastService);
+        } else if (isSettings(value)) {
+          settings.push(value);
+        }
+      }
       for (const cb of this.listeners.add) await cb({ id, value });
       for (const cb of this.listeners.change)
         await cb({ id, value, action: "add" });
     }
+
     if (this.started) {
-      if (loadSettingsHandler)
+      if (settingsHandler !== this.settingsHandler)
         await this.context.resolve(SettingsHandler, { abstract: true }).load();
       for (const setting of settings) await this.registerSettings(setting);
       for (const service of services) await this.startService(service);
