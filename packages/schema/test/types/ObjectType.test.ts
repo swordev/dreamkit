@@ -1,4 +1,4 @@
-import { NumberType, StringType, s } from "../../src/index.js";
+import { InferType, NumberType, StringType, s } from "../../src/index.js";
 import { describe, expect, expectTypeOf, it } from "vitest";
 
 describe("object.type", () => {
@@ -88,6 +88,40 @@ describe("object.require", () => {
       .require({ a: true });
     expect($.props.a.flags).toEqual({});
     expect($.props.b.flags).toEqual({ optional: true });
+  });
+});
+
+describe("object.partial", () => {
+  it("create partial type", () => {
+    const $ = s.object({ a: s.string(), b: s.string() }).partial({ a: true });
+    expectTypeOf<InferType<typeof $>>().toEqualTypeOf<{
+      a?: string;
+      b: string;
+    }>();
+    expect($.props.a.flags).toEqual({ optional: true });
+    expect($.props.b.flags).toEqual({});
+  });
+
+  it("create fullpartial type", () => {
+    const $ = s
+      .object({
+        a: s.string(),
+        b: s.string(),
+        c: s.object({
+          d: s.string(),
+        }),
+      })
+      .partial();
+    expectTypeOf<InferType<typeof $>>().toEqualTypeOf<{
+      a?: string;
+      b?: string;
+      c?: {
+        d: string;
+      };
+    }>();
+    expect($.props.a.flags).toEqual({ optional: true });
+    expect($.props.b.flags).toEqual({ optional: true });
+    expect($.props.c.flags).toEqual({ optional: true });
   });
 });
 describe("object.deepNullish", () => {

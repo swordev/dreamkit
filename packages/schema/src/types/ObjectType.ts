@@ -258,7 +258,6 @@ export class ObjectType<
       ) as P,
     });
   }
-
   require(): ObjectType<
     {
       [K in keyof P]: ConvertType<P[K], $.TypeFlag.Name.Required>;
@@ -280,6 +279,31 @@ export class ObjectType<
                   optional: undefined,
                   nullable: undefined,
                 })
+              : prop;
+          return props;
+        },
+        {} as ObjectTypeProps,
+      ) as P,
+    });
+  }
+  partial(): ObjectType<
+    {
+      [K in keyof P]: ConvertType<P[K], $.TypeFlag.Name.Optional>;
+    },
+    F
+  >;
+  partial<
+    Mask extends {
+      [k in keyof P]?: true;
+    },
+  >(mask: Mask): ConvertObjectType<this, Mask, $.TypeFlag.Name.Optional>;
+  partial(mask?: Record<string, boolean>): any {
+    return this.clone({
+      props: Object.entries(this.options.props).reduce(
+        (props, [name, prop]) => {
+          props[name] =
+            !mask || mask[name]
+              ? (prop as $.Type)["clone"]({ optional: true })
               : prop;
           return props;
         },
