@@ -2,6 +2,7 @@ export { ResponseHeaders } from "./ResponseHeaders.js";
 export { isRoute, isApp } from "./utils/kind.js";
 export { isApi } from "./builders/ApiBuilder.js";
 export { App } from "./App.js";
+export { AppError } from "./AppError.js";
 export { defineRoutePath, type RoutePathFunc } from "./routePath.js";
 export { EJSON, type EJSONEncodedObject } from "./EJSON.js";
 // contexts
@@ -26,9 +27,9 @@ export { $settings } from "./objects/$settings.js";
 export {
   Settings,
   SettingsBuilder,
+  isSettings,
   type SettingsConstructor,
   type SettingsData,
-  isSettings,
 } from "./builders/SettingsBuilder.js";
 export {
   Middleware,

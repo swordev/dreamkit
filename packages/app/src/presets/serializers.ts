@@ -1,3 +1,4 @@
+import { AppError } from "../AppError.js";
 import { $serializer } from "../objects/$serializer.js";
 import { TypeAssertError } from "@dreamkit/schema";
 
@@ -23,8 +24,14 @@ export const dateSerializer = $serializer.create({
 
 export const typeAssertErrorSerializer = $serializer.create({
   key: "TypeAssertError",
-  priority: -1,
   is: (input) => input instanceof TypeAssertError,
   to: (input) => input.errors,
   from: (input) => new TypeAssertError(input),
+});
+
+export const appErrorSerializer = $serializer.create({
+  key: "AppError",
+  is: (input) => input instanceof AppError,
+  to: (input) => ({ message: input.message, cause: input.cause }),
+  from: (input) => new AppError(input.message, { cause: input.cause }),
 });
