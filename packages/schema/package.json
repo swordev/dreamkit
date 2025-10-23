@@ -30,7 +30,11 @@
     "@dreamkit/utils": "workspace:*",
     "@types/json-schema": "^7.0.15"
   },
+  "peerDependencies": {
+    "@standard-schema/spec": "^1.0.0"
+  },
   "devDependencies": {
-    "@dreamkit/tsconfig": "workspace:*"
+    "@dreamkit/tsconfig": "workspace:*",
+    "@standard-schema/spec": "^1.0.0"
   }
 }

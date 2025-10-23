@@ -1,4 +1,4 @@
-import type { MinimalType } from "./types/MinimalType.js";
+import type { StandardSchemaV1 } from "@standard-schema/spec";
 
 export type Nullish<V, F> = F extends { null: true }
   ? null
@@ -7,8 +7,5 @@ export type Nullish<V, F> = F extends { null: true }
       | (F extends { nullable: true } ? null : never)
       | (F extends { optional: true } ? undefined : never);
 
-export type TypeDef<T extends MinimalType> =
-  // @ts-expect-error
-  T["def"];
-
-export type InferType<T extends MinimalType> = Nullish<TypeDef<T>, T["flags"]>;
+export type InferType<T extends StandardSchemaV1> =
+  StandardSchemaV1.InferOutput<T>;

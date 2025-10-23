@@ -1,6 +1,6 @@
 import { TypeContext } from "../context.js";
 import { type TypeFlag, flagValues } from "../flags.js";
-import { InferType, TypeDef } from "../infer.js";
+import type { InferType } from "../infer.js";
 import { kindSchema } from "../utils/kind.js";
 import {
   TypeAssertError,
@@ -8,6 +8,7 @@ import {
   type TypeAssertErrorData,
 } from "../validation.js";
 import { MinimalType } from "./MinimalType.js";
+import type { StandardSchemaV1 } from "@standard-schema/spec";
 import type { JSONSchema7 } from "json-schema";
 
 export type TypeConstructor<T extends Type = Type> = {
@@ -43,6 +44,16 @@ export abstract class Type<
       if (flagValues.includes(key as any))
         (this.flags as any)[key] = (options as any)[key];
     }
+    const validate: StandardSchemaV1<D>["~standard"]["validate"] = (value) => {
+      return {
+        value,
+        issues: this.validate(value).map((v) => ({
+          message: v.message ?? "",
+          path: v.path,
+        })),
+      };
+    };
+    (this["~standard"] as any)["validate"] = validate;
   }
   protected onClone(options: O): Type {
     const Constructor = (this as any).constructor;
@@ -126,15 +137,15 @@ export abstract class Type<
   test(value: unknown): value is InferType<this> {
     return !this.validate(value).length;
   }
-  assert(value: unknown): asserts value is TypeDef<this> {
+  assert(value: unknown): asserts value is InferType<this> {
     const errors = this.validate(value);
     if (errors.length) throw new TypeAssertError(errors);
   }
-  parse(input: TypeDef<this>, context?: TypeContext): unknown {
+  parse(input: InferType<this>, context?: TypeContext): unknown {
     if (!context) context = new TypeContext({ input });
     return this.onParse(input, context) as any;
   }
-  safeParse(input: TypeDef<this>): InferType<this> {
+  safeParse(input: InferType<this>): InferType<this> {
     const parsed = this.parse(input);
     this.assert(parsed);
     return parsed as any;

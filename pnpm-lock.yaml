@@ -304,6 +304,9 @@ importers:
       '@dreamkit/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
+      '@standard-schema/spec':
+        specifier: ^1.0.0
+        version: 1.0.0
 
   packages/site:
     dependencies:

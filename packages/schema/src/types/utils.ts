@@ -4,7 +4,7 @@ export {
   type TypeAssertErrorData as TypeAssertErrorData,
 } from "../validation.js";
 export { TypeFlag } from "../flags.js";
-export type { TypeDef } from "../infer.js";
+export type { InferType as TypeDef } from "../infer.js";
 export { kindSchema as kind } from "../utils/kind.js";
 export { MinimalType } from "./MinimalType.js";
 export { Type, type TypeOptions } from "./Type.js";
