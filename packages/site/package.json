@@ -29,15 +29,15 @@
     "start": "astro dev"
   },
   "dependencies": {
-    "@astrojs/check": "^0.9.4",
-    "@astrojs/solid-js": "^5.1.1",
-    "@astrojs/starlight": "^0.36.1",
+    "@astrojs/check": "^0.9.5",
+    "@astrojs/solid-js": "^5.1.2",
+    "@astrojs/starlight": "^0.36.2",
     "@stackblitz/sdk": "^1.11.0",
-    "astro": "^5.14.5",
+    "astro": "^5.15.3",
     "better-sqlite3": "^12.4.1",
     "client-zip": "^2.5.0",
     "dreamkit": "workspace:*",
-    "solid-js": "^1.9.9",
+    "solid-js": "^1.9.10",
     "typescript": "^5.9.3"
   },
   "devDependencies": {
