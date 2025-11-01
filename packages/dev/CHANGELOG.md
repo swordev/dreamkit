@@ -1,5 +1,16 @@
 # @dreamkit/dev
 
+## 0.0.37
+
+### Patch Changes
+
+- [`0d91650`](https://github.com/swordev/dreamkit/commit/0d916503a1434edac0d775ada1f5195d668936bd) Thanks [@juanrgm](https://github.com/juanrgm)! - Update deps
+
+- Updated dependencies [[`afbadcd`](https://github.com/swordev/dreamkit/commit/afbadcdf23ec1cec52034ff13aad6d34b996a777), [`5edf0ca`](https://github.com/swordev/dreamkit/commit/5edf0ca8f64c547c1cdb766d23eed7bf3ef716d8), [`9e85b60`](https://github.com/swordev/dreamkit/commit/9e85b60cafedb93511d043cc6992b934dc81c87d), [`07952f7`](https://github.com/swordev/dreamkit/commit/07952f73949199961ed21250aebf38a0b95d8674), [`3974886`](https://github.com/swordev/dreamkit/commit/39748862899cf67ae1f73d4b4ce369dbf146b06c)]:
+  - @dreamkit/app@0.0.29
+  - @dreamkit/schema@0.0.13
+  - @dreamkit/node-app@0.0.24
+
 ## 0.0.36
 
 ### Patch Changes
