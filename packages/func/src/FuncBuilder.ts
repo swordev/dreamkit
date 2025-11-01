@@ -17,10 +17,17 @@ import {
   IocRegistryKey,
   IocRegistryValue,
 } from "@dreamkit/ioc";
-import { getKinds, kind, kindOf } from "@dreamkit/kind";
+import { createKind, getKinds, kind, kindOf } from "@dreamkit/kind";
 import { ObjectType, ObjectTypeProps, Type } from "@dreamkit/schema";
 
+export const [kindFuncBuilder, isFuncBuilder] = createKind<FuncBuilder>(
+  "@dreamkit/FuncBuilder",
+);
+
 export class FuncBuilder<T extends FuncData = FuncData> {
+  static {
+    kindFuncBuilder(this);
+  }
   readonly data: T;
   readonly options: FuncOptions;
   constructor(options: FuncOptions<T>) {

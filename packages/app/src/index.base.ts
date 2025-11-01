@@ -1,6 +1,6 @@
 export { ResponseHeaders } from "./ResponseHeaders.js";
 export { isRoute, isApp } from "./utils/kind.js";
-export { isApi } from "./builders/ApiBuilder.js";
+export { isApi, isApiBuilder } from "./builders/ApiBuilder.js";
 export { App } from "./App.js";
 export { AppError } from "./AppError.js";
 export { defineRoutePath, type RoutePathFunc } from "./routePath.js";
