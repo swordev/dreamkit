@@ -51,8 +51,12 @@ export class StringType<F extends $.TypeFlag.Options = {}> extends $.Type<
   protected override onJsonSchema(): $.JSONSchema7 {
     return {
       type: ["string", ...(this.options.nullable ? ["null" as const] : [])],
-      minLength: this.options.min,
-      maxLength: this.options.max,
+      ...(this.options.min !== undefined && {
+        minLength: this.options.min,
+      }),
+      ...(this.options.max !== undefined && {
+        maxLength: this.options.max,
+      }),
     };
   }
   min(value: number) {
