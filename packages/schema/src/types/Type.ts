@@ -154,7 +154,9 @@ export abstract class Type<
   toJsonSchema(): JSONSchema7 {
     return this.onJsonSchema();
   }
-  meta(data: Record<string, any>): this {
-    return this.clone({ meta: { ...this.options.meta, ...data } } as any);
+  meta(data: Record<string, any> | undefined): this {
+    return this.clone({
+      meta: data === undefined ? undefined : { ...this.options.meta, ...data },
+    } as any);
   }
 }

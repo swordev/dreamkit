@@ -10,4 +10,8 @@ describe("type.meta", () => {
     const t = s.string().meta({ info: "data" }).meta({ info2: "data" });
     expect(t.options.meta).toEqual({ info: "data", info2: "data" });
   });
+  it("remove meta data", () => {
+    const t = s.string().meta({ info: "data" }).meta(undefined);
+    expect(t.options.meta).toEqual(undefined);
+  });
 });
