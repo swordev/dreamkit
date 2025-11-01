@@ -1,5 +1,17 @@
 # @dreamkit/schema
 
+## 0.0.13
+
+### Patch Changes
+
+- [`5edf0ca`](https://github.com/swordev/dreamkit/commit/5edf0ca8f64c547c1cdb766d23eed7bf3ef716d8) Thanks [@juanrgm](https://github.com/juanrgm)! - Allow type as custom test
+
+- [`9e85b60`](https://github.com/swordev/dreamkit/commit/9e85b60cafedb93511d043cc6992b934dc81c87d) Thanks [@juanrgm](https://github.com/juanrgm)! - Add test assert
+
+- [`07952f7`](https://github.com/swordev/dreamkit/commit/07952f73949199961ed21250aebf38a0b95d8674) Thanks [@juanrgm](https://github.com/juanrgm)! - Save description
+
+- [`3974886`](https://github.com/swordev/dreamkit/commit/39748862899cf67ae1f73d4b4ce369dbf146b06c) Thanks [@juanrgm](https://github.com/juanrgm)! - Add meta option
+
 ## 0.0.12
 
 ### Patch Changes
