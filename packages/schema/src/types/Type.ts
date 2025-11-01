@@ -17,6 +17,7 @@ export type TypeConstructor<T extends Type = Type> = {
 
 export type TypeOptions<O = {}> = TypeFlag.Options & {
   title?: string;
+  meta?: Record<string, any>;
   refine?: (input: any) => boolean | TypeAssertErrorData[];
 } & O;
 
@@ -152,5 +153,8 @@ export abstract class Type<
   }
   toJsonSchema(): JSONSchema7 {
     return this.onJsonSchema();
+  }
+  meta(data: Record<string, any>): this {
+    return this.clone({ meta: { ...this.options.meta, ...data } } as any);
   }
 }
