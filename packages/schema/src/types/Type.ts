@@ -17,6 +17,7 @@ export type TypeConstructor<T extends Type = Type> = {
 
 export type TypeOptions<O = {}> = TypeFlag.Options & {
   title?: string;
+  description?: string;
   meta?: Record<string, any>;
   refine?: (input: any) => boolean | TypeAssertErrorData[];
 } & O;
@@ -91,6 +92,9 @@ export abstract class Type<
   }
   title(value: string | undefined): this {
     return this.clone({ title: value } as any);
+  }
+  description(value: string | undefined): this {
+    return this.clone({ description: value } as any);
   }
   // [workaround] https://github.com/microsoft/TypeScript/issues/6223
   nullable(): Type<D, TypeFlag.Nullable<F>, N> {

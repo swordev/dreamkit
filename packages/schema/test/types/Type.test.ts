@@ -15,3 +15,14 @@ describe("type.meta", () => {
     expect(t.options.meta).toEqual(undefined);
   });
 });
+
+describe("type.description", () => {
+  it("save description", () => {
+    const t = s.string().description("User name").min(1).max(5);
+    expect(t.options.description).toEqual("User name");
+  });
+  it("remove description", () => {
+    const t = s.string().description("User name").description(undefined);
+    expect(t.options.description).toEqual(undefined);
+  });
+});
