@@ -118,7 +118,7 @@ export abstract class Type<
       context || new TypeContext({ ...this.context, input }),
     );
   }
-  test(value: unknown): boolean {
+  test(value: unknown): value is InferType<this> {
     return !this.validate(value).length;
   }
   assert(value: unknown): asserts value is TypeDef<this> {
