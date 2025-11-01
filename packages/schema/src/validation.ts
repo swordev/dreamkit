@@ -4,7 +4,7 @@ import { typeOf } from "./utils/object.js";
 
 export type TypeAssertErrorData<C extends string = any> = {
   path: string[];
-  code: C;
+  code?: C;
   expected?: string;
   received?: string;
   message?: string;
