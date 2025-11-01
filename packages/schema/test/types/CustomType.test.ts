@@ -1,4 +1,4 @@
-import { s } from "../../src/index.js";
+import { ObjectType, s } from "../../src/index.js";
 import { describe, expect, it } from "vitest";
 
 describe("custom.test", () => {
@@ -12,7 +12,7 @@ describe("custom.test", () => {
   it("with assert as options and refine", () => {
     const httpsUrlType = s
       .custom({
-        assert: (value) => typeof value === "string",
+        test: (value) => typeof value === "string",
       })
       .refine((value) => value.startsWith("https://"));
     expect(httpsUrlType.test("https://example.com")).toBe(true);
@@ -33,5 +33,26 @@ describe("custom.test", () => {
   it("without assert", () => {
     const special = s.custom<{ value: string }>();
     expect(special.test(1)).toBe(true);
+  });
+
+  it("with type", () => {
+    const derived = s.custom(
+      s.object({
+        id: s.string(),
+        name: s.string(),
+      }),
+    );
+    expect(derived.test({ id: "1", name: "test" })).toBe(true);
+    expect(derived.test({ id: 1, name: "test" })).toBe(false);
+    expect(derived.options.test).toBeInstanceOf(ObjectType);
+    expect(derived.toJsonSchema()).toEqual({
+      type: ["object"],
+      required: ["id", "name"],
+      additionalProperties: false,
+      properties: {
+        id: { type: ["string"] },
+        name: { type: ["string"] },
+      },
+    });
   });
 });

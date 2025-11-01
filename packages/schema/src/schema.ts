@@ -6,6 +6,8 @@ import { FileType } from "./types/FileType.js";
 import { NumberType } from "./types/NumberType.js";
 import { ObjectType, type ObjectTypeProps } from "./types/ObjectType.js";
 import { StringType } from "./types/StringType.js";
+import { Type } from "./types/Type.js";
+import { kindOf } from "@dreamkit/kind";
 
 export type SchemaOptions = {
   title?: string;
@@ -44,17 +46,17 @@ export class Schema {
     return new FileType(this.typeOptions);
   }
   custom<T>(
-    assert?: SelfCustomTypeOptions<T>["assert"],
-    options?: Omit<SelfCustomTypeOptions<T>, "assert">,
+    test?: SelfCustomTypeOptions<T>["test"],
+    options?: Omit<SelfCustomTypeOptions<T>, "test">,
   ): CustomType<T>;
   custom<T>(options: SelfCustomTypeOptions<T>): CustomType<T>;
   custom<T>(...args: any[]): CustomType {
-    if (typeof args[0] === "function") {
-      const [assert, options] = args as [
-        SelfCustomTypeOptions<T>["assert"],
-        Omit<SelfCustomTypeOptions<T>, "assert">,
+    if (typeof args[0] === "function" || kindOf(args[0], Type)) {
+      const [test, options] = args as [
+        SelfCustomTypeOptions<T>["test"],
+        Omit<SelfCustomTypeOptions<T>, "test">,
       ];
-      return new CustomType<T>({ assert, ...options });
+      return new CustomType<T>({ test, ...options });
     } else if (args.length === 2) {
       const [, options] = args as [any, SelfCustomTypeOptions<T>];
       return new CustomType<T>(options);

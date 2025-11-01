@@ -1,11 +1,12 @@
 import * as $ from "./utils.js";
+import { kindOf } from "@dreamkit/kind";
 
 export type SelfCustomTypeOptions<T> = {
-  assert?: (input: any) => input is T;
   onCast?: (input: any) => any;
   onRegex?: () => RegExp;
   onJsonSchema?: () => $.JSONSchema7;
   expected?: string;
+  test?: ((input: any) => input is T) | $.MinimalType<T>;
 };
 
 export type CustomTypeOptions<T> = $.TypeOptions<SelfCustomTypeOptions<T>>;
@@ -34,9 +35,16 @@ export class CustomType<
   protected override onValidate(value: unknown, context: $.TypeContext) {
     const val = this.validation(value, context);
     if (!val.next()) return val.errors;
-    if (this.options.assert && !this.options.assert(value))
-      return val.addTypeError(this.options.expected);
+    const test = this.options.test;
+    if (kindOf(test, $.Type)) {
+      if (!test.test(value)) return val.addTypeError(this.options.expected);
+    } else if (typeof test === "function") {
+      if (!(test as any)(value)) return val.addTypeError(this.options.expected);
+    }
     return val.end();
+  }
+  protected getTypeTestOption(): $.Type | undefined {
+    return this.options.test instanceof $.Type ? this.options.test : undefined;
   }
   protected override onCast(input: unknown): unknown {
     return this.options.onCast
@@ -44,11 +52,13 @@ export class CustomType<
       : super.onCast(input);
   }
   protected override onRegex(): RegExp {
-    return this.options.onRegex ? this.options.onRegex() : super.onRegex();
+    return this.options.onRegex
+      ? this.options.onRegex()
+      : (this.getTypeTestOption()?.regex() ?? super.onRegex());
   }
   protected override onJsonSchema(): $.JSONSchema7 {
     return this.options.onJsonSchema
       ? this.options.onJsonSchema()
-      : super.onJsonSchema();
+      : (this.getTypeTestOption()?.toJsonSchema() ?? super.onJsonSchema());
   }
 }
