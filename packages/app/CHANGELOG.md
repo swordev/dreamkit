@@ -1,5 +1,11 @@
 # @dreamkit/app
 
+## 0.0.30
+
+### Patch Changes
+
+- [`2392cc0`](https://github.com/swordev/dreamkit/commit/2392cc05383f4e9c92c14f86330c383d461c9bc0) Thanks [@juanrgm](https://github.com/juanrgm)! - Save default key as object id
+
 ## 0.0.29
 
 ### Patch Changes
