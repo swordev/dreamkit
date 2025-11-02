@@ -176,7 +176,9 @@ export class App {
       path
         .split(/[:/]/)
         .map((value) => {
-          if (
+          if (value === "default" || value.startsWith("_")) {
+            return undefined;
+          } else if (
             /^index\.[mc]?([jt]s)x?$/.test(value) ||
             value === "." ||
             !value.length
@@ -208,10 +210,7 @@ export class App {
       ([id, value]): [string, any][] => {
         if (isPlainObject(value) || Array.isArray(value)) {
           return Object.entries(this.resolveEntry(value)).map(
-            ([childId, childValue]) => [
-              id === "default" ? childId : `${id}:${childId}`,
-              childValue,
-            ],
+            ([childId, childValue]) => [`${id}:${childId}`, childValue],
           );
         }
         return [[id, value]];
