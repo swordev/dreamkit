@@ -1,6 +1,7 @@
 import { TypeContext } from "../context.js";
 import { type TypeFlag, flagValues } from "../flags.js";
 import type { InferType } from "../infer.js";
+import { SchemaMeta } from "../override.js";
 import { kindSchema } from "../utils/kind.js";
 import {
   TypeAssertError,
@@ -19,7 +20,7 @@ export type TypeConstructor<T extends Type = Type> = {
 export type TypeOptions<O = {}> = TypeFlag.Options & {
   title?: string;
   description?: string;
-  meta?: Record<string, any>;
+  meta?: SchemaMeta;
   refine?: (input: any) => boolean | TypeAssertErrorData[];
 } & O;
 
@@ -169,7 +170,7 @@ export abstract class Type<
   toJsonSchema(): JSONSchema7 {
     return this.onJsonSchema();
   }
-  meta(data: Record<string, any> | undefined): this {
+  meta(data: SchemaMeta | undefined): this {
     return this.clone({
       meta: data === undefined ? undefined : { ...this.options.meta, ...data },
     } as any);
