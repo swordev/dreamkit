@@ -5,7 +5,7 @@ import {
   type IocParamsConfig,
   type IocParamsUserConfig,
 } from "./params.js";
-import { IocRegistryData } from "./registry.js";
+import type { IocRegistryData } from "./registry.js";
 
 export type IocFunc<
   P extends IocParamsUserConfig = IocParamsUserConfig,

@@ -1,14 +1,14 @@
 import {
-  IocParams,
-  IocParamsUserConfig,
+  type IocParams,
+  type IocParamsUserConfig,
   assignParams,
   attachIocMeta,
   isIocObject,
 } from "./params.js";
-import { IocRegistryData } from "./registry.js";
+import type { IocRegistryData } from "./registry.js";
 import { iocKind } from "./utils/kind.js";
 import { capitalize } from "./utils/string.js";
-import {
+import type {
   AbstractConstructor,
   ConstructorArg,
   ObjectToArray,
