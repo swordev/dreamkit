@@ -8,3 +8,4 @@ export {
   TypeAssertError,
   type TypeAssertErrorData,
 } from "./validation.js";
+export { Schema, type SchemaOptions } from "./schema.js";
