@@ -9,7 +9,7 @@ export type NumberTypeOptions = $.TypeOptions<{
 export class MinimalNumberType<
   F extends $.TypeFlag.Options = {},
 > extends $.MinimalType<number, F, "number"> {
-  override readonly type = "number" as const;
+  override readonly kind = "number" as const;
 }
 
 export class NumberType<F extends $.TypeFlag.Options = {}> extends $.Type<
@@ -21,7 +21,7 @@ export class NumberType<F extends $.TypeFlag.Options = {}> extends $.Type<
   static {
     $.kind(this, "NumberType");
   }
-  override readonly type = "number" as const;
+  override readonly kind = "number" as const;
   declare nullable: () => NumberType<$.TypeFlag.Nullable<F>>;
   declare optional: () => NumberType<$.TypeFlag.Optional<F>>;
   declare nullish: () => NumberType<$.TypeFlag.Nullish<F>>;

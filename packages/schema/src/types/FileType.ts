@@ -13,7 +13,7 @@ const type = "file" as const;
 export class MinimalFileType<
   F extends $.TypeFlag.Options = {},
 > extends $.MinimalType<File, F, typeof type> {
-  override readonly type = type;
+  override readonly kind = type;
 }
 
 export class FileType<F extends $.TypeFlag.Options = {}> extends $.Type<
@@ -25,7 +25,7 @@ export class FileType<F extends $.TypeFlag.Options = {}> extends $.Type<
   static {
     $.kind(this, "FileType");
   }
-  override readonly type = type;
+  override readonly kind = type;
   declare nullable: () => FileType<$.TypeFlag.Nullable<F>>;
   declare optional: () => FileType<$.TypeFlag.Optional<F>>;
   declare nullish: () => FileType<$.TypeFlag.Nullish<F>>;

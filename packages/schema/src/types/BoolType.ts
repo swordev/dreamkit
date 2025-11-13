@@ -7,7 +7,7 @@ const type = "bool" as const;
 export class MinimalBoolType<
   F extends $.TypeFlag.Options = {},
 > extends $.MinimalType<boolean, F, typeof type> {
-  override readonly type = type;
+  override readonly kind = type;
 }
 
 export class BoolType<F extends $.TypeFlag.Options = {}> extends $.Type<
@@ -19,7 +19,7 @@ export class BoolType<F extends $.TypeFlag.Options = {}> extends $.Type<
   static {
     $.kind(this, "BoolType");
   }
-  override readonly type = type;
+  override readonly kind = type;
   declare nullable: () => BoolType<$.TypeFlag.Nullable<F>>;
   declare optional: () => BoolType<$.TypeFlag.Optional<F>>;
   declare nullish: () => BoolType<$.TypeFlag.Nullish<F>>;

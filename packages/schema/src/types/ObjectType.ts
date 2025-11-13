@@ -98,7 +98,7 @@ export class MinimalObjectType<
   "object"
 > {
   readonly props!: P;
-  override readonly type = "object" as const;
+  override readonly kind = "object" as const;
 }
 
 export class ObjectType<
@@ -119,7 +119,7 @@ export class ObjectType<
   static {
     $.kind(this, "ObjectType");
   }
-  override readonly type = "object" as const;
+  override readonly kind = "object" as const;
   declare nullable: () => ObjectType<P, $.TypeFlag.Nullable<F>>;
   declare optional: () => ObjectType<P, $.TypeFlag.Optional<F>>;
   declare nullish: () => ObjectType<P, $.TypeFlag.Nullish<F>>;
@@ -168,24 +168,40 @@ export class ObjectType<
     const { props, ...otherOptions } = options;
     return new ObjectType(props, otherOptions);
   }
-  create(
+  createWith(
     data: any,
-    cb?: (data: { path: string[]; type: $.Type; value: any }) => any,
-    path?: string[],
+    mapper?: (data: {
+      name: string;
+      selfName: string;
+      path: string[];
+      type: $.Type;
+      value: any;
+    }) => any,
+    parentPath?: string[],
     output: Record<string, any> = {},
   ): any {
     for (const name in this.props) {
       const type = this.props[name] as any as $.Type;
-      const typePath = [...(path || []), name];
+      const path = [...(parentPath || []), name];
       const value = data?.[name];
       if (
         kindOf(type, ObjectType) &&
         (!!value || (!type.options.nullable && !type.options.optional))
       ) {
-        output[name] = {};
-        type.create(value, cb, typePath, output[name]);
+        output[name] = type.createWith(value, mapper, path);
       } else {
-        const newValue = cb ? cb({ path: typePath, type, value }) : value;
+        let pathName: string | undefined;
+        const newValue = mapper
+          ? mapper({
+              path,
+              type,
+              value,
+              selfName: name,
+              get name() {
+                return pathName || (pathName = path.join("."));
+              },
+            })
+          : value;
         if (newValue !== undefined) output[name] = newValue;
       }
     }

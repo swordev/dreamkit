@@ -2,16 +2,13 @@ import type { TypeFlag } from "../flags.js";
 import type { Nullish } from "../infer.js";
 import type { StandardSchemaV1 } from "@standard-schema/spec";
 
-export const kind = Symbol("kind");
-
 export class MinimalType<
   D = any,
   F extends TypeFlag.Options = {},
-  N extends string = string,
+  K extends string = string,
 > implements StandardSchemaV1<D>
 {
-  readonly [kind]!: "schema";
-  readonly type!: N;
+  readonly kind!: K;
   get flagsValue(): F {
     return (this as any).options;
   }

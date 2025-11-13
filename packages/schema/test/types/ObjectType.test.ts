@@ -3,7 +3,7 @@ import { describe, expect, expectTypeOf, it } from "vitest";
 
 describe("object.type", () => {
   it("return type", () => {
-    expect(s.object({}).type).toBe("object");
+    expect(s.object({}).kind).toBe("object");
   });
 });
 
@@ -460,13 +460,13 @@ describe("object.prop", () => {
     }),
   });
   it("return the prop", () => {
-    expect(o.prop._id().type).toBe("number");
+    expect(o.prop._id().kind).toBe("number");
     expectTypeOf(o.prop._id()).toEqualTypeOf<NumberType>();
-    expect(o.prop.name().type).toBe("string");
+    expect(o.prop.name().kind).toBe("string");
     expectTypeOf(o.prop.name()).toEqualTypeOf<StringType>();
   });
   it("return nested prop", () => {
-    expect(o.prop.address.id().type).toBe("number");
+    expect(o.prop.address.id().kind).toBe("number");
     expectTypeOf(o.prop.address.id()).toEqualTypeOf<NumberType>();
   });
 });

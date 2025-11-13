@@ -7,7 +7,7 @@ const type = "any" as const;
 export class MinimalAnyType<
   F extends $.TypeFlag.Options = {},
 > extends $.MinimalType<any, F, typeof type> {
-  override readonly type = type;
+  override readonly kind = type;
 }
 
 export class AnyType<F extends $.TypeFlag.Options = {}> extends $.Type<
@@ -19,7 +19,7 @@ export class AnyType<F extends $.TypeFlag.Options = {}> extends $.Type<
   static {
     $.kind(this, "AnyType");
   }
-  override readonly type = type;
+  override readonly kind = type;
   declare nullable: () => AnyType<$.TypeFlag.Nullable<F>>;
   declare optional: () => AnyType<$.TypeFlag.Optional<F>>;
   declare nullish: () => AnyType<$.TypeFlag.Nullish<F>>;

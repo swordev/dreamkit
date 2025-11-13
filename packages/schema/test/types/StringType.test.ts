@@ -12,7 +12,7 @@ describe("MinimalStringType", () => {
 
 describe("string.type", () => {
   it("return type", () => {
-    expect(s.string().type).toBe("string");
+    expect(s.string().kind).toBe("string");
   });
 });
 

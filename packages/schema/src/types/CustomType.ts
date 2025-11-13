@@ -17,7 +17,7 @@ export class MinimalCustomType<
   T = any,
   F extends $.TypeFlag.Options = {},
 > extends $.MinimalType<T, F, typeof type> {
-  override readonly type = type;
+  override readonly kind = type;
 }
 
 export class CustomType<
@@ -27,7 +27,7 @@ export class CustomType<
   static {
     $.kind(this, "CustomType");
   }
-  override readonly type = type;
+  override readonly kind = type;
   declare nullable: () => CustomType<T, $.TypeFlag.Nullable<F>>;
   declare optional: () => CustomType<T, $.TypeFlag.Optional<F>>;
   declare nullish: () => CustomType<T, $.TypeFlag.Nullish<F>>;

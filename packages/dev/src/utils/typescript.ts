@@ -58,13 +58,13 @@ export function createType(type: Type): string {
     if (type.options.optional) values.push("undefined");
     return values.join(" | ");
   };
-  if (type.type === "string") {
+  if (type.kind === "string") {
     return tsType("string");
-  } else if (type.type === "number" || type.type === "integer") {
+  } else if (type.kind === "number" || type.kind === "integer") {
     return tsType("number");
-  } else if (type.type === "boolean") {
+  } else if (type.kind === "boolean") {
     return tsType("boolean");
-  } else if (type.type === "object") {
+  } else if (type.kind === "object") {
     const objectType = type as ObjectType;
     const props = Object.keys(objectType.options.props || {})
       .map((name) => {
@@ -75,7 +75,7 @@ export function createType(type: Type): string {
       })
       .join(", ");
     return `{ ${props} }`;
-  } else if (type.type === "array") {
+  } else if (type.kind === "array") {
     const arrayType = type as ArrayType;
     return tsType(`(${createType((arrayType.items as any) || {})})[]`);
   } else {

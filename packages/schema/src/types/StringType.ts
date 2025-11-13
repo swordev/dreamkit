@@ -8,7 +8,7 @@ export type StringTypeOptions = $.TypeOptions<{
 export class MinimalStringType<
   F extends $.TypeFlag.Options = {},
 > extends $.MinimalType<string, F, "string"> {
-  override readonly type = "string" as const;
+  override readonly kind = "string" as const;
 }
 
 export class StringType<F extends $.TypeFlag.Options = {}> extends $.Type<
@@ -20,7 +20,7 @@ export class StringType<F extends $.TypeFlag.Options = {}> extends $.Type<
   static {
     $.kind(this, "StringType");
   }
-  override readonly type = "string" as const;
+  override readonly kind = "string" as const;
   declare nullable: () => StringType<$.TypeFlag.Nullable<F>>;
   declare optional: () => StringType<$.TypeFlag.Optional<F>>;
   declare nullish: () => StringType<$.TypeFlag.Nullish<F>>;

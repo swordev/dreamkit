@@ -14,7 +14,7 @@ export class MinimalArrayType<
   I extends ArrayTypeItems = ArrayTypeItems,
   F extends $.TypeFlag.Options = {},
 > extends $.MinimalType<InferType<I>[], F, "array"> {
-  override readonly type = "array" as const;
+  override readonly kind = "array" as const;
   readonly items!: I;
 }
 
@@ -25,7 +25,7 @@ export class ArrayType<
   static {
     $.kind(this, "ArrayType");
   }
-  override readonly type = "array" as const;
+  override readonly kind = "array" as const;
   declare nullable: () => ArrayType<I, $.TypeFlag.Nullable<F>>;
   declare optional: () => ArrayType<I, $.TypeFlag.Optional<F>>;
   declare nullish: () => ArrayType<I, $.TypeFlag.Nullish<F>>;
