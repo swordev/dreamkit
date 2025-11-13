@@ -24,6 +24,9 @@ export class AnyType<F extends $.TypeFlag.Options = {}> extends $.Type<
   declare optional: () => AnyType<$.TypeFlag.Optional<F>>;
   declare nullish: () => AnyType<$.TypeFlag.Nullish<F>>;
   declare required: () => AnyType<$.TypeFlag.Required<F>>;
+  declare flags: <F2 extends $.SchemaFlags>(
+    flags: F2,
+  ) => AnyType<$.TypeFlag.Merge<F, F2>>;
   protected override onJsonSchema(): $.JSONSchema7 {
     return {};
   }

@@ -26,6 +26,9 @@ export class NumberType<F extends $.TypeFlag.Options = {}> extends $.Type<
   declare optional: () => NumberType<$.TypeFlag.Optional<F>>;
   declare nullish: () => NumberType<$.TypeFlag.Nullish<F>>;
   declare required: () => NumberType<$.TypeFlag.Required<F>>;
+  declare flags: <F2 extends $.SchemaFlags>(
+    flags: F2,
+  ) => NumberType<$.TypeFlag.Merge<F, F2>>;
   protected override onCast(value: unknown) {
     if (typeof value === "number") {
       return value;

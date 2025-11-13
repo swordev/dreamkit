@@ -24,6 +24,9 @@ export class BoolType<F extends $.TypeFlag.Options = {}> extends $.Type<
   declare optional: () => BoolType<$.TypeFlag.Optional<F>>;
   declare nullish: () => BoolType<$.TypeFlag.Nullish<F>>;
   declare required: () => BoolType<$.TypeFlag.Required<F>>;
+  declare flags: <F2 extends $.SchemaFlags>(
+    flags: F2,
+  ) => BoolType<$.TypeFlag.Merge<F, F2>>;
   protected override onCast(value: unknown) {
     if (typeof value === "boolean") {
       return value;

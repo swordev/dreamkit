@@ -25,6 +25,9 @@ export class StringType<F extends $.TypeFlag.Options = {}> extends $.Type<
   declare optional: () => StringType<$.TypeFlag.Optional<F>>;
   declare nullish: () => StringType<$.TypeFlag.Nullish<F>>;
   declare required: () => StringType<$.TypeFlag.Required<F>>;
+  declare flags: <F2 extends $.SchemaFlags>(
+    flags: F2,
+  ) => StringType<$.TypeFlag.Merge<F, F2>>;
   protected override onCast(value: unknown) {
     if (typeof value === "string") {
       return value;

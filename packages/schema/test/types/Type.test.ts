@@ -1,4 +1,5 @@
-import { s } from "../../src/index.js";
+import { InferType, s } from "../../src/index.js";
+import "./../override.js";
 import { StandardSchemaV1 } from "@standard-schema/spec";
 import { describe, expect, it, expectTypeOf } from "vitest";
 
@@ -14,6 +15,47 @@ describe("type.meta", () => {
   it("remove meta data", () => {
     const t = s.string().meta({ info: "data" }).meta(undefined);
     expect(t.options.meta).toEqual(undefined);
+  });
+});
+
+describe("type.query", () => {
+  const o = s.object({
+    id: s.string().flags({ internal: true }),
+    name: s.string().nullable(),
+    location: s.object({
+      id: s.string().flags({ internal: true }),
+      address: s.string(),
+    }),
+  });
+
+  it("omit internal props", () => {
+    const externalObject = o.query({ internal: false });
+
+    expectTypeOf<InferType<typeof externalObject>>().toEqualTypeOf<{
+      name: string | null;
+      location: {
+        address: string;
+      };
+    }>();
+
+    expect(Object.keys(externalObject.props)).toEqual(["name", "location"]);
+    expect(Object.keys(externalObject.props.location.props)).toEqual([
+      "address",
+    ]);
+  });
+
+  it("pick internal props", () => {
+    const internalObject = o.query({ internal: true });
+
+    expectTypeOf<InferType<typeof internalObject>>().toEqualTypeOf<{
+      id: string;
+      location: {
+        id: string;
+      };
+    }>();
+
+    expect(Object.keys(internalObject.props)).toEqual(["id", "location"]);
+    expect(Object.keys(internalObject.props.location.props)).toEqual(["id"]);
   });
 });
 

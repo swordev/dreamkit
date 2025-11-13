@@ -32,6 +32,9 @@ export class CustomType<
   declare optional: () => CustomType<T, $.TypeFlag.Optional<F>>;
   declare nullish: () => CustomType<T, $.TypeFlag.Nullish<F>>;
   declare required: () => CustomType<T, $.TypeFlag.Required<F>>;
+  declare flags: <F2 extends $.SchemaFlags>(
+    flags: F2,
+  ) => CustomType<T, $.TypeFlag.Merge<F, F2>>;
   protected override onValidate(value: unknown, context: $.TypeContext) {
     const val = this.validation(value, context);
     if (!val.next()) return val.errors;

@@ -30,6 +30,9 @@ export class FileType<F extends $.TypeFlag.Options = {}> extends $.Type<
   declare optional: () => FileType<$.TypeFlag.Optional<F>>;
   declare nullish: () => FileType<$.TypeFlag.Nullish<F>>;
   declare required: () => FileType<$.TypeFlag.Required<F>>;
+  declare flags: <F2 extends $.SchemaFlags>(
+    flags: F2,
+  ) => FileType<$.TypeFlag.Merge<F, F2>>;
   protected override onValidate(
     value: $.TypeDef<this>,
     context: $.TypeContext,

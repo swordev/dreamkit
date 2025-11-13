@@ -1,7 +1,6 @@
 import { TypeContext } from "../context.js";
-import { type TypeFlag, flagValues } from "../flags.js";
+import { type TypeFlag } from "../flags.js";
 import type { InferType } from "../infer.js";
-import { SchemaMeta } from "../override.js";
 import { kindSchema } from "../utils/kind.js";
 import {
   TypeAssertError,
@@ -9,6 +8,7 @@ import {
   type TypeAssertErrorData,
 } from "../validation.js";
 import { MinimalType } from "./MinimalType.js";
+import { SchemaFlags, SchemaMeta } from "@dreamkit/schema/override.js";
 import type { StandardSchemaV1 } from "@standard-schema/spec";
 import type { JSONSchema7 } from "json-schema";
 
@@ -40,11 +40,6 @@ export abstract class Type<
   protected context: Context | undefined;
   constructor(readonly options: O = {} as any) {
     super();
-    (this as any).flags = {} as F;
-    for (const key in options) {
-      if (flagValues.includes(key as any))
-        (this.flags as any)[key] = (options as any)[key];
-    }
     const validate: StandardSchemaV1<D>["~standard"]["validate"] = (value) => {
       return {
         value,
@@ -120,6 +115,9 @@ export abstract class Type<
   }
   required(): Type<D, TypeFlag.Required<F>> {
     return this.clone({ nullable: undefined, optional: undefined } as any);
+  }
+  flags<T extends SchemaFlags>(flags: T): Type<D, TypeFlag.Merge<F, T>> {
+    return this.clone(flags);
   }
   refine(
     refine: (input: InferType<this>) => boolean | TypeAssertErrorData[],

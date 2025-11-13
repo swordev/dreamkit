@@ -13,7 +13,7 @@ import * as $ from "./utils.js";
 import { kindOf } from "@dreamkit/kind";
 import { isPlainObject } from "@dreamkit/utils/object.js";
 import { createProxy } from "@dreamkit/utils/proxy.js";
-import { Any } from "@dreamkit/utils/ts.js";
+import type { Any, RecursiveRecord } from "@dreamkit/utils/ts.js";
 
 export type ObjectTypeProps = Record<string, $.MinimalType>;
 export type ObjectTypeOptions<P extends ObjectTypeProps = ObjectTypeProps> =
@@ -23,11 +23,11 @@ export type InferObjectProps<T extends ObjectTypeProps> = InferType<
 >;
 
 export type ResolveOptionalFlag<T extends ObjectTypeProps> = {
-  [K in keyof T as T[K]["flags"] extends { optional: true }
+  [K in keyof T as T[K]["flagsValue"] extends { optional: true }
     ? K
     : never]?: InferType<T[K]>;
 } & {
-  [K in keyof T as T[K]["flags"] extends { optional: true }
+  [K in keyof T as T[K]["flagsValue"] extends { optional: true }
     ? never
     : K]: InferType<T[K]>;
 };
@@ -38,6 +38,41 @@ export type FieldObjectValue<T extends $.MinimalType> =
 export type FieldObject<T extends MinimalObjectType> = {
   [K in keyof T["props"]]: FieldObjectValue<T["props"][K]>;
 };
+
+export type IsEmptyObjectTypeProps<
+  T extends ObjectTypeProps,
+  K = keyof T,
+> = K extends string
+  ? T[K] extends MinimalObjectType<infer Props>
+    ? IsEmptyObjectTypeProps<Props>
+    : true
+  : never;
+
+export type QueryObjectType<
+  T extends MinimalObjectType,
+  Q extends $.TypeFlag.Query,
+  P extends ObjectTypeProps = T["props"],
+> =
+  unknown extends Any<T>
+    ? ObjectType
+    : ObjectType<
+        {
+          [K in keyof P as P[K] extends MinimalObjectType
+            ? IsEmptyObjectTypeProps<
+                QueryObjectType<P[K], Q>["props"]
+              > extends never
+              ? never
+              : K
+            : $.TypeFlag.CheckTypeFlags<Q, P[K]["flagsValue"]> extends never
+              ? never
+              : K]: P[K] extends MinimalObjectType
+            ? QueryObjectType<P[K], Q>
+            : $.TypeFlag.CheckTypeFlags<Q, P[K]["flagsValue"]> extends never
+              ? never
+              : P[K];
+        } & {},
+        T["flagsValue"]
+      >;
 
 export type FlatObjectKeys<
   T extends Record<string, unknown>,
@@ -89,6 +124,9 @@ export class ObjectType<
   declare optional: () => ObjectType<P, $.TypeFlag.Optional<F>>;
   declare nullish: () => ObjectType<P, $.TypeFlag.Nullish<F>>;
   declare required: () => ObjectType<P, $.TypeFlag.Required<F>>;
+  declare flags: <F2 extends $.SchemaFlags>(
+    flags: F2,
+  ) => ObjectType<P, $.TypeFlag.Merge<F, F2>>;
   readonly prop: FieldObject<ObjectType<P, F>>;
   constructor(props: P, options: Omit<ObjectTypeOptions, "props"> = {}) {
     super({ ...options, props: { ...props } });
@@ -104,9 +142,9 @@ export class ObjectType<
       ? string
       : FlatObjectKeys<$.TypeDef<this>>,
   ): $.Type | undefined {
-    if (!name.length) return this;
+    if (!name.length) return this as any;
     const path = name.split(".");
-    let ref: $.Type = this;
+    let ref: $.Type = this as any;
     for (const level of path) {
       //if (kindOf(ref, ArrayType)) ref = ref.items;
       if (kindOf(ref, ObjectType)) {
@@ -129,6 +167,29 @@ export class ObjectType<
   static create(options: ObjectTypeOptions): any {
     const { props, ...otherOptions } = options;
     return new ObjectType(props, otherOptions);
+  }
+  create(
+    data: any,
+    cb?: (data: { path: string[]; type: $.Type; value: any }) => any,
+    path?: string[],
+    output: Record<string, any> = {},
+  ): any {
+    for (const name in this.props) {
+      const type = this.props[name] as any as $.Type;
+      const typePath = [...(path || []), name];
+      const value = data?.[name];
+      if (
+        kindOf(type, ObjectType) &&
+        (!!value || (!type.options.nullable && !type.options.optional))
+      ) {
+        output[name] = {};
+        type.create(value, cb, typePath, output[name]);
+      } else {
+        const newValue = cb ? cb({ path: typePath, type, value }) : value;
+        if (newValue !== undefined) output[name] = newValue;
+      }
+    }
+    return output;
   }
   protected override onValidate(
     value: unknown,
@@ -326,7 +387,7 @@ export class ObjectType<
         (props, [name, prop]) => {
           props[name] = kindOf(prop, ObjectType)
             ? prop.deepPartial(true)
-            : !query || checkTypeFlags(query, prop.flags)
+            : !query || checkTypeFlags(query, prop.flagsValue)
               ? (prop as $.Type).optional()
               : prop;
           return props;
@@ -365,6 +426,52 @@ export class ObjectType<
           props[name] = kindOf(prop, ObjectType)
             ? prop.deepNullish(true)
             : (prop as $.Type).nullish();
+          return props;
+        },
+        {} as ObjectTypeProps,
+      ) as P,
+    });
+  }
+  iterateProps(
+    cb: (name: string, type: $.Type) => void | false,
+    parentNames: string[] = [],
+  ) {
+    for (const name in this.props) {
+      const type = this.props[name] as any as $.Type;
+      const names = [...parentNames, name];
+      if (kindOf(type, ObjectType)) {
+        type.iterateProps(cb, names);
+      } else if (cb(names.join("."), type) === false) {
+        break;
+      }
+    }
+  }
+  query<Q extends $.TypeFlag.Query>(
+    flags: Q,
+    outMask?: RecursiveRecord<boolean>,
+  ): QueryObjectType<this, Q> {
+    const someFlag = Object.entries(flags).some(
+      ([, v]) => typeof v === "boolean",
+    );
+    if (!someFlag) return this.clone({});
+    return this.clone({
+      props: Object.entries(this.options.props).reduce(
+        (props, [name, prop]) => {
+          if (kindOf(prop, ObjectType)) {
+            const nextOutMask = outMask ? (outMask[name] = {}) : undefined;
+            const objectProp = prop.query(flags, nextOutMask);
+            let someChildProp = false;
+            objectProp.iterateProps(() => !(someChildProp = true));
+            if (someChildProp) {
+              props[name] = objectProp;
+            } else {
+              if (outMask) outMask[name] = false;
+            }
+          } else {
+            if (checkTypeFlags(flags, prop.flagsValue))
+              props[name] = (prop as $.Type)["clone"]({} as any);
+            if (outMask) outMask[name] = !!props[name];
+          }
           return props;
         },
         {} as ObjectTypeProps,

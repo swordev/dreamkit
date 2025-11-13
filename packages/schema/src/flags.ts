@@ -1,3 +1,4 @@
+import { SchemaFlags } from "@dreamkit/schema/override.js";
 import { checkSomeObjectProp } from "@dreamkit/utils/object.js";
 
 export namespace TypeFlag {
@@ -19,7 +20,7 @@ export namespace TypeFlag {
   export type Options = {
     optional?: boolean;
     nullable?: boolean;
-  };
+  } & (keyof SchemaFlags extends never ? {} : SchemaFlags);
 
   export type Query = {
     [K in keyof Options]?: boolean;
@@ -56,8 +57,6 @@ export namespace TypeFlag {
             : never]: true;
       };
 }
-
-export const flagValues = Object.values(TypeFlag.Name);
 
 export function checkTypeFlags(
   query: TypeFlag.Query,

@@ -30,7 +30,7 @@ export type ConvertObjectType<
             : T["props"][K]
           : T["props"][K];
       },
-      T["flags"]
+      T["flagsValue"]
     >
   : never;
 
@@ -68,7 +68,7 @@ export type DeepProjectObjectType<
                 : If<Include, never, TProps[K]>
             : If<Include, never, TProps[K]>;
         },
-        T["flags"]
+        T["flagsValue"]
       >;
 
 export type DeepMergeFlags<
@@ -82,13 +82,16 @@ export type DeepMergeFlags<
         {
           [K in keyof T["props"]]: T["props"][K] extends MinimalObjectType
             ? DeepMergeFlags<T["props"][K], F, Q, true>
-            : $.TypeFlag.CheckTypeFlags<Q, T["props"][K]["flags"]> extends never
+            : $.TypeFlag.CheckTypeFlags<
+                  Q,
+                  T["props"][K]["flagsValue"]
+                > extends never
               ? T["props"][K]
               : DeepMergeFlags<T["props"][K], F, Q, true>;
         },
         [Self] extends [true]
-          ? $.TypeFlag.Merge<T["flags"], $.TypeFlag.Object[F]>
-          : T["flags"]
+          ? $.TypeFlag.Merge<T["flagsValue"], $.TypeFlag.Object[F]>
+          : T["flagsValue"]
       >
     : T[F] extends () => $.MinimalType
       ? ReturnType<T[F]>
@@ -135,7 +138,7 @@ export type AssignObjectType<
             ? T1["props"][K]
             : never;
       },
-      T1["flags"]
+      T1["flagsValue"]
     >
   : never;
 

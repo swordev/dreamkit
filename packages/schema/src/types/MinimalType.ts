@@ -12,7 +12,9 @@ export class MinimalType<
 {
   readonly [kind]!: "schema";
   readonly type!: N;
-  readonly flags!: F;
+  get flagsValue(): F {
+    return (this as any).options;
+  }
   readonly "~standard": StandardSchemaV1<Nullish<D, F>>["~standard"] = {
     version: 1,
     vendor: "dreamkit",

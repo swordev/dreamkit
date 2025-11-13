@@ -1,6 +1,10 @@
 export type Obj = Record<string, any>;
+export type DeepObj<V> = {
+  [key: string]: V | DeepObj<V>;
+};
 
 export type ExpandObject<T> = { [K in keyof T]: T[K] } & {};
+export type RecursiveRecord<T> = { [K: string]: T | RecursiveRecord<T> };
 
 export type Merge<
   Shape,

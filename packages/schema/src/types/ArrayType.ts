@@ -30,6 +30,9 @@ export class ArrayType<
   declare optional: () => ArrayType<I, $.TypeFlag.Optional<F>>;
   declare nullish: () => ArrayType<I, $.TypeFlag.Nullish<F>>;
   declare required: () => ArrayType<I, $.TypeFlag.Required<F>>;
+  declare flags: <F2 extends $.SchemaFlags>(
+    flags: F2,
+  ) => ArrayType<I, $.TypeFlag.Merge<F, F2>>;
   declare reset: () => ArrayType<I>;
   constructor(
     readonly items: I,

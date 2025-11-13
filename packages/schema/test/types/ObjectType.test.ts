@@ -86,8 +86,103 @@ describe("object.require", () => {
       .object({ a: s.string(), b: s.string() })
       .deepPartial()
       .require({ a: true });
-    expect($.props.a.flags).toEqual({});
-    expect($.props.b.flags).toEqual({ optional: true });
+    expect($.props.a.flagsValue).toEqual({});
+    expect($.props.b.flagsValue).toEqual({ optional: true });
+  });
+});
+
+describe("object.create", () => {
+  it("create safe object", () => {
+    const $ = s.object({ a: s.string(), b: s.string() });
+    expect($.create({ a: "", b: "" })).toEqual({ a: "", b: "" });
+    // @ts-expect-error
+    expect($.create({ a: 1, b: "" })).toEqual({ a: 1, b: "" });
+  });
+});
+
+describe("object.createWith", () => {
+  it("create defauts object", () => {
+    const $ = s.object({
+      enabled: s.bool(),
+      profile: s.object({
+        name: s.string(),
+        surname: s.string().nullable(),
+        country: s.string(),
+      }),
+      location: s
+        .object({
+          address: s.string(),
+        })
+        .nullable(),
+    });
+
+    const defaults = $.createWith(
+      {
+        profile: {
+          country: "Spain",
+        },
+      },
+      ({ type, value }) => {
+        if (value !== undefined) {
+          return value;
+        } else if (type.options.nullable) {
+          return null;
+        } else if (type.kind === "bool") {
+          return false;
+        } else if (type.kind === "string") {
+          return "";
+        }
+      },
+    );
+
+    expect(defaults).toEqual(
+      $.create({
+        enabled: false,
+        profile: {
+          name: "",
+          surname: null,
+          country: "Spain",
+        },
+        location: null,
+      }),
+    );
+  });
+  it("create custom object", () => {
+    const $ = s.object({
+      a: s.string(),
+      b: s.string(),
+      c: s.object({
+        d: s.bool(),
+        e: s
+          .object({
+            f: s.string(),
+          })
+          .nullable(),
+        g: s.object({
+          h: s.string(),
+        }),
+      }),
+    });
+    expect(
+      $.createWith(
+        {
+          c: {
+            d: "D",
+          },
+        },
+        (data) => data.value ?? data.name,
+      ),
+    ).toEqual({
+      a: "a",
+      b: "b",
+      c: {
+        d: "D",
+        e: "c.e",
+        g: {
+          h: "c.g.h",
+        },
+      },
+    });
   });
 });
 
@@ -98,8 +193,8 @@ describe("object.partial", () => {
       a?: string;
       b: string;
     }>();
-    expect($.props.a.flags).toEqual({ optional: true });
-    expect($.props.b.flags).toEqual({});
+    expect($.props.a.flagsValue).toEqual({ optional: true });
+    expect($.props.b.flagsValue).toEqual({});
   });
 
   it("create fullpartial type", () => {
@@ -119,9 +214,9 @@ describe("object.partial", () => {
         d: string;
       };
     }>();
-    expect($.props.a.flags).toEqual({ optional: true });
-    expect($.props.b.flags).toEqual({ optional: true });
-    expect($.props.c.flags).toEqual({ optional: true });
+    expect($.props.a.flagsValue).toMatchObject({ optional: true });
+    expect($.props.b.flagsValue).toMatchObject({ optional: true });
+    expect($.props.c.flagsValue).toMatchObject({ optional: true });
   });
 });
 describe("object.deepNullish", () => {
@@ -137,12 +232,12 @@ describe("object.deepPartial", () => {
     const $ = s.object({ a: s.string() }).deepPartial();
     // @ts-expect-error
     expect($.flags.optional).toBeUndefined();
-    expect($.props.a.flags.optional).toBeTruthy();
+    expect($.props.a.flagsValue.optional).toBeTruthy();
   });
   it("create deep partial including self", () => {
     const $ = s.object({ a: s.string() }).deepPartial(true);
-    expect($.flags.optional).toBeTruthy();
-    expect($.props.a.flags.optional).toBeTruthy();
+    expect($.flagsValue.optional).toBeTruthy();
+    expect($.props.a.flagsValue.optional).toBeTruthy();
   });
 });
 
