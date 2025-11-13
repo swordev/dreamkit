@@ -1,5 +1,11 @@
 # @dreamkit/utils
 
+## 0.0.10
+
+### Patch Changes
+
+- [`e30dec3`](https://github.com/swordev/dreamkit/commit/e30dec3e17a0c6a76942495ef775cb9b3ca3a219) Thanks [@juanrgm](https://github.com/juanrgm)! - Add custom flags to the schema
+
 ## 0.0.9
 
 ### Patch Changes

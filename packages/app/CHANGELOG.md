@@ -1,5 +1,14 @@
 # @dreamkit/app
 
+## 0.0.31
+
+### Patch Changes
+
+- Updated dependencies [[`ad302f6`](https://github.com/swordev/dreamkit/commit/ad302f62f900520ac9da98f26bf3e061ffa83f4f), [`e30dec3`](https://github.com/swordev/dreamkit/commit/e30dec3e17a0c6a76942495ef775cb9b3ca3a219), [`22609ec`](https://github.com/swordev/dreamkit/commit/22609ecca70084b6ebc3e111553a5884a21ce2a5), [`6fe1932`](https://github.com/swordev/dreamkit/commit/6fe193276683aa08e404fd1ad72e0216fa2ce2d9)]:
+  - @dreamkit/schema@0.0.14
+  - @dreamkit/utils@0.0.10
+  - @dreamkit/func@0.0.18
+
 ## 0.0.30
 
 ### Patch Changes
