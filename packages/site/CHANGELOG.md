@@ -1,5 +1,14 @@
 # @dreamkit/site
 
+## 0.0.43
+
+### Patch Changes
+
+- [`5d3af88`](https://github.com/swordev/dreamkit/commit/5d3af88f50ebd3139d9359ee6db140faedd6994b) Thanks [@juanrgm](https://github.com/juanrgm)! - Update dependencies
+
+- Updated dependencies [[`ad302f6`](https://github.com/swordev/dreamkit/commit/ad302f62f900520ac9da98f26bf3e061ffa83f4f), [`e30dec3`](https://github.com/swordev/dreamkit/commit/e30dec3e17a0c6a76942495ef775cb9b3ca3a219)]:
+  - dreamkit@0.0.40
+
 ## 0.0.42
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @dreamkit/prettier-config
 
+## 0.0.5
+
+### Patch Changes
+
+- [`5d3af88`](https://github.com/swordev/dreamkit/commit/5d3af88f50ebd3139d9359ee6db140faedd6994b) Thanks [@juanrgm](https://github.com/juanrgm)! - Update dependencies
+
 ## 0.0.4
 
 ### Patch Changes

@@ -1,5 +1,19 @@
 # dreamkit
 
+## 0.0.40
+
+### Patch Changes
+
+- [`ad302f6`](https://github.com/swordev/dreamkit/commit/ad302f62f900520ac9da98f26bf3e061ffa83f4f) Thanks [@juanrgm](https://github.com/juanrgm)! - Add schema meta override
+
+- [`e30dec3`](https://github.com/swordev/dreamkit/commit/e30dec3e17a0c6a76942495ef775cb9b3ca3a219) Thanks [@juanrgm](https://github.com/juanrgm)! - Add custom flags to the schema
+
+- Updated dependencies [[`ad302f6`](https://github.com/swordev/dreamkit/commit/ad302f62f900520ac9da98f26bf3e061ffa83f4f), [`e30dec3`](https://github.com/swordev/dreamkit/commit/e30dec3e17a0c6a76942495ef775cb9b3ca3a219), [`5d3af88`](https://github.com/swordev/dreamkit/commit/5d3af88f50ebd3139d9359ee6db140faedd6994b), [`6fe1932`](https://github.com/swordev/dreamkit/commit/6fe193276683aa08e404fd1ad72e0216fa2ce2d9)]:
+  - @dreamkit/core@0.0.9
+  - @dreamkit/node-app@0.0.26
+  - @dreamkit/solid@0.0.34
+  - @dreamkit/dev@0.0.39
+
 ## 0.0.39
 
 ### Patch Changes
