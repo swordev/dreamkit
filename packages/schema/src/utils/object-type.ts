@@ -74,7 +74,7 @@ export type DeepProjectObjectType<
 export type DeepMergeFlags<
   T extends $.MinimalType,
   F extends $.TypeFlag.Name,
-  Q extends $.TypeFlag.Query | undefined = undefined,
+  Q = undefined,
   Self extends boolean = false,
 > = F extends keyof T
   ? T extends MinimalObjectType

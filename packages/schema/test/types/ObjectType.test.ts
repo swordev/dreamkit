@@ -116,13 +116,13 @@ describe("object.createWith", () => {
         .nullable(),
     });
 
-    const defaults = $.createWith(
-      {
+    const defaults = $.createWith({
+      data: {
         profile: {
           country: "Spain",
         },
       },
-      ({ type, value }) => {
+      map: ({ type, value }) => {
         if (value !== undefined) {
           return value;
         } else if (type.options.nullable) {
@@ -133,7 +133,7 @@ describe("object.createWith", () => {
           return "";
         }
       },
-    );
+    });
 
     expect(defaults).toEqual(
       $.create({
@@ -164,14 +164,14 @@ describe("object.createWith", () => {
       }),
     });
     expect(
-      $.createWith(
-        {
+      $.createWith({
+        data: {
           c: {
             d: "D",
           },
         },
-        (data) => data.value ?? data.name,
-      ),
+        map: (data) => data.value ?? data.pathName,
+      }),
     ).toEqual({
       a: "a",
       b: "b",
@@ -523,5 +523,69 @@ describe("object.refine", () => {
     executed = false;
     expect(o.test({ a: "a", b: 2 })).toBe(false);
     expect(executed).toBe(false);
+  });
+});
+
+describe("object.fit", () => {
+  const o = s.object({
+    id: s.string().flags({ pk: true, internal: true }),
+    creationDate: s.string().flags({ internal: true }),
+    name: s.string(),
+    location: s.object({
+      address: s.string().nullable(),
+      country: s.string(),
+    }),
+  });
+
+  const value = o.create({
+    id: "1",
+    name: "User",
+    creationDate: "2025-01-01",
+    location: {
+      address: "t",
+      country: "Spain",
+    },
+  });
+
+  it("remove unregistered prop", () => {
+    const o2 = o.fit({
+      ...value,
+      // @ts-expect-error
+      extra: 1,
+    });
+    // @ts-expect-error
+    expect(o2.extra).toBeUndefined();
+  });
+
+  it("pick pk", () => {
+    const pk = o.query({ pk: true }).fit(value);
+    expectTypeOf<typeof pk>().toEqualTypeOf<{ id: string }>();
+    expect(pk).toStrictEqual({ id: value.id });
+  });
+
+  it("pick internal", () => {
+    const internal = o.query({ internal: true }).fit(value);
+    expectTypeOf<typeof internal>().toEqualTypeOf<{
+      id: string;
+      creationDate: string;
+    }>();
+    expect(internal).toStrictEqual({
+      id: value.id,
+      creationDate: value.creationDate,
+    });
+  });
+
+  it("pick nullable", () => {
+    const nullable = o.query({ nullable: true }).fit(value);
+    expectTypeOf<typeof nullable>().toEqualTypeOf<{
+      location: {
+        address: string | null;
+      };
+    }>();
+    expect(nullable).toStrictEqual({
+      location: {
+        address: value.location.address,
+      },
+    });
   });
 });

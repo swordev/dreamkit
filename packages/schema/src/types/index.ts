@@ -7,6 +7,7 @@ export { BoolType, type MinimalBoolType } from "./BoolType.js";
 export { NumberType, type MinimalNumberType } from "./NumberType.js";
 export {
   ObjectType,
+  type QueryObjectType,
   type ObjectTypeProps,
   type MinimalObjectType,
   type InferObjectProps,

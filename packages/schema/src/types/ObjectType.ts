@@ -50,7 +50,7 @@ export type IsEmptyObjectTypeProps<
 
 export type QueryObjectType<
   T extends MinimalObjectType,
-  Q extends $.TypeFlag.Query,
+  Q,
   P extends ObjectTypeProps = T["props"],
 > =
   unknown extends Any<T>
@@ -100,6 +100,29 @@ export class MinimalObjectType<
   readonly props!: P;
   override readonly kind = "object" as const;
 }
+
+type ObjectTypeIteratorItem = {
+  type: $.Type;
+  objectType: ObjectType | undefined;
+  name: string;
+  path: string[];
+  value: any;
+};
+
+type ObjectTypeIteratorOptions = {
+  data?: any;
+  parentPath?: string[];
+  followData?: boolean;
+};
+
+type ObjectTypeCreatorOptions = ObjectTypeIteratorOptions & {
+  map?: (
+    data: ObjectTypeIteratorItem & {
+      pathName: string;
+    },
+  ) => any;
+  output?: Record<string, any>;
+};
 
 export class ObjectType<
   P extends ObjectTypeProps = ObjectTypeProps,
@@ -168,41 +191,82 @@ export class ObjectType<
     const { props, ...otherOptions } = options;
     return new ObjectType(props, otherOptions);
   }
-  createWith(
-    data: any,
-    mapper?: (data: {
-      name: string;
-      selfName: string;
-      path: string[];
-      type: $.Type;
-      value: any;
-    }) => any,
-    parentPath?: string[],
-    output: Record<string, any> = {},
-  ): any {
-    for (const name in this.props) {
+
+  private *createIterator(
+    options: ObjectTypeIteratorOptions = {},
+  ): Generator<ObjectTypeIteratorItem, void, unknown> {
+    const entry = options.followData ? options.data : this.props;
+    for (const name in entry) {
       const type = this.props[name] as any as $.Type;
-      const path = [...(parentPath || []), name];
-      const value = data?.[name];
+      if (!type) continue;
+      const path = [...(options.parentPath || []), name];
+      const value = options.data?.[name];
+      yield {
+        type,
+        path,
+        name,
+        value,
+        objectType: kindOf(type, ObjectType) ? type : undefined,
+      };
+    }
+  }
+  createWith(options: ObjectTypeCreatorOptions = {}): any {
+    const output = options.output ?? {};
+    const it = this.createIterator(options);
+    for (const item of it) {
       if (
-        kindOf(type, ObjectType) &&
-        (!!value || (!type.options.nullable && !type.options.optional))
+        item.objectType &&
+        (!!item.value ||
+          (!item.type.options.nullable && !item.type.options.optional))
       ) {
-        output[name] = type.createWith(value, mapper, path);
+        output[item.name] = item.objectType.createWith({
+          ...options,
+          data: item.value,
+          output: undefined,
+          parentPath: item.path,
+        });
       } else {
         let pathName: string | undefined;
-        const newValue = mapper
-          ? mapper({
-              path,
-              type,
-              value,
-              selfName: name,
-              get name() {
-                return pathName || (pathName = path.join("."));
+        const newValue = options.map
+          ? options.map({
+              ...item,
+              get pathName() {
+                return pathName || (pathName = item.path.join("."));
               },
             })
-          : value;
-        if (newValue !== undefined) output[name] = newValue;
+          : item.value;
+        if (newValue !== undefined) output[item.name] = newValue;
+      }
+    }
+    return output;
+  }
+
+  async createWithAsync(options: ObjectTypeCreatorOptions = {}): Promise<any> {
+    const output = options.output ?? {};
+    const it = this.createIterator(options);
+    for (const item of it) {
+      if (
+        item.objectType &&
+        (!!item.value ||
+          (!item.type.options.nullable && !item.type.options.optional))
+      ) {
+        output[item.name] = await item.objectType.createWithAsync({
+          ...options,
+          data: item.value,
+          output: undefined,
+          parentPath: item.path,
+        });
+      } else {
+        let pathName: string | undefined;
+        const newValue = options.map
+          ? await options.map({
+              ...item,
+              get pathName() {
+                return pathName || (pathName = item.path.join("."));
+              },
+            })
+          : item.value;
+        if (newValue !== undefined) output[item.name] = newValue;
       }
     }
     return output;
@@ -267,6 +331,13 @@ export class ObjectType<
         {} as Record<string, $.JSONSchema7>,
       ),
     };
+  }
+  fit(data: InferType<this>): InferType<this> {
+    return this.createWith({
+      data,
+      followData: true,
+      map: ({ value }) => value,
+    });
   }
   pick<Input extends ObjectTypeMask<P>>(
     input: Input,
@@ -450,14 +521,13 @@ export class ObjectType<
   }
   iterateProps(
     cb: (name: string, type: $.Type) => void | false,
-    parentNames: string[] = [],
+    parentPath: string[] = [],
   ) {
-    for (const name in this.props) {
-      const type = this.props[name] as any as $.Type;
-      const names = [...parentNames, name];
-      if (kindOf(type, ObjectType)) {
-        type.iterateProps(cb, names);
-      } else if (cb(names.join("."), type) === false) {
+    const it = this.createIterator({ parentPath });
+    for (const item of it) {
+      if (item.objectType) {
+        item.objectType.iterateProps(cb, item.path);
+      } else if (cb(item.path.join("."), item.type) === false) {
         break;
       }
     }

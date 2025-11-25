@@ -9,3 +9,8 @@ export {
   type TypeAssertErrorData,
 } from "./validation.js";
 export { Schema, type SchemaOptions } from "./schema.js";
+export type {
+  DeepMergeFlags,
+  ConvertObjectType,
+  ObjectTypeMask,
+} from "./utils/object-type.js";

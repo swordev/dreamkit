@@ -38,10 +38,9 @@ export namespace TypeFlag {
   export type Nullish<F> = TypeFlag.Merge<F, Object[Name.Nullish]> & {};
   export type Required<F> = TypeFlag.Merge<F, Object[Name.Required]> & {};
 
-  export type CheckTypeFlags<
-    F1 extends TypeFlag.Query | undefined,
-    F2 extends TypeFlag.Options,
-  > = [F1] extends [undefined]
+  export type CheckTypeFlags<F1, F2 extends TypeFlag.Options> = [F1] extends [
+    undefined,
+  ]
     ? true
     : keyof {
         [K in keyof F1 as [F1[K]] extends [true]
