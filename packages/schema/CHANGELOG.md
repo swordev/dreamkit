@@ -1,5 +1,11 @@
 # @dreamkit/schema
 
+## 0.0.15
+
+### Patch Changes
+
+- [`d8b6c1b`](https://github.com/swordev/dreamkit/commit/d8b6c1b27ed8ca2f3547d9bf44c8585a3a81070e) Thanks [@juanrgm](https://github.com/juanrgm)! - Add `fit` and `createWithAsync` methods
+
 ## 0.0.14
 
 ### Patch Changes
