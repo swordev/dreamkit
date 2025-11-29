@@ -1,5 +1,15 @@
 # @dreamkit/app
 
+## 0.0.33
+
+### Patch Changes
+
+- [`ec18fac`](https://github.com/swordev/dreamkit/commit/ec18fac460e167a715d84f2862f6727baec27ad4) Thanks [@juanrgm](https://github.com/juanrgm)! - Resolve async
+
+- Updated dependencies [[`ea5a957`](https://github.com/swordev/dreamkit/commit/ea5a95737b43ad3fda980623455c483e21353b59)]:
+  - @dreamkit/schema@0.0.16
+  - @dreamkit/func@0.0.20
+
 ## 0.0.32
 
 ### Patch Changes
