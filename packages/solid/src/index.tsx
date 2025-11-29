@@ -10,6 +10,10 @@ export {
 } from "./primitives/createControlledValue.js";
 export { defineLink, type LinkComponent } from "./primitives/defineLink.js";
 export { useRoute } from "./primitives/useRoute.js";
-export { createAction, type ActionResult } from "./primitives/createAction.js";
+export {
+  createAction,
+  isAction,
+  type ActionResult,
+} from "./primitives/createAction.js";
 export { useActionManager } from "./primitives/useActionManager.js";
 export { ClickAwayListener } from "./components/ClickAwayListener.js";

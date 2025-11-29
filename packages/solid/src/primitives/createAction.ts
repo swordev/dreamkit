@@ -59,6 +59,12 @@ export type ActionResult<
 } & TryPick<SourceT, "title" | "params"> &
   StatedActionResult<T>;
 
+export function isAction(
+  input: unknown,
+): input is ActionResult<(...args: any[]) => any> {
+  return !!input && (input as any)._isAction === true;
+}
+
 export function createAction<T extends (...args: any[]) => any>(
   cb: T,
 ): ActionResult<T> {
@@ -124,6 +130,7 @@ export function createAction<T extends (...args: any[]) => any>(
       });
   };
   Object.defineProperties(action, {
+    _isAction: { value: true },
     ref: {
       value: {
         get errorWithoutUsing() {
