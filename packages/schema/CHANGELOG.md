@@ -1,5 +1,11 @@
 # @dreamkit/schema
 
+## 0.0.16
+
+### Patch Changes
+
+- [`ea5a957`](https://github.com/swordev/dreamkit/commit/ea5a95737b43ad3fda980623455c483e21353b59) Thanks [@juanrgm](https://github.com/juanrgm)! - Add filter option
+
 ## 0.0.15
 
 ### Patch Changes

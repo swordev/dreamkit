@@ -1,5 +1,15 @@
 # @dreamkit/solid
 
+## 0.0.36
+
+### Patch Changes
+
+- [`78a5676`](https://github.com/swordev/dreamkit/commit/78a56763717c05b6501dc4c0d19f533088466ef8) Thanks [@juanrgm](https://github.com/juanrgm)! - Add `isAction` function
+
+- Updated dependencies [[`ea5a957`](https://github.com/swordev/dreamkit/commit/ea5a95737b43ad3fda980623455c483e21353b59), [`ec18fac`](https://github.com/swordev/dreamkit/commit/ec18fac460e167a715d84f2862f6727baec27ad4)]:
+  - @dreamkit/schema@0.0.16
+  - @dreamkit/app@0.0.33
+
 ## 0.0.35
 
 ### Patch Changes
