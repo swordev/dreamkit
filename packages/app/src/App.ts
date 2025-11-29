@@ -156,7 +156,8 @@ export class App {
   protected async startService(item: AppService) {
     const name = item.name;
     log("starting service", { name });
-    const cb = await this.context.resolve(item.service).onStart();
+    const service = await this.context.resolveAsync(item.service);
+    const cb = await service.onStart();
     const shutdown = typeof cb === "function";
     item.started = true;
     log("service started", { name, ...(shutdown && { shutdown: true }) });
@@ -331,7 +332,7 @@ export class App {
     if (!context) context = this.createRequestContext(request);
     log("request", context.resolve(RequestUrl).pathname);
     for (const middleware of this.getSortedMiddlewares()) {
-      const $md = context.resolve(middleware);
+      const $md = await context.resolveAsync(middleware);
       const response = await $md.onRequest();
       if (response && response instanceof Response) {
         const headers = context.resolve(ResponseHeaders);
