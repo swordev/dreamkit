@@ -116,6 +116,11 @@ type ObjectTypeIteratorOptions = {
 };
 
 type ObjectTypeCreatorOptions = ObjectTypeIteratorOptions & {
+  filter?: (
+    data: ObjectTypeIteratorItem & {
+      pathName: string;
+    },
+  ) => boolean;
   map?: (
     data: ObjectTypeIteratorItem & {
       pathName: string;
@@ -214,6 +219,14 @@ export class ObjectType<
     const output = options.output ?? {};
     const it = this.createIterator(options);
     for (const item of it) {
+      let pathName: string | undefined;
+      const subItem = {
+        ...item,
+        get pathName() {
+          return pathName || (pathName = item.path.join("."));
+        },
+      };
+      if (options.filter && !options.filter(subItem)) continue;
       if (
         item.objectType &&
         (!!item.value ||
@@ -226,15 +239,7 @@ export class ObjectType<
           parentPath: item.path,
         });
       } else {
-        let pathName: string | undefined;
-        const newValue = options.map
-          ? options.map({
-              ...item,
-              get pathName() {
-                return pathName || (pathName = item.path.join("."));
-              },
-            })
-          : item.value;
+        const newValue = options.map ? options.map(subItem) : item.value;
         if (newValue !== undefined) output[item.name] = newValue;
       }
     }
@@ -245,6 +250,15 @@ export class ObjectType<
     const output = options.output ?? {};
     const it = this.createIterator(options);
     for (const item of it) {
+      let pathName: string | undefined;
+      const subItem = {
+        ...item,
+        get pathName() {
+          return pathName || (pathName = item.path.join("."));
+        },
+      };
+      if (options.filter && !options.filter(subItem)) continue;
+
       if (
         item.objectType &&
         (!!item.value ||
@@ -257,15 +271,7 @@ export class ObjectType<
           parentPath: item.path,
         });
       } else {
-        let pathName: string | undefined;
-        const newValue = options.map
-          ? await options.map({
-              ...item,
-              get pathName() {
-                return pathName || (pathName = item.path.join("."));
-              },
-            })
-          : item.value;
+        const newValue = options.map ? await options.map(subItem) : item.value;
         if (newValue !== undefined) output[item.name] = newValue;
       }
     }
