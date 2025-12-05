@@ -398,7 +398,7 @@ export class ObjectType<
         (props, [name, assignProp]) => {
           if (merge && kindOf(assignProp, ObjectType))
             assignProp = assignProp["props"];
-          props[name] = kindOf(assignProp, $.MinimalType)
+          props[name] = kindOf(assignProp, $.Type)
             ? assignProp
             : kindOf(props[name], ObjectType)
               ? ((props[name] as ObjectType).assign(
