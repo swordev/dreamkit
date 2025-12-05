@@ -1,5 +1,11 @@
 # @dreamkit/schema
 
+## 0.0.17
+
+### Patch Changes
+
+- [`a98480a`](https://github.com/swordev/dreamkit/commit/a98480aeaf69f4d3bd6e63b0b9322431c0c06bed) Thanks [@juanrgm](https://github.com/juanrgm)! - Update type check
+
 ## 0.0.16
 
 ### Patch Changes
