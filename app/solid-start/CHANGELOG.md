@@ -1,5 +1,12 @@
 # solid-start-app
 
+## 0.0.31
+
+### Patch Changes
+
+- Updated dependencies []:
+  - dreamkit@0.0.44
+
 ## 0.0.30
 
 ### Patch Changes
