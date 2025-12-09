@@ -28,11 +28,14 @@ export function getTSConfigReferences(pkg, packages, options) {
       if (!depPkg)
         throw new Error(`Workspace package (${name}) not found in ${pkg.name}`);
 
+      if (!depPkg.isTypeScript) return;
+
       const absPath = join(depPkg.dir, fileName);
       const path = relative(pkg.dir, absPath).replaceAll("\\", "/");
 
       return { path };
-    });
+    })
+    .filter((v) => !!v);
 }
 
 /**
