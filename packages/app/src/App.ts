@@ -427,7 +427,7 @@ export class App {
       try {
         await this.stopService(item);
       } catch (error) {
-        log("service stopped", { name, error });
+        log("service stopped", { name: item.name, error });
         errors.push(error as Error);
       }
     }
