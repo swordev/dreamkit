@@ -1,6 +1,6 @@
 {
   "name": "@dreamkit/workspace",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Tool for managing monorepos.",
   "homepage": "https://dreamkit.dev",
   "repository": {

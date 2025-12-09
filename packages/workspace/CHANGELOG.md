@@ -1,5 +1,11 @@
 # @dreamkit/workspace
 
+## 0.2.1
+
+### Patch Changes
+
+- [`370f07e`](https://github.com/swordev/dreamkit/commit/370f07e32912d1a52651808172d7f1bdd1122617) Thanks [@juanrgm](https://github.com/juanrgm)! - Exclude non-typescript packages
+
 ## 0.2.0
 
 ### Minor Changes

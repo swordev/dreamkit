@@ -1,5 +1,11 @@
 # @dreamkit/app
 
+## 0.0.35
+
+### Patch Changes
+
+- [`1fcd6e5`](https://github.com/swordev/dreamkit/commit/1fcd6e56c6524a829c9d67e1e58fd4bf7e4898a5) Thanks [@juanrgm](https://github.com/juanrgm)! - Fix logging
+
 ## 0.0.34
 
 ### Patch Changes
