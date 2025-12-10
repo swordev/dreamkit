@@ -1,5 +1,11 @@
 # @dreamkit/app
 
+## 0.0.36
+
+### Patch Changes
+
+- [`ac00f88`](https://github.com/swordev/dreamkit/commit/ac00f888047d5cbf38cc5f1ee6adf59d950fd472) Thanks [@juanrgm](https://github.com/juanrgm)! - Fix app input
+
 ## 0.0.35
 
 ### Patch Changes
