@@ -321,8 +321,8 @@ export class App {
     this.sortedMiddlewares = sortByDeps(
       [...this.middlewares].map((value) => ({
         value,
-        deps: value.$options.deps,
-        priority: value.$options.priority,
+        deps: value.$options?.deps,
+        priority: value.$options?.priority,
       })),
     ).map((item) => item.value);
     return this.sortedMiddlewares;

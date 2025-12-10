@@ -30,7 +30,7 @@ export abstract class Middleware {
 }
 
 export type MiddlewareConstructor = Constructor<Middleware> & {
-  $options: MiddlewareOptions;
+  $options?: MiddlewareOptions;
 };
 
 const MiddlewareClass = createIocClass(Middleware);
