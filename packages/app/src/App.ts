@@ -66,7 +66,7 @@ export class App {
       .register(App, { value: this })
       .register(EJSON, { value: new EJSON([]) });
     this.context.register(AppContext, { value: this.context });
-    if (input) this.addSync(input);
+    if (input) [...this.addSync(input)];
   }
   static instance(): App {
     const value = (globalThis as any)[App.instanceKey];
