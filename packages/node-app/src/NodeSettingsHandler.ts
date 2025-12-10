@@ -76,12 +76,18 @@ export class NodeSettingsHandler extends SettingsHandlerClass({
       } as Record<string, any>,
     };
 
+    const properties: Record<string, any> = {};
+
     for (const value of this.settings) {
       const options = value.options;
       if (!options.optional) schema.required.push(options.name!);
-      schema.properties[options.name!] = (
-        options.params as ObjectType
-      ).toJsonSchema();
+      properties[options.name!] = (options.params as ObjectType).toJsonSchema();
+    }
+
+    schema.required.sort();
+
+    for (const name of Object.keys(properties).sort()) {
+      schema.properties[name] = properties[name];
     }
 
     return schema;
