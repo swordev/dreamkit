@@ -203,7 +203,7 @@ export class ObjectType<
     return new ObjectType(props, otherOptions);
   }
 
-  private *createIterator(
+  *iterator(
     options: ObjectTypeIteratorOptions = {},
   ): Generator<ObjectTypeIteratorItem, void, unknown> {
     const entry = options.followData ? options.data : this.props;
@@ -221,9 +221,24 @@ export class ObjectType<
       };
     }
   }
+
+  *deepIterator(
+    options: {
+      parentPath?: string[];
+    } = {},
+  ): Generator<ObjectTypeIteratorItem, void, unknown> {
+    for (const item of this.iterator(options)) {
+      yield item;
+      if (item.objectType)
+        yield* item.objectType.deepIterator({
+          parentPath: item.path,
+        });
+    }
+  }
+
   createWith(options: ObjectTypeCreatorOptions = {}): any {
     const output = options.output ?? {};
-    const it = this.createIterator(options);
+    const it = this.iterator(options);
     for (const item of it) {
       let pathName: string | undefined;
       const subItem = {
@@ -254,7 +269,7 @@ export class ObjectType<
 
   async createWithAsync(options: ObjectTypeCreatorOptions = {}): Promise<any> {
     const output = options.output ?? {};
-    const it = this.createIterator(options);
+    const it = this.iterator(options);
     for (const item of it) {
       let pathName: string | undefined;
       const subItem = {
@@ -531,19 +546,6 @@ export class ObjectType<
       ) as P,
     });
   }
-  iterateProps(
-    cb: (name: string, type: $.Type) => void | false,
-    parentPath: string[] = [],
-  ) {
-    const it = this.createIterator({ parentPath });
-    for (const item of it) {
-      if (item.objectType) {
-        item.objectType.iterateProps(cb, item.path);
-      } else if (cb(item.path.join("."), item.type) === false) {
-        break;
-      }
-    }
-  }
   query<Q extends $.TypeFlag.Query>(
     flags: Q,
     outMask?: RecursiveRecord<boolean>,
@@ -559,7 +561,10 @@ export class ObjectType<
             const nextOutMask = outMask ? (outMask[name] = {}) : undefined;
             const objectProp = prop.query(flags, nextOutMask);
             let someChildProp = false;
-            objectProp.iterateProps(() => !(someChildProp = true));
+            for (const _ of objectProp.deepIterator()) {
+              someChildProp = true;
+              break;
+            }
             if (someChildProp) {
               props[name] = objectProp;
             } else {
