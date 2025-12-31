@@ -1,5 +1,17 @@
 # dreamkit
 
+## 0.0.46
+
+### Patch Changes
+
+- [`83f0978`](https://github.com/swordev/dreamkit/commit/83f097869d529f743379e8a614cc303ce709d6a5) Thanks [@juanrgm](https://github.com/juanrgm)! - Add schema factory override
+
+- Updated dependencies [[`83f0978`](https://github.com/swordev/dreamkit/commit/83f097869d529f743379e8a614cc303ce709d6a5)]:
+  - @dreamkit/core@0.0.15
+  - @dreamkit/dev@0.0.45
+  - @dreamkit/node-app@0.0.32
+  - @dreamkit/solid@0.0.40
+
 ## 0.0.45
 
 ### Patch Changes
