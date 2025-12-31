@@ -8,6 +8,7 @@ export { NumberType, type MinimalNumberType } from "./NumberType.js";
 export {
   ObjectType,
   type QueryObjectType,
+  type QueryObjectTypeResult,
   type ObjectTypeProps,
   type MinimalObjectType,
   type InferObjectProps,

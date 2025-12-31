@@ -1,4 +1,5 @@
 import { InferType, NumberType, StringType, s } from "../../src/index.js";
+import "./../override.js";
 import { describe, expect, expectTypeOf, it } from "vitest";
 
 describe("object.type", () => {
@@ -555,6 +556,27 @@ describe("object.fit", () => {
     });
     // @ts-expect-error
     expect(o2.extra).toBeUndefined();
+  });
+
+  it("query internal false in array", () => {
+    const o = s
+      .object({
+        id: s.string().flags({ internal: true }),
+        name: s.string(),
+        items: s.array(
+          s.object({
+            userId: s.string().flags({ internal: true }),
+            value: s.string(),
+          }),
+        ),
+      })
+      .query({ internal: false });
+    expectTypeOf<InferType<typeof o>>().toEqualTypeOf<{
+      name: string;
+      items: { value: string }[];
+    }>();
+    expect(Object.keys(o.props)).toStrictEqual(["name", "items"]);
+    expect(Object.keys(o.props.items.items.props)).toStrictEqual(["value"]);
   });
 
   it("pick pk", () => {

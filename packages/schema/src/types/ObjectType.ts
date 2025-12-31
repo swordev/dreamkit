@@ -9,6 +9,7 @@ import type {
   DeepProjectObjectType,
   ObjectTypeMask,
 } from "./../utils/object-type.js";
+import { ArrayType, MinimalArrayType } from "./ArrayType.js";
 import * as $ from "./utils.js";
 import { kindOf } from "@dreamkit/kind";
 import { isPlainObject } from "@dreamkit/utils/object.js";
@@ -48,6 +49,9 @@ export type IsEmptyObjectTypeProps<
     : true
   : never;
 
+export type QueryObjectTypeResult<Q, T extends $.MinimalType> =
+  $.TypeFlag.CheckTypeFlags<Q, T["flagsValue"]> extends never ? never : T;
+
 export type QueryObjectType<
   T extends MinimalObjectType,
   Q,
@@ -67,9 +71,11 @@ export type QueryObjectType<
               ? never
               : K]: P[K] extends MinimalObjectType
             ? QueryObjectType<P[K], Q>
-            : $.TypeFlag.CheckTypeFlags<Q, P[K]["flagsValue"]> extends never
-              ? never
-              : P[K];
+            : P[K] extends MinimalArrayType
+              ? P[K]["items"] extends MinimalObjectType
+                ? ArrayType<QueryObjectType<P[K]["items"], Q>>
+                : QueryObjectTypeResult<Q, P[K]>
+              : QueryObjectTypeResult<Q, P[K]>;
         } & {},
         T["flagsValue"]
       >;
@@ -559,6 +565,11 @@ export class ObjectType<
             } else {
               if (outMask) outMask[name] = false;
             }
+          } else if (
+            kindOf(prop, ArrayType) &&
+            kindOf(prop.items, ObjectType)
+          ) {
+            props[name] = prop["clone"]({ items: prop.items.query(flags) });
           } else {
             if (checkTypeFlags(flags, prop.flagsValue))
               props[name] = (prop as $.Type)["clone"]({} as any);
