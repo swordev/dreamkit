@@ -1,3 +1,4 @@
+import { SchemaFactory } from "./override.js";
 import { Schema } from "./schema.js";
 
-export const s = /*#__PURE__*/ new Schema();
+export const s: Schema & SchemaFactory = /*#__PURE__*/ new Schema();

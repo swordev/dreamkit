@@ -1,3 +1,4 @@
-import { s } from "@dreamkit/schema";
+import { s, Schema } from "@dreamkit/schema";
+import { SchemaFactory } from "@dreamkit/schema/override.js";
 
-export const $schema = s;
+export const $schema: Schema & SchemaFactory = s;
