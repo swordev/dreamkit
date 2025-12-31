@@ -1,5 +1,15 @@
 # dreamkit
 
+## 0.0.47
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @dreamkit/core@0.0.16
+  - @dreamkit/dev@0.0.46
+  - @dreamkit/node-app@0.0.33
+  - @dreamkit/solid@0.0.41
+
 ## 0.0.46
 
 ### Patch Changes
