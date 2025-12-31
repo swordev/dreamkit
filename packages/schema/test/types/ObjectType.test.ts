@@ -558,25 +558,58 @@ describe("object.fit", () => {
     expect(o2.extra).toBeUndefined();
   });
 
-  it("query internal false in array", () => {
-    const o = s
-      .object({
-        id: s.string().flags({ internal: true }),
-        name: s.string(),
-        items: s.array(
-          s.object({
-            userId: s.string().flags({ internal: true }),
-            value: s.string(),
-          }),
-        ),
-      })
-      .query({ internal: false });
-    expectTypeOf<InferType<typeof o>>().toEqualTypeOf<{
+  it("query flag in array", () => {
+    const o = s.object({
+      id: s.string().flags({ pk: true, internal: true }),
+      name: s.string(),
+      roles: s.array(
+        s.object({
+          userId: s.string().flags({ internal: true }),
+          value: s.string(),
+        }),
+      ),
+    });
+
+    const internal = o.query({ internal: false });
+    expectTypeOf<InferType<typeof internal>>().toEqualTypeOf<{
       name: string;
-      items: { value: string }[];
+      roles: { value: string }[];
     }>();
-    expect(Object.keys(o.props)).toStrictEqual(["name", "items"]);
-    expect(Object.keys(o.props.items.items.props)).toStrictEqual(["value"]);
+    expect(Object.keys(internal.props)).toStrictEqual(["name", "roles"]);
+    expect(Object.keys(internal.props.roles.items.props)).toStrictEqual([
+      "value",
+    ]);
+    const pk = o.query({ pk: true });
+    expectTypeOf<InferType<typeof pk>>().toEqualTypeOf<{
+      id: string;
+    }>();
+    expect(Object.keys(pk.props)).toStrictEqual(["id"]);
+  });
+
+  it("query flag with nullable", () => {
+    const o = s.object({
+      id: s.string().flags({ pk: true, internal: true }),
+      name: s.string(),
+      location: s
+        .object({
+          userId: s.string().flags({ internal: true }),
+          address: s.string(),
+        })
+        .nullable(),
+    });
+
+    const internal = o.query({ internal: false });
+    expectTypeOf<InferType<typeof internal>>().toEqualTypeOf<{
+      name: string;
+      location: {
+        address: string;
+      } | null;
+    }>();
+
+    expect(Object.keys(internal.props)).toStrictEqual(["name", "location"]);
+    expect(Object.keys(internal.props.location.props)).toStrictEqual([
+      "address",
+    ]);
   });
 
   it("pick pk", () => {

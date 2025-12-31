@@ -546,6 +546,10 @@ export class ObjectType<
       ) as P,
     });
   }
+  protected haveProps() {
+    for (const _ of this.deepIterator()) return true;
+    return false;
+  }
   query<Q extends $.TypeFlag.Query>(
     flags: Q,
     outMask?: RecursiveRecord<boolean>,
@@ -560,21 +564,22 @@ export class ObjectType<
           if (kindOf(prop, ObjectType)) {
             const nextOutMask = outMask ? (outMask[name] = {}) : undefined;
             const objectProp = prop.query(flags, nextOutMask);
-            let someChildProp = false;
-            for (const _ of objectProp.deepIterator()) {
-              someChildProp = true;
-              break;
-            }
-            if (someChildProp) {
+            if (objectProp.haveProps()) {
               props[name] = objectProp;
-            } else {
-              if (outMask) outMask[name] = false;
+            } else if (outMask) {
+              outMask[name] = false;
             }
           } else if (
             kindOf(prop, ArrayType) &&
             kindOf(prop.items, ObjectType)
           ) {
-            props[name] = prop["clone"]({ items: prop.items.query(flags) });
+            const nextOutMask = outMask ? (outMask[name] = {}) : undefined;
+            const objectProp = prop.items.query(flags, nextOutMask);
+            if (objectProp.haveProps()) {
+              props[name] = prop["clone"]({ items: objectProp });
+            } else if (outMask) {
+              outMask[name] = false;
+            }
           } else {
             if (checkTypeFlags(flags, prop.flagsValue))
               props[name] = (prop as $.Type)["clone"]({} as any);
