@@ -61,7 +61,7 @@ export type QueryObjectType<
     ? ObjectType
     : ObjectType<
         {
-          [K in keyof P as P[K] extends MinimalObjectType
+          [K in keyof P as P[K] extends MinimalObjectType<any, any>
             ? IsEmptyObjectTypeProps<
                 QueryObjectType<P[K], Q>["props"]
               > extends never
@@ -69,10 +69,10 @@ export type QueryObjectType<
               : K
             : $.TypeFlag.CheckTypeFlags<Q, P[K]["flagsValue"]> extends never
               ? never
-              : K]: P[K] extends MinimalObjectType
+              : K]: P[K] extends MinimalObjectType<any, any>
             ? QueryObjectType<P[K], Q>
             : P[K] extends MinimalArrayType
-              ? P[K]["items"] extends MinimalObjectType
+              ? P[K]["items"] extends MinimalObjectType<any, any>
                 ? ArrayType<QueryObjectType<P[K]["items"], Q>>
                 : QueryObjectTypeResult<Q, P[K]>
               : QueryObjectTypeResult<Q, P[K]>;
