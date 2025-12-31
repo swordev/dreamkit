@@ -127,9 +127,11 @@ type ObjectTypeCreatorOptions = ObjectTypeIteratorOptions & {
       pathName: string;
     },
   ) => boolean;
+  mapObjects?: boolean;
   map?: (
     data: ObjectTypeIteratorItem & {
       pathName: string;
+      nextValue: () => any;
     },
   ) => any;
   output?: Record<string, any>;
@@ -246,21 +248,29 @@ export class ObjectType<
         get pathName() {
           return pathName || (pathName = item.path.join("."));
         },
+        nextValue: item.objectType
+          ? () =>
+              item.objectType!.createWith({
+                ...options,
+                data: item.value,
+                output: undefined,
+                parentPath: item.path,
+              })
+          : () => item.value,
       };
       if (options.filter && !options.filter(subItem)) continue;
+
       if (
+        !options.mapObjects &&
         item.objectType &&
         (!!item.value ||
           (!item.type.options.nullable && !item.type.options.optional))
       ) {
-        output[item.name] = item.objectType.createWith({
-          ...options,
-          data: item.value,
-          output: undefined,
-          parentPath: item.path,
-        });
+        output[item.name] = subItem.nextValue();
       } else {
-        const newValue = options.map ? options.map(subItem) : item.value;
+        const newValue = options.map
+          ? options.map(subItem)
+          : subItem.nextValue();
         if (newValue !== undefined) output[item.name] = newValue;
       }
     }
@@ -277,22 +287,28 @@ export class ObjectType<
         get pathName() {
           return pathName || (pathName = item.path.join("."));
         },
+        nextValue: item.objectType
+          ? () =>
+              item.objectType!.createWithAsync({
+                ...options,
+                data: item.value,
+                output: undefined,
+                parentPath: item.path,
+              })
+          : () => item.value,
       };
       if (options.filter && !options.filter(subItem)) continue;
-
       if (
+        !options.mapObjects &&
         item.objectType &&
         (!!item.value ||
           (!item.type.options.nullable && !item.type.options.optional))
       ) {
-        output[item.name] = await item.objectType.createWithAsync({
-          ...options,
-          data: item.value,
-          output: undefined,
-          parentPath: item.path,
-        });
+        output[item.name] = await subItem.nextValue();
       } else {
-        const newValue = options.map ? await options.map(subItem) : item.value;
+        const newValue = options.map
+          ? await options.map(subItem)
+          : await subItem.nextValue();
         if (newValue !== undefined) output[item.name] = newValue;
       }
     }

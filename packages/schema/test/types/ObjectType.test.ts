@@ -1,5 +1,12 @@
-import { InferType, NumberType, StringType, s } from "../../src/index.js";
+import {
+  InferType,
+  NumberType,
+  StringType,
+  ObjectType,
+  s,
+} from "../../src/index.js";
 import "./../override.js";
+import { kindOf } from "@dreamkit/kind";
 import { describe, expect, expectTypeOf, it } from "vitest";
 
 describe("object.type", () => {
@@ -182,6 +189,42 @@ describe("object.createWith", () => {
         g: {
           h: "c.g.h",
         },
+      },
+    });
+  });
+  it("with mapObjects", () => {
+    const $ = s.object({
+      a: s.string(),
+      b: s
+        .object({
+          c: s.bool(),
+        })
+        .flags({ internal: true }),
+      d: s.object({
+        e: s.bool(),
+      }),
+    });
+
+    const o = $.createWith({
+      mapObjects: true,
+      map: ({ type, pathName, nextValue }) => {
+        if (kindOf(type, ObjectType)) {
+          return (type.flagsValue as any).internal
+            ? JSON.stringify(nextValue())
+            : nextValue();
+        } else {
+          return pathName;
+        }
+      },
+    });
+
+    expect(o).toEqual({
+      a: "a",
+      b: JSON.stringify({
+        c: "b.c",
+      }),
+      d: {
+        e: "d.e",
       },
     });
   });
