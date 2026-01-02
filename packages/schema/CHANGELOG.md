@@ -1,5 +1,11 @@
 # @dreamkit/schema
 
+## 0.0.20
+
+### Patch Changes
+
+- [`dc738b1`](https://github.com/swordev/dreamkit/commit/dc738b1ba59732f82814144aa7106a81c939f552) Thanks [@juanrgm](https://github.com/juanrgm)! - Allow numeric properties
+
 ## 0.0.19
 
 ### Patch Changes
