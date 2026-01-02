@@ -249,6 +249,7 @@ describe("object.partial", () => {
         c: s.object({
           d: s.string(),
         }),
+        3: s.number(),
       })
       .partial();
     expectTypeOf<InferType<typeof $>>().toEqualTypeOf<{
@@ -257,10 +258,26 @@ describe("object.partial", () => {
       c?: {
         d: string;
       };
+      3?: number;
     }>();
     expect($.props.a.flagsValue).toMatchObject({ optional: true });
     expect($.props.b.flagsValue).toMatchObject({ optional: true });
     expect($.props.c.flagsValue).toMatchObject({ optional: true });
+  });
+
+  it("create fullpartial with only numeric properties", () => {
+    const $ = s
+      .object({
+        1: s.string(),
+        2: s.number(),
+      })
+      .partial();
+    expectTypeOf<InferType<typeof $>>().toEqualTypeOf<{
+      1?: string;
+      2?: number;
+    }>();
+    expect($.props[1].flagsValue).toMatchObject({ optional: true });
+    expect($.props[2].flagsValue).toMatchObject({ optional: true });
   });
 });
 describe("object.deepNullish", () => {
@@ -652,6 +669,29 @@ describe("object.fit", () => {
     expect(Object.keys(internal.props)).toStrictEqual(["name", "location"]);
     expect(Object.keys(internal.props.location.props)).toStrictEqual([
       "address",
+    ]);
+  });
+
+  it("query flag with numeric property", () => {
+    const o = s.object({
+      id: s.string().flags({ pk: true, internal: true }),
+      name: s.string(),
+      42: s.string().flags({ internal: true }),
+      43: s.object({
+        id: s.string().flags({ internal: true }),
+      }),
+    });
+    const internal = o.query({ internal: true });
+
+    expectTypeOf<InferType<typeof internal>>().toEqualTypeOf<{
+      id: string;
+      42: string;
+      43: { id: string };
+    }>();
+    expect(Object.keys(internal.props).sort()).toStrictEqual([
+      "42",
+      "43",
+      "id",
     ]);
   });
 

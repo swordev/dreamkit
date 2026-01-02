@@ -16,7 +16,7 @@ import { isPlainObject } from "@dreamkit/utils/object.js";
 import { createProxy } from "@dreamkit/utils/proxy.js";
 import type { Any, RecursiveRecord } from "@dreamkit/utils/ts.js";
 
-export type ObjectTypeProps = Record<string, $.MinimalType>;
+export type ObjectTypeProps = Record<string | number, $.MinimalType>;
 export type ObjectTypeOptions<P extends ObjectTypeProps = ObjectTypeProps> =
   $.TypeOptions<{ props: P }>;
 export type InferObjectProps<T extends ObjectTypeProps> = InferType<
@@ -43,7 +43,7 @@ export type FieldObject<T extends MinimalObjectType> = {
 export type IsEmptyObjectTypeProps<
   T extends ObjectTypeProps,
   K = keyof T,
-> = K extends string
+> = K extends string | number
   ? T[K] extends MinimalObjectType<infer Props>
     ? IsEmptyObjectTypeProps<Props>
     : true
