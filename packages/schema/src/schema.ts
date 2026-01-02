@@ -59,10 +59,16 @@ export class Schema {
       return new CustomType<T>({ test, ...options });
     } else if (args.length === 2) {
       const [, options] = args as [any, SelfCustomTypeOptions<T>];
-      return new CustomType<T>(options);
+      return new CustomType<T>({
+        ...this.typeOptions,
+        ...options,
+      });
     } else {
       const [options] = args as [SelfCustomTypeOptions<T>];
-      return new CustomType<T>(options);
+      return new CustomType<T>({
+        ...this.typeOptions,
+        ...options,
+      });
     }
   }
 }
