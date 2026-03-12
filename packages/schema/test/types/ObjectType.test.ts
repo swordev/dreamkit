@@ -587,6 +587,58 @@ describe("object.refine", () => {
   });
 });
 
+describe("object.query", () => {
+  const groupItem = s.object({
+    id: s.string().flags({ internal: true }),
+    value: s.string(),
+  });
+  it("omit internal with nullable array", () => {
+    const o = s.object({
+      groups: s.array(groupItem).nullable(),
+    });
+    const o2 = o.query({ internal: false });
+    const o2Flags = o2.props.groups.flagsValue;
+    const props = o2.props.groups.items.props;
+    type names = keyof typeof props;
+    expectTypeOf<names>().toEqualTypeOf<"value">();
+    expectTypeOf<typeof o2Flags>().toEqualTypeOf<{
+      nullable: true;
+    }>();
+    expect(o2Flags.nullable).toBe(true);
+    expect(Object.keys(props)).toEqual(["value"]);
+  });
+  it("omit internal with optional array", () => {
+    const o = s.object({
+      groups: s.array(groupItem).optional(),
+    });
+    const o2 = o.query({ internal: false });
+    const o2Flags = o2.props.groups.flagsValue;
+    const props = o2.props.groups.items.props;
+    type names = keyof typeof props;
+    expectTypeOf<names>().toEqualTypeOf<"value">();
+    expectTypeOf<typeof o2Flags>().toEqualTypeOf<{
+      optional: true;
+    }>();
+    expect(o2Flags.optional).toBe(true);
+    expect(Object.keys(props)).toEqual(["value"]);
+  });
+  it("omit internal with nullable object", () => {
+    const o = s.object({
+      groups: groupItem.nullable(),
+    });
+    const o2 = o.query({ internal: false });
+    const o2Flags = o2.props.groups.flagsValue;
+    const props = o2.props.groups.props;
+    type names = keyof typeof props;
+    expectTypeOf<names>().toEqualTypeOf<"value">();
+    expectTypeOf<typeof o2Flags>().toEqualTypeOf<{
+      nullable: true;
+    }>();
+    expect(o2Flags.nullable).toBe(true);
+    expect(Object.keys(props)).toEqual(["value"]);
+  });
+});
+
 describe("object.fit", () => {
   const o = s.object({
     id: s.string().flags({ pk: true, internal: true }),

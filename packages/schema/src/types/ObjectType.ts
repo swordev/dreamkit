@@ -71,9 +71,9 @@ export type QueryObjectType<
               ? never
               : K]: P[K] extends MinimalObjectType<any, any>
             ? QueryObjectType<P[K], Q>
-            : P[K] extends MinimalArrayType
+            : P[K] extends MinimalArrayType<any, infer ArrayFlags>
               ? P[K]["items"] extends MinimalObjectType<any, any>
-                ? ArrayType<QueryObjectType<P[K]["items"], Q>>
+                ? ArrayType<QueryObjectType<P[K]["items"], Q>, ArrayFlags>
                 : QueryObjectTypeResult<Q, P[K]>
               : QueryObjectTypeResult<Q, P[K]>;
         } & {},
