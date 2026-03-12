@@ -1,5 +1,11 @@
 # @dreamkit/schema
 
+## 0.0.21
+
+### Patch Changes
+
+- [`a828366`](https://github.com/swordev/dreamkit/commit/a82836606eb99eb76dcadcad80aa852bf62f49cf) Thanks [@juanrgm](https://github.com/juanrgm)! - Fix query types
+
 ## 0.0.20
 
 ### Patch Changes
