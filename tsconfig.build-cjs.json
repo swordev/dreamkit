@@ -1,0 +1,7 @@
+{
+  "include": [],
+  "references": [
+    { "path": "./packages/ioc/tsconfig.build-cjs.json" },
+    { "path": "./packages/kind/tsconfig.build-cjs.json" }
+  ]
+}

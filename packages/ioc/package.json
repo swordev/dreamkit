@@ -26,12 +26,21 @@
   ],
   "sideEffects": false,
   "type": "module",
+  "module": "./lib/index.js",
+  "main": "./lib-cjs/index.js",
   "exports": {
-    ".": "./lib/index.js",
-    "./*": "./lib/*"
+    ".": {
+      "import": "./lib/index.js",
+      "require": "./lib-cjs/index.js"
+    },
+    "./*": {
+      "import": "./lib/*.js",
+      "require": "./lib-cjs/*.js"
+    }
   },
   "files": [
-    "lib"
+    "lib",
+    "lib-cjs"
   ],
   "dependencies": {
     "@dreamkit/kind": "workspace:*"

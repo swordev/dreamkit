@@ -21,6 +21,7 @@ jobs:
           cache: pnpm
       - run: pnpm install
       - run: pnpm build
+      - run: pnpm build:cjs
       - run: pnpm build:site
       - run: pnpm test
       - id: changesets
