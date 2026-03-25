@@ -1,5 +1,11 @@
 # @dreamkit/kind
 
+## 0.0.5
+
+### Patch Changes
+
+- [`27b7c54`](https://github.com/swordev/dreamkit/commit/27b7c54c6a94730b2a45ccda351238c1a933a208) Thanks [@juanrgm](https://github.com/juanrgm)! - Add CJS support
+
 ## 0.0.4
 
 ### Patch Changes
