@@ -1,5 +1,11 @@
 # @dreamkit/ioc
 
+## 0.4.0
+
+### Minor Changes
+
+- [`ae9fb58`](https://github.com/swordev/dreamkit/commit/ae9fb5826bc5a25b675f7aa4c25397d7ba903705) Thanks [@juanrgm](https://github.com/juanrgm)! - Allow deep plain object as param
+
 ## 0.3.4
 
 ### Patch Changes
