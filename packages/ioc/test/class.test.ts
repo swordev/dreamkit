@@ -1,5 +1,6 @@
 import { createIocClass, IocClass } from "../src/class.js";
 import { context } from "../src/context.js";
+import { IocFunc } from "../src/func.js";
 import { iocParam } from "../src/params.js";
 import { kind } from "@dreamkit/kind";
 import { describe, expect, expectTypeOf, it } from "vitest";
@@ -186,6 +187,49 @@ describe("IocClass", () => {
       internal: 3,
       external: 2,
     });
+  });
+  it("with deep plain object", () => {
+    class Handler {
+      read() {
+        return 1;
+      }
+      fetch() {
+        return 2;
+      }
+    }
+    class Token {
+      constructor(readonly value: string) {}
+    }
+
+    const api = {
+      fs: {
+        Token,
+        read: IocFunc({ Handler })(function () {
+          return this.handler.read();
+        }),
+      },
+      network: {
+        http: {
+          Token: iocParam(Token).optional(),
+          fetch: IocFunc({ Handler })(function () {
+            return this.handler.fetch();
+          }),
+        },
+      },
+    };
+
+    class App extends IocClass({ api }) {}
+    const app = context
+      .fork()
+      .register(new Handler())
+      .register(new Token("secret"))
+      .resolve(App);
+    // @ts-expect-error
+    app.api.network.http.token.value;
+    expect(app.api.fs.token.value).toBe("secret");
+    expect(app.api.network.http.token?.value).toBe("secret");
+    expect(app.api.fs.read()).toBe(1);
+    expect(app.api.network.http.fetch()).toBe(2);
   });
 });
 

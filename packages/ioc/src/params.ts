@@ -1,6 +1,7 @@
 import { IocFunc } from "./func.js";
 import type { IocRegistryData, IocRegistryKey } from "./registry.js";
 import { iocKind } from "./utils/kind.js";
+import { isPlainObject } from "./utils/object.js";
 import { uncapitalize } from "./utils/string.js";
 import type {
   AbstractConstructor,
@@ -18,7 +19,9 @@ export type IocParamValue = ParamValue & {
 };
 
 export type IocParamsConfig = Record<string, IocParamBuilder>;
-export type IocParamsUserConfig = Record<string, IocParamBuilder | ParamValue>;
+export type IocParamsUserConfig = {
+  [name: string]: IocParamBuilder | ParamValue | IocParamsUserConfig;
+};
 
 export type IocParamConfigurable<V extends ParamValue> = V extends IocParamValue
   ? {
@@ -131,7 +134,9 @@ export type IocParam<V> = V extends NumberConstructor
           ? V extends { bind: IocBind }
             ? ReturnType<V["bind"]>
             : (...args: Parameters<V>) => ReturnType<V>
-          : V;
+          : V extends Record<string, any>
+            ? IocParams<V>
+            : V;
 
 export type IocBind<S = any, R = any> = {
   (input: S): R;
@@ -180,16 +185,27 @@ export function iocParam<V extends ParamValue>(
 ): IocParamBuilder<{ value: V }> {
   return new IocParamBuilder({ value });
 }
-
+export function normalizeIocParams(input: IocParamsUserConfig): IocParamsConfig;
 export function normalizeIocParams(
   input: IocParamsUserConfig,
+  deep: false,
+): {
+  [name: string]: IocParamBuilder | IocParamsUserConfig;
+};
+export function normalizeIocParams(
+  input: IocParamsUserConfig,
+  deep?: boolean,
 ): IocParamsConfig {
-  const params: IocParamsConfig = {};
+  const params: any = {};
   for (const key in input) {
     const value = input[key];
     params[uncapitalize(key)] = kindOf(value, IocParamBuilder)
       ? value
-      : iocParam(value);
+      : isPlainObject(value)
+        ? deep
+          ? normalizeIocParams(value)
+          : value
+        : iocParam(value);
   }
   return params;
 }

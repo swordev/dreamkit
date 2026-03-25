@@ -17,6 +17,7 @@ import {
 } from "./registry.js";
 import { ensureSync } from "./utils/async.js";
 import { iocKind, KindMap } from "./utils/kind.js";
+import { isPlainObject } from "./utils/object.js";
 import { capitalize } from "./utils/string.js";
 import type { AbstractConstructor, Constructor } from "./utils/ts.js";
 import { is } from "@dreamkit/kind";
@@ -323,7 +324,7 @@ export class IocContext {
     if (!onResolveIocObject || onResolveIocObject(input)) {
       return {
         paramOptions: { context, parent: input },
-        params: normalizeIocParams(iocObject.$ioc.params),
+        params: iocObject.$ioc.params,
         create,
       };
     }
@@ -340,22 +341,45 @@ export class IocContext {
       ? this.resolveAsync(input, options)
       : this.resolve(input, options);
   }
-  resolveParams<T extends IocParamsUserConfig>(input: T): IocParams<T> {
-    const config = normalizeIocParams(input);
+  resolveParams<T extends IocParamsUserConfig>(
+    input: T,
+    options: {
+      parent?: unknown;
+      context?: IocContext;
+    } = {},
+  ): IocParams<T> {
+    const config = normalizeIocParams(input, false);
     const params: Record<string, any> = {};
     for (const name in config) {
-      params[name] = ensureSync(this.createParam(config[name]));
+      const value = config[name];
+      if (isPlainObject(value)) {
+        params[name] = this.resolveParams(value, options);
+      } else {
+        params[name] = ensureSync(this.createParam(value, options));
+      }
     }
     return params as any;
   }
 
   async resolveAsyncParams<T extends IocParamsUserConfig>(
     input: T,
+    options: {
+      parent?: unknown;
+      context?: IocContext;
+    } = {},
   ): Promise<IocParams<T>> {
-    const config = normalizeIocParams(input);
+    const config = normalizeIocParams(input, false);
     const params: Record<string, any> = {};
     for (const name in config) {
-      params[name] = await this.createParam(config[name]);
+      const value = config[name];
+      if (isPlainObject(value)) {
+        params[name] = await this.resolveAsyncParams(value, options);
+      } else {
+        params[name] = await this.createParam(value, {
+          ...options,
+          async: true,
+        });
+      }
     }
     return params as any;
   }
@@ -400,12 +424,7 @@ export class IocContext {
     const object = this.tryParseIocObject(input, options);
 
     if (object) {
-      const params: Record<string, any> = {};
-      for (const name in object.params) {
-        params[name] = ensureSync(
-          this.createParam(object.params[name], object.paramOptions),
-        );
-      }
+      const params = this.resolveParams(object.params, object.paramOptions);
       return object.create(params);
     }
   }
@@ -451,13 +470,10 @@ export class IocContext {
     const object = this.tryParseIocObject(input, options);
 
     if (object) {
-      const params: Record<string, any> = {};
-      for (const name in object.params) {
-        params[name] = await this.createParam(object.params[name], {
-          ...object.paramOptions,
-          async: true,
-        });
-      }
+      const params = await this.resolveAsyncParams(
+        object.params,
+        object.paramOptions,
+      );
       return object.create(params);
     }
   }
