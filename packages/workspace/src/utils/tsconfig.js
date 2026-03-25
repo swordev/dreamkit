@@ -101,7 +101,8 @@ export function createTSConfigFiles(options) {
       extends: ["@dreamkit/tsconfig/build.json", ...extendsValue],
       ...options.build,
     });
-    if (pkg.isTypeScript && pkg.manifest.main)
+    if (pkg.manifest.main) {
+      files["lib-cjs/package.json"] = { type: "commonjs" };
       files["tsconfig.build-cjs.json"] = defineTSConfig({
         compilerOptions: {
           outDir: "lib-cjs",
@@ -114,6 +115,7 @@ export function createTSConfigFiles(options) {
           fileName: "tsconfig.build-cjs.json",
         }),
       });
+    }
   }
   return files;
 }
