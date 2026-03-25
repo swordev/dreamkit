@@ -1,5 +1,16 @@
 # @dreamkit/core
 
+## 0.0.20
+
+### Patch Changes
+
+- Updated dependencies [[`4a3457d`](https://github.com/swordev/dreamkit/commit/4a3457d3491464c16869c283c48198d5182e5c50)]:
+  - @dreamkit/ioc@0.3.4
+  - @dreamkit/kind@0.0.6
+  - @dreamkit/app@0.0.42
+  - @dreamkit/func@0.0.27
+  - @dreamkit/schema@0.0.23
+
 ## 0.0.19
 
 ### Patch Changes
