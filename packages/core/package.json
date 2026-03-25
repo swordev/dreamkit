@@ -1,6 +1,6 @@
 {
   "name": "@dreamkit/core",
-  "version": "0.0.20",
+  "version": "0.0.21",
   "description": "Core of DreamKit.",
   "keywords": [
     "type-safe",
