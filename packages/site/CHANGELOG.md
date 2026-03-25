@@ -1,5 +1,12 @@
 # @dreamkit/site
 
+## 0.0.53
+
+### Patch Changes
+
+- Updated dependencies []:
+  - dreamkit@0.0.50
+
 ## 0.0.52
 
 ### Patch Changes

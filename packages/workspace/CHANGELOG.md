@@ -1,5 +1,11 @@
 # @dreamkit/workspace
 
+## 0.3.0
+
+### Minor Changes
+
+- [`b0e8be1`](https://github.com/swordev/dreamkit/commit/b0e8be12fd1a22625422eddaf9d1e6767b559e6a) Thanks [@juanrgm](https://github.com/juanrgm)! - Add CJS support
+
 ## 0.2.1
 
 ### Patch Changes
