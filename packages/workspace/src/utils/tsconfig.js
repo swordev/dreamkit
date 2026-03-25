@@ -69,9 +69,21 @@ export function createTSConfigFiles(options) {
   ).map((name) =>
     presets.includes(name) ? `@dreamkit/tsconfig/${name}.json` : name,
   );
+  const cjs = packages.some((pkg) => pkg.isTypeScript && pkg.manifest.main);
   /** @type {Record<string, any>} */
   const files = {};
   if (pkg.isRoot) {
+    if (cjs)
+      files["tsconfig.build-cjs.json"] = defineTSConfig({
+        include: [],
+        references: getRootTSConfigReferences(
+          packages.filter((pkg) => pkg.isTypeScript && pkg.manifest.main),
+          {
+            fileName: "tsconfig.build-cjs.json",
+          },
+        ),
+        ...options.base,
+      });
     files["tsconfig.build.json"] = defineTSConfig({
       include: [],
       references: getRootTSConfigReferences(packages),
@@ -89,6 +101,19 @@ export function createTSConfigFiles(options) {
       extends: ["@dreamkit/tsconfig/build.json", ...extendsValue],
       ...options.build,
     });
+    if (pkg.isTypeScript && pkg.manifest.main)
+      files["tsconfig.build-cjs.json"] = defineTSConfig({
+        compilerOptions: {
+          outDir: "lib-cjs",
+          module: "commonjs",
+          moduleResolution: "Node",
+        },
+        extends: ["./tsconfig.build.json"],
+        references: getTSConfigReferences(pkg, packages, {
+          exclude: ["@dreamkit/tsconfig"],
+          fileName: "tsconfig.build-cjs.json",
+        }),
+      });
   }
   return files;
 }

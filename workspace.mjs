@@ -1,12 +1,6 @@
 // @ts-check
-import {
-  createTSConfigFiles,
-  defineConfig,
-  definePackageJSON,
-  defineTSConfig,
-  getRootTSConfigReferences,
-} from "@dreamkit/workspace";
-import { mkdirSync, readFileSync } from "fs";
+import { createTSConfigFiles, defineConfig } from "@dreamkit/workspace";
+import { readFileSync } from "fs";
 import { markdownTable } from "markdown-table";
 
 const readmePackageTpl = readFileSync("./docs/readme-package.tpl.md", "utf8");
@@ -16,8 +10,6 @@ export default defineConfig(({ pkg, packages }) => {
     throw new Error('"files" field is required');
   if (pkg.manifest.private && !pkg.isRoot) return;
   if (pkg.name === "@dreamkit/site") return;
-  const cjs = pkg.isTypeScript && !!pkg.manifest.main;
-  if (cjs) mkdirSync(`${pkg.dir}/lib-cjs`, { recursive: true });
   return {
     files: {
       ...createTSConfigFiles({
@@ -27,33 +19,10 @@ export default defineConfig(({ pkg, packages }) => {
         pkg,
         extends: ["publish"],
       }),
-
       ...(pkg.isRoot && {
         "README.md": renderRootReadme(packages),
-        "tsconfig.build-cjs.json": defineTSConfig({
-          include: [],
-          references: getRootTSConfigReferences(
-            packages.filter((pkg) => pkg.isTypeScript && pkg.manifest.main),
-            {
-              fileName: "tsconfig.build-cjs.json",
-            },
-          ),
-        }),
       }),
       ...(!pkg.isRoot && {
-        ...(cjs && {
-          "tsconfig.build-cjs.json": defineTSConfig({
-            compilerOptions: {
-              outDir: "lib-cjs",
-              module: "commonjs",
-              moduleResolution: "Node",
-            },
-            extends: ["./tsconfig.build.json"],
-          }),
-          "lib-cjs/package.json": definePackageJSON({
-            type: "commonjs",
-          }),
-        }),
         "README.md": readmePackageTpl
           .replaceAll("{packageName}", pkg.name ?? "")
           .replaceAll("{packageDescription}", pkg.manifest.description ?? ""),

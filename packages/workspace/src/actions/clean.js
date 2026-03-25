@@ -24,7 +24,7 @@ export async function clean(inputFilter) {
 
     for (const name of await readdir(pkgDir)) {
       if (
-        ["node_modules", "lib", "dist"].includes(name) ||
+        ["node_modules", "lib", "lib-cjs", "dist"].includes(name) ||
         name.endsWith(".tsbuildinfo")
       ) {
         try {

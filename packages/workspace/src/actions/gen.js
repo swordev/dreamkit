@@ -7,8 +7,8 @@ import {
 } from "../utils/fs.js";
 import { findPackageDirs } from "../utils/pkg.js";
 import { existsSync } from "fs";
-import { readdir, writeFile } from "fs/promises";
-import { basename, join } from "path";
+import { mkdir, readdir, writeFile } from "fs/promises";
+import { basename, dirname, join } from "path";
 
 /** @return {Promise<import("../index.js").Package[]>} */
 export async function findPackages() {
@@ -105,6 +105,8 @@ export async function gen(inputFilter) {
           : undefined;
 
       const next = typeof value === "function" ? value(prev) : value;
+
+      await mkdir(dirname(filePath), { recursive: true });
 
       if (next !== undefined && next !== false) {
         if (isJSON) {
