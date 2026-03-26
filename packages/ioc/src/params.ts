@@ -170,7 +170,7 @@ export class IocParamBuilder<T extends IocParamData = IocParamData> {
     return this.clone({ optional: true }) as any;
   }
   configurable: T["value"] extends IocParamValue
-    ? <C extends IocParamConfigurable<T["value"]>>(
+    ? <const C extends IocParamConfigurable<T["value"]>>(
         input: C,
       ) => IocParamBuilder<MergeIocParamData<T, { configurable: C }>>
     : never = function (input: any) {
