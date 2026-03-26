@@ -314,6 +314,28 @@ describe("IocContext.resolve", () => {
         .resolve(Client),
     ).toBeInstanceOf(NodeClient);
   });
+  it("report trace", () => {
+    class X {}
+    class A extends IocClass({ X }) {}
+    class B extends IocClass({ A }) {}
+    const c = IocFunc({ B })(function c() {});
+    class D extends IocClass({ c }) {}
+    expect(() => context.resolve(D)).toThrowError(
+      `Class 'X' is not registered (D.c.b.a.x)`,
+    );
+    expect(() => context.resolve(c)).toThrowError(
+      `Class 'X' is not registered (c2.b.a.x)`,
+    );
+    expect(() => context.resolve(B)).toThrowError(
+      `Class 'X' is not registered (B.a.x)`,
+    );
+    expect(() => context.resolve(A)).toThrowError(
+      `Class 'X' is not registered (A.x)`,
+    );
+    expect(() => context.resolve(X)).toThrowError(
+      `Class 'X' is not registered`,
+    );
+  });
 });
 
 describe("IocContext.resolveParams", () => {

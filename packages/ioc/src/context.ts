@@ -38,7 +38,11 @@ const fallbackKey = Symbol("fallback");
 export const undefinedValueKey = Symbol("undefined");
 export const ignoreValueKey = Symbol("ignore");
 
-type RequiredResolveOptions = { parent?: unknown; abstract?: boolean };
+type RequiredResolveOptions = {
+  parent?: unknown;
+  abstract?: boolean;
+  path?: string[];
+};
 type OptionalResolveOptions = RequiredResolveOptions & { optional: true };
 type ResolveOptions = RequiredResolveOptions & { optional?: boolean };
 
@@ -116,15 +120,20 @@ export class IocContext {
       parent?: unknown;
       context?: IocContext;
       async?: boolean;
+      path?: string[];
     } = {},
   ) {
     const { parent } = options;
     const context = options.context ?? this;
     return param["isConfigurable"]()
-      ? this.createConfigurableParam(param, { parent, context })
+      ? this.createConfigurableParam(param, {
+          parent,
+          context,
+          path: options.path,
+        })
       : context.dynamicResolve(
           param["getKey"](),
-          { parent, optional: param.options.optional },
+          { parent, optional: param.options.optional, path: options.path },
           { async: options.async },
         );
   }
@@ -133,6 +142,7 @@ export class IocContext {
     options: {
       context: IocContext;
       parent?: unknown;
+      path?: string[];
     },
   ) {
     const registerKey = param["getKey"]();
@@ -152,8 +162,10 @@ export class IocContext {
       return ensureSync(
         ctx.resolve(registerKey, {
           parent: options.parent,
+          path: options.path,
           optional: param.options.optional as true,
         }),
+        options.path,
       );
     };
   }
@@ -256,6 +268,7 @@ export class IocContext {
     options: {
       parent?: any;
       async?: boolean;
+      path?: string[];
     },
   ) {
     const { parent } = options;
@@ -271,7 +284,7 @@ export class IocContext {
       const ctx = this.fork().register(input as any, { value: ignoreValueKey });
       return ctx.dynamicResolve(
         data.useClass,
-        { parent },
+        { parent, path: options.path },
         { async: options.async },
       );
     }
@@ -298,7 +311,7 @@ export class IocContext {
   ):
     | {
         params: IocParamsConfig;
-        paramOptions: { context: IocContext; parent: unknown };
+        paramOptions: { context: IocContext; parent: unknown; path?: string[] };
         create: (params: Record<string, any>) => any;
       }
     | undefined {
@@ -312,7 +325,7 @@ export class IocContext {
       iocObject = input;
       create = (params: any) => input.bind(params);
     } else if (!options.optional) {
-      throw createKeyError(input as IocRegistryKey);
+      throw createKeyError(input as IocRegistryKey, options.path);
     } else {
       return;
     }
@@ -323,7 +336,7 @@ export class IocContext {
       : this;
     if (!onResolveIocObject || onResolveIocObject(input)) {
       return {
-        paramOptions: { context, parent: input },
+        paramOptions: { context, parent: input, path: options.path },
         params: iocObject.$ioc.params,
         create,
       };
@@ -346,16 +359,22 @@ export class IocContext {
     options: {
       parent?: unknown;
       context?: IocContext;
+      path?: string[];
     } = {},
   ): IocParams<T> {
     const config = normalizeIocParams(input, false);
+    const prevPath = options.path ?? [];
     const params: Record<string, any> = {};
     for (const name in config) {
       const value = config[name];
+      const path = [...prevPath, name];
       if (isPlainObject(value)) {
-        params[name] = this.resolveParams(value, options);
+        params[name] = this.resolveParams(value, { ...options, path });
       } else {
-        params[name] = ensureSync(this.createParam(value, options));
+        params[name] = ensureSync(
+          this.createParam(value, { ...options, path }),
+          path,
+        );
       }
     }
     return params as any;
@@ -366,17 +385,24 @@ export class IocContext {
     options: {
       parent?: unknown;
       context?: IocContext;
+      path?: string[];
     } = {},
   ): Promise<IocParams<T>> {
     const config = normalizeIocParams(input, false);
+    const prevPath = options.path ?? [];
     const params: Record<string, any> = {};
     for (const name in config) {
       const value = config[name];
+      const path = [...prevPath, name];
       if (isPlainObject(value)) {
-        params[name] = await this.resolveAsyncParams(value, options);
+        params[name] = await this.resolveAsyncParams(value, {
+          ...options,
+          path,
+        });
       } else {
         params[name] = await this.createParam(value, {
           ...options,
+          path,
           async: true,
         });
       }
@@ -411,17 +437,26 @@ export class IocContext {
     input: Constructor | ((...args: any[]) => any) | IocRegistryKey,
     options: ResolveOptions = {},
   ) {
+    const path = options.path ?? [
+      typeof input === "function" ? input.name : `${input}`,
+    ];
     const data = this.find(input as any);
 
     if (data && this.shouldBeResolved(input, data)) {
       const value = ensureSync(
-        this.resolveWithRegistryData(input, data, { parent: options.parent }),
+        this.resolveWithRegistryData(input, data, {
+          parent: options.parent,
+          path,
+        }),
       );
       const result = this.tryParseResolvedValue(input, data, value);
       if (result) return result.value;
     }
 
-    const object = this.tryParseIocObject(input, options);
+    const object = this.tryParseIocObject(input, {
+      ...options,
+      path,
+    });
 
     if (object) {
       const params = this.resolveParams(object.params, object.paramOptions);
@@ -456,18 +491,26 @@ export class IocContext {
     input: Constructor | ((...args: any[]) => any) | IocRegistryKey,
     options: ResolveOptions = {},
   ) {
+    const path = [
+      ...(options.path ?? []),
+      typeof input === "function" ? input.name : `${input}`,
+    ];
     const data = this.find(input as any);
 
     if (data && this.shouldBeResolved(input, data)) {
       const value = await this.resolveWithRegistryData(input, data, {
         parent: options.parent,
+        path,
         async: true,
       });
       const result = this.tryParseResolvedValue(input, data, value);
       if (result) return result.value;
     }
 
-    const object = this.tryParseIocObject(input, options);
+    const object = this.tryParseIocObject(input, {
+      ...options,
+      path,
+    });
 
     if (object) {
       const params = await this.resolveAsyncParams(
