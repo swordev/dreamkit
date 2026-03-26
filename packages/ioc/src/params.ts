@@ -133,7 +133,7 @@ export type IocParam<V> = V extends NumberConstructor
         : V extends (...args: any[]) => any
           ? V extends { bind: IocBind }
             ? ReturnType<V["bind"]>
-            : (...args: Parameters<V>) => ReturnType<V>
+            : OmitThisParameter<V>
           : V extends Record<string, any>
             ? IocParams<V>
             : V;

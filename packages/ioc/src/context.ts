@@ -394,11 +394,11 @@ export class IocContext {
   resolve<T extends (...args: any[]) => any>(
     func: T,
     options?: RequiredResolveOptions,
-  ): (...args: Parameters<T>) => ReturnType<T>;
+  ): OmitThisParameter<T>;
   resolve<T extends (...args: any[]) => any>(
     func: T,
     options: OptionalResolveOptions,
-  ): (...args: Parameters<T>) => ReturnType<T> | undefined;
+  ): OmitThisParameter<T> | undefined;
   resolve<T = unknown>(
     key: Exclude<IocRegistryKey, Constructor>,
     options?: RequiredResolveOptions,
@@ -439,11 +439,11 @@ export class IocContext {
   resolveAsync<T extends (...args: any[]) => any>(
     func: T,
     options?: RequiredResolveOptions,
-  ): Promise<(...args: Parameters<T>) => ReturnType<T>>;
+  ): Promise<OmitThisParameter<T>>;
   resolveAsync<T extends (...args: any[]) => any>(
     func: T,
     options: OptionalResolveOptions,
-  ): Promise<(...args: Parameters<T>) => ReturnType<T> | undefined>;
+  ): Promise<OmitThisParameter<T> | undefined>;
   resolveAsync<T = unknown>(
     key: Exclude<IocRegistryKey, Constructor>,
     options?: RequiredResolveOptions,
