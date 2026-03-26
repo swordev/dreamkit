@@ -1,5 +1,13 @@
 # @dreamkit/solid
 
+## 0.0.47
+
+### Patch Changes
+
+- Updated dependencies [[`fc5871a`](https://github.com/swordev/dreamkit/commit/fc5871a9ebe8a26d58cd4d700ed09a40034b92a8)]:
+  - @dreamkit/ioc@0.4.1
+  - @dreamkit/app@0.0.44
+
 ## 0.0.46
 
 ### Patch Changes

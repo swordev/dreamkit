@@ -1,5 +1,11 @@
 # @dreamkit/ioc
 
+## 0.4.1
+
+### Patch Changes
+
+- [`fc5871a`](https://github.com/swordev/dreamkit/commit/fc5871a9ebe8a26d58cd4d700ed09a40034b92a8) Thanks [@juanrgm](https://github.com/juanrgm)! - Add error trace
+
 ## 0.4.0
 
 ### Minor Changes
