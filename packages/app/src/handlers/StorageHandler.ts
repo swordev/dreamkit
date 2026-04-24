@@ -12,5 +12,5 @@ export abstract class StorageHandler {
   }
   abstract read(path: string): Promise<ArrayBuffer>;
   abstract stream(path: string): ReadableStream<Uint8Array>;
-  abstract moveTo(path: string): Promise<void>;
+  abstract move(source: File | string, target: string): Promise<void>;
 }

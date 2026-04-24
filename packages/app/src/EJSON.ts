@@ -11,6 +11,11 @@ function isEJSONObject(
   return "$ejson" in input && "$value" in input;
 }
 
+export type EJSONDecodeOptions = {
+  blobRefs?: BlobRefs;
+  onDecoded?: (input: any) => void;
+};
+
 export class EJSON {
   #serializers: Serializer[] = [];
   #serializersValue: readonly Serializer[] | undefined;
@@ -41,11 +46,11 @@ export class EJSON {
     if (isPlainObject(input)) {
       const object: Record<string, any> = {};
       for (const key in input) {
-        object[key] = this.encode(input[key]);
+        object[key] = this.encode(input[key], blobs);
       }
       return object;
     } else if (Array.isArray(input)) {
-      return input.map((item) => this.encode(item));
+      return input.map((item) => this.encode(item, blobs));
     } else if (typeof input === "object" && input !== null) {
       for (const serializer of this.serializers) {
         if (serializer.config.is(input)) {
@@ -58,13 +63,7 @@ export class EJSON {
     }
     return input;
   }
-  decode(
-    input: any,
-    options: {
-      blobRefs?: BlobRefs;
-      onDecoded?: (input: any) => void;
-    } = {},
-  ): any {
+  decode(input: any, options: EJSONDecodeOptions = {}): any {
     if (isPlainObject(input)) {
       if (isEJSONObject(input)) {
         const serializer = this.serializers.find(
@@ -88,12 +87,12 @@ export class EJSON {
       return input;
     }
   }
-  parse(input: string): any {
+  parse(input: string, options: EJSONDecodeOptions = {}): any {
     const json = JSON.parse(input);
-    return this.decode(json);
+    return this.decode(json, options);
   }
-  stringify(value: any): string {
-    const ejson = this.encode(value);
+  stringify(value: any, blobs: Blob[] = []): string {
+    const ejson = this.encode(value, blobs);
     return JSON.stringify(ejson);
   }
 }

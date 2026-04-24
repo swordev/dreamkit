@@ -9,7 +9,7 @@ export class LazyFile extends File {
   constructor(
     readonly ref: BlobRef,
     name: string,
-    protected options: FilePropertyBag,
+    protected options: FilePropertyBag = {},
     protected handler?: StorageHandler,
   ) {
     super([], name, options);
