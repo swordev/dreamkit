@@ -1,5 +1,11 @@
 # @dreamkit/app
 
+## 0.0.45
+
+### Patch Changes
+
+- [`e6ec9a0`](https://github.com/swordev/dreamkit/commit/e6ec9a00ea67055fadb777fd20f78ae581719986) Thanks [@juanrgm](https://github.com/juanrgm)! - Add `LazyFile`.
+
 ## 0.0.44
 
 ### Patch Changes
