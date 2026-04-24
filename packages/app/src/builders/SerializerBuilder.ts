@@ -1,3 +1,4 @@
+import { BlobRefs } from "../EJSON.js";
 import { createKind } from "@dreamkit/kind";
 
 export const [kindSerializer, isSerializer] = createKind(
@@ -7,8 +8,8 @@ export const [kindSerializer, isSerializer] = createKind(
 export type SerializerData<I = any, O = any> = {
   key: string;
   is(input: any): input is I;
-  to(input: I): O;
-  from(output: O): I;
+  to(input: I, blobs: Blob[]): O;
+  from(output: O, blobRefs: BlobRefs): I;
   priority?: number;
 };
 

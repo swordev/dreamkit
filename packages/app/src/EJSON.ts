@@ -2,6 +2,8 @@ import { Serializer } from "./builders/SerializerBuilder.js";
 import { isPlainObject } from "@dreamkit/utils/object.js";
 
 export type EJSONEncodedObject = { $ejson: string; $value: any };
+export type BlobRef = { path: string; size: number };
+export type BlobRefs = Record<number, BlobRef>;
 
 function isEJSONObject(
   input: Record<string, any>,
@@ -35,7 +37,7 @@ export class EJSON {
     this.#serializers = [];
     this.#serializersValue = undefined;
   }
-  encode(input: any): any {
+  encode(input: any, blobs: Blob[] = []): any {
     if (isPlainObject(input)) {
       const object: Record<string, any> = {};
       for (const key in input) {
@@ -49,28 +51,39 @@ export class EJSON {
         if (serializer.config.is(input)) {
           return {
             $ejson: serializer.config.key,
-            $value: serializer.config.to(input),
+            $value: serializer.config.to(input, blobs),
           } satisfies EJSONEncodedObject;
         }
       }
     }
     return input;
   }
-  decode(input: any): any {
+  decode(
+    input: any,
+    options: {
+      blobRefs?: BlobRefs;
+      onDecoded?: (input: any) => void;
+    } = {},
+  ): any {
     if (isPlainObject(input)) {
       if (isEJSONObject(input)) {
         const serializer = this.serializers.find(
           (s) => s.config.key === input.$ejson,
         );
         if (!serializer) throw new Error(`Unknown EJSON type: ${input.$ejson}`);
-        return serializer.config.from(input.$value);
+        const decoded = serializer.config.from(
+          input.$value,
+          options.blobRefs ?? {},
+        );
+        options.onDecoded?.(decoded);
+        return decoded;
       } else {
         const object: Record<string, any> = {};
-        for (const key in input) object[key] = this.decode(input[key]);
+        for (const key in input) object[key] = this.decode(input[key], options);
         return object;
       }
     } else if (Array.isArray(input)) {
-      return input.map((item) => this.decode(item));
+      return input.map((item) => this.decode(item, options));
     } else {
       return input;
     }

@@ -1,4 +1,5 @@
 import { AppError } from "../AppError.js";
+import { LazyFile } from "../LazyFile.js";
 import { $serializer } from "../objects/$serializer.js";
 import { TypeAssertError } from "@dreamkit/schema";
 
@@ -34,4 +35,26 @@ export const appErrorSerializer = $serializer.create({
   is: (input) => input instanceof AppError,
   to: (input) => ({ message: input.message, cause: input.cause }),
   from: (input) => new AppError(input.message, { cause: input.cause }),
+});
+
+export const fileSerializer = $serializer.create({
+  key: "File",
+  is: (input) => input instanceof File,
+  to: (input, blobs) => {
+    const blobIndex = blobs.push(input) - 1;
+    return {
+      blobIndex,
+      name: input.name,
+      type: input.type,
+      lastModified: input.lastModified,
+    };
+  },
+  from: (input, blobRefs) => {
+    const ref = blobRefs[input.blobIndex];
+    if (!ref) throw new Error(`Blob ref not found: ${input.blobIndex}`);
+    return new LazyFile(ref, input.name, {
+      type: input.type,
+      lastModified: input.lastModified,
+    });
+  },
 });

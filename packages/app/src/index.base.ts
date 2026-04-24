@@ -4,7 +4,13 @@ export { isApi, isApiBuilder } from "./builders/ApiBuilder.js";
 export { App } from "./App.js";
 export { AppError } from "./AppError.js";
 export { defineRoutePath, type RoutePathFunc } from "./routePath.js";
-export { EJSON, type EJSONEncodedObject } from "./EJSON.js";
+export {
+  EJSON,
+  type EJSONEncodedObject,
+  type BlobRef,
+  type BlobRefs,
+} from "./EJSON.js";
+export { LazyFile } from "./LazyFile.js";
 // contexts
 export { AppContext } from "./contexts/AppContext.js";
 export { RequestContext } from "./contexts/RequestContext.js";
@@ -69,3 +75,7 @@ export {
   SessionHandlerClass,
   type SessionHandlerConstructor,
 } from "./handlers/SessionHandler.js";
+export {
+  StorageHandler,
+  type StorageHandlerConstructor,
+} from "./handlers/StorageHandler.js";
