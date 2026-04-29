@@ -102,7 +102,7 @@ export class IocContext {
       return [[Constructor, { value }]];
     }
   }
-  batch(): IocContextBatch {
+  batch(): IocContextBatch<this> {
     return new IocContextBatch(this);
   }
   unregister(key: IocRegistryKey) {

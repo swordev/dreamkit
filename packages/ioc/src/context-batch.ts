@@ -5,30 +5,30 @@ import type {
   IocRegistryValue,
 } from "./registry.js";
 
-export type IocContextBatchObject = {
-  context: IocContext;
+export type IocContextBatchObject<T extends IocContext = IocContext> = {
+  context: T;
   unregister: () => void;
 };
 
-export class IocContextBatch {
+export class IocContextBatch<T extends IocContext = IocContext> {
   protected registry: Map<IocRegistryKey, IocRegistryValue> = new Map();
-  constructor(protected context: IocContext) {}
-  registerSelf(): IocContextBatch {
+  constructor(protected context: T) {}
+  registerSelf(): IocContextBatch<T> {
     return this.register(this.context["getConstructor"](), { value: this });
   }
   register<K extends IocRegistryKey>(
     key: K,
-    data: IocRegistryValue<K, this>,
-  ): IocContextBatch;
-  register(items: IocRegistryData): IocContextBatch;
-  register(value: unknown): IocContextBatch;
-  register(...args: any[]): IocContextBatch {
+    data: IocRegistryValue<K, T>,
+  ): IocContextBatch<T>;
+  register(items: IocRegistryData): IocContextBatch<T>;
+  register(value: unknown): IocContextBatch<T>;
+  register(...args: any[]): IocContextBatch<T> {
     const input = this.context["parseRegisterInput"](args);
     for (const [key, data] of input) this.registry.set(key, data);
     return this;
   }
   end(): IocContextBatchObject["unregister"];
-  end(object: true): IocContextBatchObject;
+  end(object: true): IocContextBatchObject<T>;
   end(
     object?: boolean,
   ): IocContextBatchObject | IocContextBatchObject["unregister"] {
