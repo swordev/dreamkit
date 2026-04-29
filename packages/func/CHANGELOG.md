@@ -1,5 +1,12 @@
 # @dreamkit/func
 
+## 0.0.30
+
+### Patch Changes
+
+- Updated dependencies [[`7b7e6e1`](https://github.com/swordev/dreamkit/commit/7b7e6e1c000b8650c78eafabd8d3da8d72d386f6)]:
+  - @dreamkit/ioc@0.5.0
+
 ## 0.0.29
 
 ### Patch Changes
