@@ -1,5 +1,11 @@
 # @dreamkit/ioc
 
+## 0.5.1
+
+### Patch Changes
+
+- [`34ef772`](https://github.com/swordev/dreamkit/commit/34ef7725a904c747fda8bba4d19864ec34424591) Thanks [@juanrgm](https://github.com/juanrgm)! - Fix types
+
 ## 0.5.0
 
 ### Minor Changes
