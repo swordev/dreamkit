@@ -1,5 +1,11 @@
 # @dreamkit/ioc
 
+## 0.5.0
+
+### Minor Changes
+
+- [`7b7e6e1`](https://github.com/swordev/dreamkit/commit/7b7e6e1c000b8650c78eafabd8d3da8d72d386f6) Thanks [@juanrgm](https://github.com/juanrgm)! - Add context batch and save context in the params.
+
 ## 0.4.1
 
 ### Patch Changes
