@@ -1,4 +1,5 @@
 import { IocClass, isIocClass } from "./class.js";
+import { IocContextBatch } from "./context-batch.js";
 import { createKeyError, IocError } from "./error.js";
 import { IocFunc, isIocFunc } from "./func.js";
 import {
@@ -8,6 +9,8 @@ import {
   type IocParamsConfig,
   type IocParamsUserConfig,
   type IocParams,
+  attachParamsContext,
+  getParamsContext,
 } from "./params.js";
 import {
   IocRegistry,
@@ -56,11 +59,20 @@ export class IocContext {
     this.registry = this.options.registry ?? new IocRegistry();
     this.listeners = new KindMap();
   }
+  static tryGet(self: any): IocContext | undefined {
+    return getParamsContext(self);
+  }
+  static get(self: any): IocContext {
+    const context = this.tryGet(self);
+    if (!context)
+      throw new IocError(`No IocContext found in the parameters object`);
+    return context;
+  }
   protected getConstructor(): IocContextConstructor {
     return this.constructor as any;
   }
   registerSelf(): this {
-    return this.register(IocContext, { value: this });
+    return this.register(this.getConstructor(), { value: this });
   }
   register<K extends IocRegistryKey>(
     key: K,
@@ -69,21 +81,29 @@ export class IocContext {
   register(items: IocRegistryData): this;
   register(value: unknown): this;
   register(...args: any[]): this {
-    const set = (key: IocRegistryKey, data: IocRegistryValue) => {
+    const input = this.parseRegisterInput(args);
+    for (const [key, data] of input) {
       this.registry.set(key, data);
-    };
+    }
+    return this;
+  }
+  protected parseRegisterInput(
+    args: any[],
+  ): [key: IocRegistryKey, data: IocRegistryValue][] {
     if (args.length === 2) {
       const [key, data] = args as [IocRegistryKey, IocRegistryValue];
-      set(key, data);
+      return [[key, data]];
     } else if (Array.isArray(args[0])) {
       const [items] = args as [IocRegistryData];
-      for (const [key, data] of items) set(key, data);
+      return items;
     } else {
       const [value] = args as [unknown];
       const Constructor = (value as any).constructor;
-      set(Constructor, { value });
+      return [[Constructor, { value }]];
     }
-    return this;
+  }
+  batch(): IocContextBatch {
+    return new IocContextBatch(this);
   }
   unregister(key: IocRegistryKey) {
     this.registry.delete(key);
@@ -320,10 +340,11 @@ export class IocContext {
 
     if (!options.abstract && isIocClass(input)) {
       iocObject = input;
-      create = (params: any) => new input(params);
+      create = (params: any) => new input(attachParamsContext(params, context));
     } else if (!options.abstract && isIocFunc(input)) {
       iocObject = input;
-      create = (params: any) => input.bind(params);
+      create = (params: any) =>
+        input.bind(attachParamsContext(params, context));
     } else if (!options.optional) {
       throw createKeyError(input as IocRegistryKey, options.path);
     } else {
@@ -334,6 +355,7 @@ export class IocContext {
     const context = iocObject.$ioc.registry
       ? this.fork().register(iocObject.$ioc.registry)
       : this;
+
     if (!onResolveIocObject || onResolveIocObject(input)) {
       return {
         paramOptions: { context, parent: input, path: options.path },

@@ -1,3 +1,4 @@
+import { IocContext } from "./context.js";
 import { IocFunc } from "./func.js";
 import type { IocRegistryData, IocRegistryKey } from "./registry.js";
 import { iocKind } from "./utils/kind.js";
@@ -9,6 +10,8 @@ import type {
   TryUncapitalize,
 } from "./utils/ts.js";
 import { kindOf } from "@dreamkit/kind";
+
+export const paramContextSymbol = Symbol("paramContext");
 
 export type ParamValue =
   | (abstract new (...args: any[]) => any)
@@ -210,6 +213,24 @@ export function normalizeIocParams(
   return params;
 }
 
+export function getParamsContext(
+  params: Record<string, any> | undefined,
+): IocContext | undefined {
+  return (params as any)?.[paramContextSymbol];
+}
+
+export function attachParamsContext(
+  params: Record<string, any>,
+  context: IocContext,
+) {
+  Object.defineProperty(params, paramContextSymbol, {
+    value: context,
+    configurable: true,
+    enumerable: false,
+  });
+  return params;
+}
+
 export function assignParams(
   params: Record<string, any>,
   self: Record<string, unknown>,
@@ -217,6 +238,8 @@ export function assignParams(
   for (const name in params) {
     self[name] = params[name as keyof typeof params];
   }
+  const context = getParamsContext(params);
+  if (context) attachParamsContext(self, context);
 }
 
 export function attachIocMeta(

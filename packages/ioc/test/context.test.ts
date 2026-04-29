@@ -408,3 +408,84 @@ describe("IocContext.register", () => {
     expect(ctx.register(a).resolve(A)).toBe(a);
   });
 });
+
+describe("IocContext.get", () => {
+  const ctx = context.fork().register("data", { value: 1 });
+  it("recovery context from class params", () => {
+    class A extends IocClass({}) {
+      method1() {
+        return IocContext.get(this).resolve("data");
+      }
+      method2() {
+        return IocContext.tryGet(this)?.resolve("data");
+      }
+    }
+    expect(ctx.resolve(A).method1()).toBe(1);
+    expect(ctx.resolve(A).method2()).toBe(1);
+  });
+
+  it("recovery context from function params", () => {
+    const A = IocFunc({})(function () {
+      return IocContext.get(this).resolve("data");
+    });
+    expect(ctx.resolve(A)()).toBe(1);
+  });
+
+  it("throw error", () => {
+    expect(() => IocContext.get({})).toThrowError();
+  });
+
+  it("return undefined", () => {
+    expect(IocContext.tryGet({})).toBeUndefined();
+  });
+});
+
+describe("IocContext.batch", () => {
+  class A {}
+  class B {}
+  class C {}
+  class D {}
+
+  it("return batch object", () => {
+    const ctx = context.fork();
+    expect(ctx.registry.size).toBe(0);
+    const batch = ctx
+      .batch()
+      .register(new A())
+      .register(new B())
+      .register(new C())
+      .register(new D())
+      .end(true);
+
+    expect(ctx.registry.size).toBe(4);
+    expect(batch.context === ctx).toBeTruthy();
+    batch.unregister();
+    expect(ctx.registry.size).toBe(0);
+  });
+
+  it("return batch unregister", () => {
+    const ctx = context.fork();
+    expect(ctx.registry.size).toBe(0);
+    const unregister = ctx
+      .batch()
+      .register(new A())
+      .register(new B())
+      .register(new C())
+      .register(new D())
+      .end();
+
+    expect(ctx.registry.size).toBe(4);
+    unregister();
+    expect(ctx.registry.size).toBe(0);
+  });
+
+  it("is atomic", () => {
+    const ctx = context.fork();
+    expect(ctx.registry.size).toBe(0);
+    expect(() => {
+      ctx.batch().register(new A());
+      throw new Error("test");
+    }).toThrowError();
+    expect(ctx.registry.size).toBe(0);
+  });
+});
