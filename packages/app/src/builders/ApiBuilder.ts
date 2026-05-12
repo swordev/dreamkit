@@ -1,14 +1,9 @@
 import { Func, FuncBuilder, FuncData } from "@dreamkit/func";
-import { createKind } from "@dreamkit/kind";
+import { createIsKind, kindTag } from "@dreamkit/kind";
 
-export const [kindApi, isApi] = createKind<Func>("@dreamkit/app/api");
-
-export const [kindApiBuilder, isApiBuilder] = createKind<FuncBuilder>(
-  "@dreamkit/ApiBuilder",
-);
+const tag = "@dreamkit/ApiBuilder";
+export const isApiBuilder = createIsKind<Func>(tag);
 
 export class ApiBuilder<T extends FuncData> extends FuncBuilder<T> {
-  static {
-    kindApiBuilder(this);
-  }
+  protected static [kindTag] = tag;
 }

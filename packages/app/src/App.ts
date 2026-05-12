@@ -1,12 +1,11 @@
 import { EJSON } from "./EJSON.js";
 import { RequestUrl } from "./RequestUrl.js";
 import { ResponseHeaders } from "./ResponseHeaders.js";
-import { isApi } from "./builders/ApiBuilder.js";
 import {
   isMiddleware,
   type MiddlewareConstructor,
 } from "./builders/MiddlewareBuilder.js";
-import { type Route } from "./builders/RouteBuilder.js";
+import { isRoute, type Route } from "./builders/RouteBuilder.js";
 import { Serializer } from "./builders/SerializerBuilder.js";
 import {
   isService,
@@ -30,16 +29,17 @@ import {
   SettingsHandler,
   type SettingsHandlerConstructor,
 } from "./handlers/SettingsHandler.js";
-import { isRoute, kindApp } from "./utils/kind.js";
+import { isApi } from "./objects/$api.js";
 import { log } from "./utils/log.js";
 import { type Func } from "@dreamkit/func";
-import { kindOf } from "@dreamkit/kind";
+import { createIsKind, kindOf, kindTag } from "@dreamkit/kind";
 import { isPlainObject, merge, sortByDeps } from "@dreamkit/utils/object.js";
 
+const tag = "@dreamkit/app";
+export const isApp = createIsKind<App>(tag);
+
 export class App {
-  static {
-    kindApp(this);
-  }
+  protected static [kindTag] = tag;
   static instanceKey = "dk:app";
   readonly started = false;
   readonly context: AppContext;
@@ -303,9 +303,11 @@ export class App {
       .register(Session, {
         useFactory: async (ctx, Session) => {
           const sessionHandler = ctx.resolve(SessionHandler);
-          const data = await sessionHandler.get(Session as SessionConstructor);
+          const data = await sessionHandler.get(
+            Session as any as SessionConstructor,
+          );
           if (!data) return;
-          return new (Session as SessionConstructor)(data);
+          return new (Session as any as SessionConstructor)(data);
         },
       });
     if (this.sessionHandler)

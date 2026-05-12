@@ -1,6 +1,5 @@
-import { isRouteBuilder, kindRoute, kindRouteBuilder } from "../utils/kind.js";
 import { Func } from "@dreamkit/func";
-import { kindOf } from "@dreamkit/kind";
+import { createIsKind, kindOf, kindTag } from "@dreamkit/kind";
 import {
   InferType,
   MinimalObjectType,
@@ -10,6 +9,12 @@ import {
   type Type,
 } from "@dreamkit/schema";
 import type { Merge, throwError } from "@dreamkit/utils/ts.js";
+
+const routeTag = "@dreamkit/app/route";
+const routeBuilderTag = "@dreamkit/app/RouteBuilder";
+
+export const isRoute = createIsKind<Route>(routeTag);
+export const isRouteBuilder = createIsKind<RouteBuilder>(routeBuilderTag);
 
 export type RoutePathParamsObject<P extends string | number | symbol> = {
   [K in P]: K extends string ? `:${K}` : never;
@@ -97,9 +102,7 @@ export type MergeFuncData<
 > = Merge<RouteData, D1, D2>;
 
 export class RouteBuilder<T extends RouteData = RouteData> {
-  static {
-    kindRouteBuilder(this);
-  }
+  protected static [kindTag] = routeBuilderTag;
   readonly data: T;
   readonly options: RouteOptions<T>;
   constructor(options: RouteOptions<T>) {
@@ -195,8 +198,8 @@ export class RouteBuilder<T extends RouteData = RouteData> {
         throw new Error("createComponent is not defined");
       return self.options.createComponent(self.options as RouteOptions, props);
     };
-    kindRoute(result);
     Object.assign(result, {
+      [kindTag]: routeTag,
       $options: self.options,
       ...self.options.static,
     });

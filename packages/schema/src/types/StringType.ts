@@ -17,9 +17,7 @@ export class StringType<F extends $.TypeFlag.Options = {}> extends $.Type<
   "string",
   StringTypeOptions
 > {
-  static {
-    $.kind(this, "StringType");
-  }
+  protected static [$.kindTag] = "@dreamkit/schema/StringType";
   override readonly kind = "string" as const;
   declare nullable: () => StringType<$.TypeFlag.Nullable<F>>;
   declare optional: () => StringType<$.TypeFlag.Optional<F>>;

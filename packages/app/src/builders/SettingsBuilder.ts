@@ -1,4 +1,4 @@
-import { createKind } from "@dreamkit/kind";
+import { createIsKind, kindTag } from "@dreamkit/kind";
 import type {
   InferType,
   MinimalType,
@@ -10,9 +10,8 @@ import { s } from "@dreamkit/schema";
 import { isPlainObject } from "@dreamkit/utils/object.js";
 import type { Merge, throwError } from "@dreamkit/utils/ts.js";
 
-export const [kindSettings, isSettings] = createKind<SettingsConstructor>(
-  "@dreamkit/app/settings",
-);
+const tag = "@dreamkit/app/settings";
+export const isSettings = createIsKind<SettingsConstructor>(tag);
 
 export type SettingsName = string | undefined;
 export type SettingsParams = MinimalType | undefined;
@@ -50,9 +49,7 @@ export abstract class Settings<T extends SettingsData = SettingsData> {
   static get params() {
     throw new Error("Not implemented");
   }
-  static {
-    kindSettings(this);
-  }
+  protected static [kindTag] = tag;
   readonly options: SettingsOptions<T> = (this.constructor as any).options;
   readonly params!: [undefined] extends [T["defaults"]]
     ? InferSettingsParams<T>
@@ -141,9 +138,7 @@ export class SettingsBuilder<
     if (!this.options.params) throw new Error("Params is required");
     const self = this;
     class CustomSettings extends Settings<T> {
-      static {
-        kindSettings(this, self.options.name);
-      }
+      protected static [kindTag] = `${tag}/${self.options.name}`;
       static override get options(): any {
         return self.options;
       }

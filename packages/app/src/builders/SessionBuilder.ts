@@ -1,4 +1,4 @@
-import { createKind, kindOf } from "@dreamkit/kind";
+import { createIsKind, kindOf, kindTag } from "@dreamkit/kind";
 import {
   InferType,
   MinimalObjectType,
@@ -8,9 +8,8 @@ import {
 } from "@dreamkit/schema";
 import type { Merge, throwError } from "@dreamkit/utils/ts.js";
 
-export const [kindSession, isSession] = createKind<SessionConstructor>(
-  "@dreamkit/app/session",
-);
+const tag = "@dreamkit/app/session";
+export const isSession = createIsKind<SessionConstructor>(tag);
 
 export type SessionName = string | undefined;
 export type SessionParams = MinimalObjectType | undefined;
@@ -49,9 +48,7 @@ export abstract class Session<T extends SessionData = SessionData> {
   static get params() {
     throw new Error("Not implemented");
   }
-  static {
-    kindSession(this);
-  }
+  protected static [kindTag] = tag;
   readonly options: SessionOptions<T> = (this.constructor as any).options;
   readonly params!: InferSessionParams<T>;
   constructor(params: InferSessionParams<T>) {
@@ -124,9 +121,7 @@ export class SessionBuilder<
     if (!this.options.params) throw new Error("Params is required");
     const self = this;
     class CustomSession extends Session<T> {
-      static {
-        kindSession(this, self.options.name);
-      }
+      protected static [kindTag] = `${tag}/${self.options.name}`;
       static override get options(): any {
         return self.options;
       }

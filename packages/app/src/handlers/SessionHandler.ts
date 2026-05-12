@@ -4,20 +4,18 @@ import {
   SessionData,
 } from "../builders/SessionBuilder.js";
 import { createIocClass } from "@dreamkit/ioc";
-import { createKind } from "@dreamkit/kind";
+import { createIsKind, kindTag } from "@dreamkit/kind";
 import { Constructor } from "@dreamkit/utils/ts.js";
 
-export const [kindSessionHandler, isSessionHandler] =
-  createKind<SessionHandlerConstructor>("@dreamkit/app/SessionHandler");
+const tag = "@dreamkit/app/SessionHandler";
+export const isSessionHandler = createIsKind<SessionHandlerConstructor>(tag);
 
 export type SessionHandlerConstructor = Constructor<SessionHandler> & {
   $ioc: any;
 };
 
 export abstract class SessionHandler {
-  static {
-    kindSessionHandler(this);
-  }
+  protected static [kindTag] = tag;
   async get<T extends SessionData>(
     constructor: SessionConstructor<T>,
   ): Promise<InferSessionParams<T> | undefined> {

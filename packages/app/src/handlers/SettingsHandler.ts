@@ -5,11 +5,11 @@ import {
 } from "../builders/SettingsBuilder.js";
 import { AppContext } from "../contexts/AppContext.js";
 import { createIocClass, IocClass } from "@dreamkit/ioc";
-import { createKind } from "@dreamkit/kind";
+import { createIsKind, kindTag } from "@dreamkit/kind";
 import { Constructor } from "@dreamkit/utils/ts.js";
 
-export const [kindSettingsHandler, isSettingsHandler] =
-  createKind<SettingsHandlerConstructor>("@dreamkit/app/SettingsHandler");
+const tag = "@dreamkit/app/SettingsHandler";
+export const isSettingsHandler = createIsKind<SettingsHandlerConstructor>(tag);
 
 export type SettingsHandlerConstructor = Constructor<SettingsHandler> & {
   $ioc: any;
@@ -21,9 +21,7 @@ export type SettingsHandlerSaveResult = Record<
 >;
 
 export abstract class SettingsHandler extends IocClass({ AppContext }) {
-  static {
-    kindSettingsHandler(this);
-  }
+  protected static [kindTag] = tag;
   autoSave = true;
   protected data: Record<string, any> = {};
   protected settings: Set<SettingsConstructor> = new Set();

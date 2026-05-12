@@ -16,9 +16,7 @@ export class BoolType<F extends $.TypeFlag.Options = {}> extends $.Type<
   typeof type,
   BoolTypeOptions
 > {
-  static {
-    $.kind(this, "BoolType");
-  }
+  protected static [$.kindTag] = "@dreamkit/schema/BoolType";
   override readonly kind = type;
   declare nullable: () => BoolType<$.TypeFlag.Nullable<F>>;
   declare optional: () => BoolType<$.TypeFlag.Optional<F>>;

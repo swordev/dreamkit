@@ -1,8 +1,6 @@
 import { IocContext } from "@dreamkit/ioc";
-import { kind } from "@dreamkit/kind";
+import { kindTag } from "@dreamkit/kind";
 
 export class AppContext extends IocContext {
-  static {
-    kind(this, "@dreamkit/app/AppContext");
-  }
+  protected static [kindTag] = "@dreamkit/app/AppContext";
 }

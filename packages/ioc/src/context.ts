@@ -19,11 +19,11 @@ import {
   type IocRegistryValue,
 } from "./registry.js";
 import { ensureSync } from "./utils/async.js";
-import { iocKind, KindMap } from "./utils/kind.js";
+import { KindMap } from "./utils/kind.js";
 import { isPlainObject } from "./utils/object.js";
 import { capitalize } from "./utils/string.js";
 import type { AbstractConstructor, Constructor } from "./utils/ts.js";
-import { is } from "@dreamkit/kind";
+import { is, kindTag } from "@dreamkit/kind";
 
 export type IocContextOptions = {
   parentContainer?: IocContext;
@@ -50,9 +50,7 @@ type OptionalResolveOptions = RequiredResolveOptions & { optional: true };
 type ResolveOptions = RequiredResolveOptions & { optional?: boolean };
 
 export class IocContext {
-  static {
-    iocKind(this, "IocContext");
-  }
+  protected static [kindTag] = "@dreamkit/ioc/IocContext";
   readonly registry: IocRegistry<IocContext>;
   protected listeners: KindMap<IocRegistryKey, any[]>;
   constructor(readonly options: IocContextOptions = {}) {

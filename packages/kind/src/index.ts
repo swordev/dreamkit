@@ -1,7 +1,7 @@
-export const kindKey = "__kind";
+export const kindTag = "__kind";
 
 type KindObject = {
-  [kindKey]: string[] | undefined;
+  [kindTag]: string | string[] | undefined;
 };
 
 type AnyConstructor =
@@ -10,24 +10,40 @@ type AnyConstructor =
 
 export function kind(input: object, name: string) {
   const $input = input as KindObject;
-  const names = $input[kindKey] || [];
-  if (!names.includes(name)) $input[kindKey] = [...names, name];
+  const value = $input[kindTag];
+  if (Array.isArray(value)) {
+    value.push(name);
+  } else if (typeof value === "string") {
+    $input[kindTag] = [value, name];
+  } else {
+    $input[kindTag] = name;
+  }
 }
 
 /*#__NO_SIDE_EFFECTS__*/
-export function createKind<T>(
+export function createIsKind<T>(
   namespace: string,
-): [
-  kind: (input: object, name?: string) => void,
-  is: (input: unknown) => input is T,
-] {
-  const result = (input: object, name?: string) =>
-    kind(input, name ? `${namespace}/${name}` : namespace);
-  return [result, (input: unknown) => is(input, namespace)] as any;
+): (input: unknown) => input is T {
+  const result = (input: unknown) => is(input, namespace);
+  return result as any;
 }
 
-export function getKinds(input: unknown): string[] | undefined {
-  return (input as KindObject)?.[kindKey];
+export function getKinds(input: unknown): string[] {
+  const tags = [];
+  let current = input;
+  while (current && current !== Function.prototype) {
+    if (current.hasOwnProperty(kindTag)) {
+      const tagValue = (current as any)[kindTag];
+      if (Array.isArray(tagValue)) {
+        tags.unshift(...tagValue);
+      } else if (typeof tagValue === "string") {
+        tags.unshift(tagValue);
+      }
+    }
+    current = Object.getPrototypeOf(current);
+  }
+
+  return tags;
 }
 
 export function getKind(input: unknown): string | undefined {

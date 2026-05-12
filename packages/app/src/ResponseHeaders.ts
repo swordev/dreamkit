@@ -1,7 +1,5 @@
-import { kindApp } from "./utils/kind.js";
+import { kindTag } from "@dreamkit/kind";
 
 export class ResponseHeaders extends Headers {
-  static {
-    kindApp(this, "ResponseHeaders");
-  }
+  protected static [kindTag] = "@dreamkit/app/ResponseHeaders";
 }

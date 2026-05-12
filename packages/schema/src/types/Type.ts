@@ -1,13 +1,13 @@
 import { TypeContext } from "../context.js";
 import { type TypeFlag } from "../flags.js";
 import type { InferType } from "../infer.js";
-import { kindSchema } from "../utils/kind.js";
 import {
   TypeAssertError,
   TypeValidation,
   type TypeAssertErrorData,
 } from "../validation.js";
 import { MinimalType } from "./MinimalType.js";
+import { kindTag } from "@dreamkit/kind";
 import { SchemaFlags, SchemaMeta } from "@dreamkit/schema/override.js";
 import type { StandardSchemaV1 } from "@standard-schema/spec";
 import type { JSONSchema7 } from "json-schema";
@@ -34,9 +34,7 @@ export abstract class Type<
   N extends string = string,
   O extends TypeOptions = TypeOptions,
 > extends MinimalType<D, F, N> {
-  static {
-    kindSchema(this, "Type");
-  }
+  protected static [kindTag] = "@dreamkit/schema/Type";
   protected context: Context | undefined;
   constructor(readonly options: O = {} as any) {
     super();

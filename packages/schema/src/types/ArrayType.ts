@@ -22,9 +22,7 @@ export class ArrayType<
   I extends ArrayTypeItems = ArrayTypeItems,
   F extends $.TypeFlag.Options = {},
 > extends $.Type<InferType<I>[], F, "array", ArrayTypeOptions> {
-  static {
-    $.kind(this, "ArrayType");
-  }
+  protected static [$.kindTag] = "@dreamkit/schema/ArrayType";
   override readonly kind = "array" as const;
   declare nullable: () => ArrayType<I, $.TypeFlag.Nullable<F>>;
   declare optional: () => ArrayType<I, $.TypeFlag.Optional<F>>;

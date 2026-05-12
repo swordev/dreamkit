@@ -1,10 +1,9 @@
 import { createIocClass, IocClass, IocParamsUserConfig } from "@dreamkit/ioc";
-import { createKind } from "@dreamkit/kind";
+import { createIsKind, kindTag } from "@dreamkit/kind";
 import type { Constructor, Merge } from "@dreamkit/utils/ts.js";
 
-export const [kindMiddleware, isMiddleware] = createKind<MiddlewareConstructor>(
-  "@dreamkit/app/middleware",
-);
+const tag = "@dreamkit/app/middleware";
+export const isMiddleware = createIsKind<MiddlewareConstructor>(tag);
 
 export type MiddlewareSelf = IocParamsUserConfig | undefined;
 export type MiddlewareData<TSelf extends MiddlewareSelf = MiddlewareSelf> = {
@@ -23,9 +22,7 @@ export type MergeMiddlewareData<
 > = Merge<MiddlewareData, D1, D2>;
 
 export abstract class Middleware {
-  static {
-    kindMiddleware(this);
-  }
+  protected static [kindTag] = tag;
   abstract onRequest(): any;
 }
 

@@ -236,12 +236,23 @@ describe("IocClass", () => {
 describe("createIocClass", () => {
   it("merge params", () => {
     class Data {
-      value = 1;
+      constructor(readonly value: number) {}
     }
-    class Handler extends IocClass({ data1: Data }) {}
+    class Handler extends IocClass({ data1: Data }) {
+      method1() {
+        return this.data1.value;
+      }
+    }
     const HandlerClass = createIocClass(Handler);
-    class Handler2 extends HandlerClass({ data2: Data }) {}
+    class Handler2 extends HandlerClass({ data2: Data }) {
+      method2() {
+        return this.data2.value + 1;
+      }
+    }
     expect(Handler2.$ioc.params.data1).toBe(Data);
     expect(Handler2.$ioc.params.data2).toBe(Data);
+    const handler2 = context.fork().register(new Data(1)).resolve(Handler2);
+    expect(handler2.method1()).toBe(1);
+    expect(handler2.method2()).toBe(2);
   });
 });

@@ -1,7 +1,6 @@
 import { IocContext } from "./context.js";
 import { IocFunc } from "./func.js";
 import type { IocRegistryData, IocRegistryKey } from "./registry.js";
-import { iocKind } from "./utils/kind.js";
 import { isPlainObject } from "./utils/object.js";
 import { uncapitalize } from "./utils/string.js";
 import type {
@@ -9,7 +8,7 @@ import type {
   Merge,
   TryUncapitalize,
 } from "./utils/ts.js";
-import { kindOf } from "@dreamkit/kind";
+import { kindOf, kindTag } from "@dreamkit/kind";
 
 export const paramContextSymbol = Symbol("paramContext");
 
@@ -147,9 +146,7 @@ export type IocBind<S = any, R = any> = {
 };
 
 export class IocParamBuilder<T extends IocParamData = IocParamData> {
-  static {
-    iocKind(this, "IocParamBuilder");
-  }
+  protected static [kindTag] = "@dreamkit/ioc/IocParamBuilder";
   constructor(readonly options: IocParamOptions<T>) {}
   protected clone(options: Partial<IocParamOptions>) {
     return new IocParamBuilder({

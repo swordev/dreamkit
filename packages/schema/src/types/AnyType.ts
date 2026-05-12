@@ -16,9 +16,7 @@ export class AnyType<F extends $.TypeFlag.Options = {}> extends $.Type<
   typeof type,
   AnyTypeOptions
 > {
-  static {
-    $.kind(this, "AnyType");
-  }
+  protected static [$.kindTag] = "@dreamkit/schema/AnyType";
   override readonly kind = type;
   declare nullable: () => AnyType<$.TypeFlag.Nullable<F>>;
   declare optional: () => AnyType<$.TypeFlag.Optional<F>>;

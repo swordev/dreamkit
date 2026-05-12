@@ -152,9 +152,7 @@ export class ObjectType<
   "object",
   ObjectTypeOptions
 > {
-  static {
-    $.kind(this, "ObjectType");
-  }
+  protected static [$.kindTag] = "@dreamkit/schema/ObjectType";
   override readonly kind = "object" as const;
   declare nullable: () => ObjectType<P, $.TypeFlag.Nullable<F>>;
   declare optional: () => ObjectType<P, $.TypeFlag.Optional<F>>;

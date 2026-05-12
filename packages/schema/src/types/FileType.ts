@@ -22,9 +22,7 @@ export class FileType<F extends $.TypeFlag.Options = {}> extends $.Type<
   typeof type,
   FileTypeOptions
 > {
-  static {
-    $.kind(this, "FileType");
-  }
+  protected static [$.kindTag] = "@dreamkit/schema/FileType";
   override readonly kind = type;
   declare nullable: () => FileType<$.TypeFlag.Nullable<F>>;
   declare optional: () => FileType<$.TypeFlag.Optional<F>>;

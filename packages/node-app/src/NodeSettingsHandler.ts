@@ -1,14 +1,12 @@
 import { tryReadJsonFile, writeFileIfDifferent } from "./utils/fs.js";
 import { SettingsHandlerClass } from "@dreamkit/app";
 import { iocParam } from "@dreamkit/ioc";
-import { kind } from "@dreamkit/kind";
+import { kind, kindTag } from "@dreamkit/kind";
 import { ObjectType } from "@dreamkit/schema";
 import { basename } from "path";
 
 export class NodeSettingsHandlerOptions {
-  static {
-    kind(this, "@dreamkit/node-app/NodeSettingsHandlerOptions");
-  }
+  protected static [kindTag] = "@dreamkit/node-app/NodeSettingsHandlerOptions";
   constructor(
     readonly data: {
       path: string;
@@ -19,9 +17,7 @@ export class NodeSettingsHandlerOptions {
 export class NodeSettingsHandler extends SettingsHandlerClass({
   options: iocParam(NodeSettingsHandlerOptions).optional(),
 }) {
-  static {
-    kind(this, "@dreamkit/node-app/NodeSettingsHandler");
-  }
+  protected static [kindTag] = "@dreamkit/node-app/NodeSettingsHandler";
   protected async onLoad() {
     const settingsPath = this.getSettingsPath();
     return (await tryReadJsonFile(settingsPath)) || {};

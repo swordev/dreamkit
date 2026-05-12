@@ -1,6 +1,6 @@
-import { createKind, getKind } from "@dreamkit/kind";
+import { createIsKind, getKind } from "@dreamkit/kind";
 
-export const [iocKind, isIoc] = createKind("@dreamkit/ioc");
+export const isIoc = createIsKind("@dreamkit/ioc");
 
 export class KindMap<K, V = any> extends Map<K, V> {
   protected kindMap = new Map<string, K>();

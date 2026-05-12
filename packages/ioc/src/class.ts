@@ -6,7 +6,6 @@ import {
   isIocObject,
 } from "./params.js";
 import type { IocRegistryData } from "./registry.js";
-import { iocKind } from "./utils/kind.js";
 import { capitalize } from "./utils/string.js";
 import type {
   AbstractConstructor,
@@ -14,7 +13,7 @@ import type {
   ObjectToArray,
   TryUncapitalize,
 } from "./utils/ts.js";
-import { is } from "@dreamkit/kind";
+import { is, kind, kindTag } from "@dreamkit/kind";
 
 export type UnsafeIocClass = {
   new (params: any): any;
@@ -23,9 +22,7 @@ export type UnsafeIocClass = {
 
 export class IocBaseClass<P extends IocParamsUserConfig = {}> {
   static $ioc: { params: IocParamsUserConfig };
-  static {
-    iocKind(this, "IocBaseClass");
-  }
+  static [kindTag] = "@dreamkit/ioc/IocBaseClass";
   constructor(params: IocParams<P>) {
     assignParams(params, this as any);
   }
@@ -123,9 +120,9 @@ export function IocClass(...args: any[]): any {
         assignParams(params, this);
       }
     };
-    iocKind(CustomIocClass, "IocBaseClass");
+    kind(CustomIocClass, "@dreamkit/ioc/IocBaseClass");
   }
-  iocKind(CustomIocClass, "IocClass");
+  kind(CustomIocClass, "@dreamkit/ioc/IocClass");
   return attachIocMeta(CustomIocClass, paramsConfig, undefined, "class");
 }
 
@@ -140,7 +137,7 @@ export function createIocClass<C extends AbstractConstructor>(
   return ((params: Record<string, any> = {}) => {
     if (is(constructor, IocBaseClass)) {
       const CustomIocClass = class extends constructor {};
-      iocKind(CustomIocClass, "IocClass");
+      kind(CustomIocClass, "@dreamkit/ioc/IocClass");
       return attachIocMeta(
         CustomIocClass,
         { ...params, ...constructor?.$ioc?.params },

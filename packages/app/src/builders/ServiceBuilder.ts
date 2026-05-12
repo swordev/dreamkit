@@ -1,10 +1,9 @@
 import { createIocClass, IocClass, IocParamsUserConfig } from "@dreamkit/ioc";
-import { createKind } from "@dreamkit/kind";
+import { createIsKind, kindTag } from "@dreamkit/kind";
 import type { Constructor, Merge } from "@dreamkit/utils/ts.js";
 
-export const [kindService, isService] = createKind<ServiceConstructor>(
-  "@dreamkit/app/service",
-);
+const tag = "@dreamkit/app/service";
+export const isService = createIsKind<ServiceConstructor>(tag);
 
 export type ServiceSelf = IocParamsUserConfig | undefined;
 export type ServiceData<TSelf extends ServiceSelf = ServiceSelf> = {
@@ -33,9 +32,7 @@ export type AppService = {
 };
 
 export abstract class Service {
-  static {
-    kindService(this);
-  }
+  protected static [kindTag] = tag;
   abstract onStart(): any;
 }
 

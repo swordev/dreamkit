@@ -24,9 +24,7 @@ export class CustomType<
   T = any,
   F extends $.TypeFlag.Options = {},
 > extends $.Type<T, F, typeof type, CustomTypeOptions<T>> {
-  static {
-    $.kind(this, "CustomType");
-  }
+  protected static [$.kindTag] = "@dreamkit/schema/CustomType";
   override readonly kind = type;
   declare nullable: () => CustomType<T, $.TypeFlag.Nullable<F>>;
   declare optional: () => CustomType<T, $.TypeFlag.Optional<F>>;

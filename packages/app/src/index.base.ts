@@ -1,6 +1,5 @@
 export { ResponseHeaders } from "./ResponseHeaders.js";
-export { isRoute, isApp } from "./utils/kind.js";
-export { isApi, isApiBuilder } from "./builders/ApiBuilder.js";
+export { isApiBuilder } from "./builders/ApiBuilder.js";
 export { App } from "./App.js";
 export { AppError } from "./AppError.js";
 export { defineRoutePath, type RoutePathFunc } from "./routePath.js";
@@ -15,7 +14,7 @@ export { LazyFile } from "./LazyFile.js";
 export { AppContext } from "./contexts/AppContext.js";
 export { RequestContext } from "./contexts/RequestContext.js";
 // objects
-export { $api } from "./objects/$api.js";
+export { $api, isApi } from "./objects/$api.js";
 export { $route } from "./objects/$route.js";
 export { $middleware } from "./objects/$middleware.js";
 export { $serializer } from "./objects/$serializer.js";
@@ -24,6 +23,7 @@ export { $session } from "./objects/$session.js";
 export { $schema } from "./objects/$schema.js";
 export {
   RouteBuilder,
+  isRoute,
   type RouteOptions,
   type Route,
   type RouteData,

@@ -1,11 +1,9 @@
 import { BlobRef } from "./EJSON.js";
 import { StorageHandler } from "./handlers/StorageHandler.js";
-import { kindApp } from "./utils/kind.js";
+import { kindTag } from "@dreamkit/kind";
 
 export class LazyFile extends File {
-  static {
-    kindApp(this, "LazyFile");
-  }
+  protected static [kindTag] = "@dreamkit/app/LazyFile";
   constructor(
     readonly ref: BlobRef,
     name: string,

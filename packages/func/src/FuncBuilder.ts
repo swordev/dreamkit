@@ -10,24 +10,19 @@ import type {
   MergeFuncData,
 } from "./types.js";
 import { cloneFuncOptions, resolveFuncParams } from "./utils/func.js";
-import { kindFunc } from "./utils/kind.js";
 import {
   IocFunc,
   IocParams,
   IocRegistryKey,
   IocRegistryValue,
 } from "@dreamkit/ioc";
-import { createKind, getKinds, kind, kindOf } from "@dreamkit/kind";
+import { createIsKind, getKinds, kind, kindOf, kindTag } from "@dreamkit/kind";
 import { ObjectType, ObjectTypeProps, Type } from "@dreamkit/schema";
 
-export const [kindFuncBuilder, isFuncBuilder] = createKind<FuncBuilder>(
-  "@dreamkit/FuncBuilder",
-);
+export const isFuncBuilder = createIsKind<FuncBuilder>("@dreamkit/FuncBuilder");
 
 export class FuncBuilder<T extends FuncData = FuncData> {
-  static {
-    kindFuncBuilder(this);
-  }
+  protected static [kindTag] = "@dreamkit/FuncBuilder";
   readonly data: T;
   readonly options: FuncOptions;
   constructor(options: FuncOptions<T>) {
@@ -113,7 +108,7 @@ export class FuncBuilder<T extends FuncData = FuncData> {
     };
 
     Object.assign(func, meta);
-    kindFunc(func);
+    kind(func, "@dreamkit/func");
     if (this.options.onCreate) return this.options.onCreate(func as any) as any;
     if (this.options.static) Object.assign(func, this.options.static);
     return func as any;

@@ -18,9 +18,7 @@ export class NumberType<F extends $.TypeFlag.Options = {}> extends $.Type<
   "number",
   NumberTypeOptions
 > {
-  static {
-    $.kind(this, "NumberType");
-  }
+  protected static [$.kindTag] = "@dreamkit/schema/NumberType";
   override readonly kind = "number" as const;
   declare nullable: () => NumberType<$.TypeFlag.Nullable<F>>;
   declare optional: () => NumberType<$.TypeFlag.Optional<F>>;

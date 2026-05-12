@@ -1,9 +1,8 @@
 import { BlobRefs } from "../EJSON.js";
-import { createKind } from "@dreamkit/kind";
+import { createIsKind, kindTag } from "@dreamkit/kind";
 
-export const [kindSerializer, isSerializer] = createKind(
-  "@dreamkit/app/serializer",
-);
+const tag = "@dreamkit/app/serializer";
+export const isSerializer = createIsKind<Serializer>(tag);
 
 export type SerializerData<I = any, O = any> = {
   key: string;
@@ -14,9 +13,7 @@ export type SerializerData<I = any, O = any> = {
 };
 
 export class Serializer<I = any, O = any> {
-  static {
-    kindSerializer(this);
-  }
+  protected static [kindTag] = tag;
   constructor(readonly config: SerializerData<I, O>) {}
 }
 
