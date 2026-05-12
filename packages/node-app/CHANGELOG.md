@@ -1,5 +1,17 @@
 # @dreamkit/node-app
 
+## 0.0.44
+
+### Patch Changes
+
+- [`e7d2c90`](https://github.com/swordev/dreamkit/commit/e7d2c90d40f909afd805cb9a2fa90d012a859cf8) Thanks [@juanrgm](https://github.com/juanrgm)! - Add tree shaking compatibility
+
+- Updated dependencies [[`e7d2c90`](https://github.com/swordev/dreamkit/commit/e7d2c90d40f909afd805cb9a2fa90d012a859cf8)]:
+  - @dreamkit/schema@0.0.24
+  - @dreamkit/kind@0.0.7
+  - @dreamkit/app@0.0.49
+  - @dreamkit/ioc@0.5.2
+
 ## 0.0.43
 
 ### Patch Changes
