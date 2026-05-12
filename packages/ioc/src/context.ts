@@ -71,8 +71,8 @@ export class IocContext {
   protected getConstructor(): IocContextConstructor {
     return this.constructor as any;
   }
-  registerSelf(): this {
-    return this.register(this.getConstructor(), { value: this });
+  registerSelf(key: IocContextConstructor = this.getConstructor()): this {
+    return this.register(key, { value: this });
   }
   register<K extends IocRegistryKey>(
     key: K,

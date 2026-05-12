@@ -1,4 +1,4 @@
-import type { IocContext } from "./context.js";
+import type { IocContext, IocContextConstructor } from "./context.js";
 import type {
   IocRegistryData,
   IocRegistryKey,
@@ -13,8 +13,10 @@ export type IocContextBatchObject<T extends IocContext = IocContext> = {
 export class IocContextBatch<T extends IocContext = IocContext> {
   protected registry: Map<IocRegistryKey, IocRegistryValue> = new Map();
   constructor(protected context: T) {}
-  registerSelf(): IocContextBatch<T> {
-    return this.register(this.context["getConstructor"](), { value: this });
+  registerSelf(
+    key: IocContextConstructor = this.context["getConstructor"](),
+  ): IocContextBatch<T> {
+    return this.register(key, { value: this });
   }
   register<K extends IocRegistryKey>(
     key: K,
