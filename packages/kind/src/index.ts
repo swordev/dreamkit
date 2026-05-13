@@ -32,7 +32,7 @@ export function getKinds(input: unknown): string[] {
   const tags = [];
   let current = input;
   while (current && current !== Function.prototype) {
-    if (current.hasOwnProperty(kindTag)) {
+    if (current.hasOwnProperty?.(kindTag)) {
       const tagValue = (current as any)[kindTag];
       if (Array.isArray(tagValue)) {
         tags.unshift(...tagValue);
