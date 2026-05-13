@@ -9,7 +9,10 @@ import {
 import { MinimalType } from "./MinimalType.js";
 import { kindTag } from "@dreamkit/kind";
 import { SchemaFlags, SchemaMeta } from "@dreamkit/schema/override.js";
-import type { StandardSchemaV1 } from "@standard-schema/spec";
+import type {
+  StandardSchemaV1,
+  StandardJSONSchemaV1,
+} from "@standard-schema/spec";
 import type { JSONSchema7 } from "json-schema";
 
 export type TypeConstructor<T extends Type = Type> = {
@@ -47,7 +50,26 @@ export abstract class Type<
         })),
       };
     };
-    (this["~standard"] as any)["validate"] = validate;
+    const jsonSchema: StandardJSONSchemaV1<D>["~standard"]["jsonSchema"] = {
+      input: (params) => {
+        const schema: Record<string, unknown> = this.toJsonSchema() as any;
+        if (params.target === "draft-2020-12") {
+          schema.$schema = "https://json-schema.org/draft/2020-12/schema";
+        } else if (params.target === "draft-07") {
+          schema.$schema = "http://json-schema.org/draft-07/schema#";
+        }
+        return schema;
+      },
+      output(options) {
+        return jsonSchema.input(options);
+      },
+    };
+    const standard = this["~standard"] as {
+      validate: StandardSchemaV1["~standard"]["validate"];
+      jsonSchema: StandardJSONSchemaV1["~standard"]["jsonSchema"];
+    };
+    standard["validate"] = validate;
+    standard["jsonSchema"] = jsonSchema;
   }
   protected onClone(options: O): Type {
     const Constructor = (this as any).constructor;

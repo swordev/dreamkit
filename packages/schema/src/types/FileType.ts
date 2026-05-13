@@ -51,7 +51,7 @@ export class FileType<F extends $.TypeFlag.Options = {}> extends $.Type<
   }
   protected override onJsonSchema(): $.JSONSchema7 {
     return {
-      type: ["boolean", ...(this.options.nullable ? ["null" as const] : [])],
+      type: ["object", ...(this.options.nullable ? ["null" as const] : [])],
     };
   }
   protected validateMaxSize(size: number) {
