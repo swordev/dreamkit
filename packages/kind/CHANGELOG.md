@@ -1,5 +1,11 @@
 # @dreamkit/kind
 
+## 0.0.8
+
+### Patch Changes
+
+- [`b5b5c6b`](https://github.com/swordev/dreamkit/commit/b5b5c6bb7811da0f52333379b97c53fa4e8ed7fa) Thanks [@juanrgm](https://github.com/juanrgm)! - Check unkown object
+
 ## 0.0.7
 
 ### Patch Changes

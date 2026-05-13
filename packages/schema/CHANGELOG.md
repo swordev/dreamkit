@@ -1,5 +1,14 @@
 # @dreamkit/schema
 
+## 0.0.25
+
+### Patch Changes
+
+- [`7745bfc`](https://github.com/swordev/dreamkit/commit/7745bfc609db17041062898c1c14e43349183ba8) Thanks [@juanrgm](https://github.com/juanrgm)! - Add JSON schema standard compatibility
+
+- Updated dependencies [[`b5b5c6b`](https://github.com/swordev/dreamkit/commit/b5b5c6bb7811da0f52333379b97c53fa4e8ed7fa)]:
+  - @dreamkit/kind@0.0.8
+
 ## 0.0.24
 
 ### Patch Changes

@@ -1,5 +1,12 @@
 # @dreamkit/ioc
 
+## 0.5.3
+
+### Patch Changes
+
+- Updated dependencies [[`b5b5c6b`](https://github.com/swordev/dreamkit/commit/b5b5c6bb7811da0f52333379b97c53fa4e8ed7fa)]:
+  - @dreamkit/kind@0.0.8
+
 ## 0.5.2
 
 ### Patch Changes
