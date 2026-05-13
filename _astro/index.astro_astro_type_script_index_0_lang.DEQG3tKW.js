@@ -1,4 +1,4 @@
-import{o}from"./stackblitz.XhvUZmj1.js";const r=`import { $route } from "dreamkit";
+import{o}from"./stackblitz.DrCMuaDL.js";const r=`import { $route } from "dreamkit";
 
 export default $route.path("/").create(() => {
   return <>Hello World</>;
