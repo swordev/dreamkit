@@ -1,3 +1,3 @@
 import { FuncBuilder } from "./FuncBuilder.js";
 
-export const $func = new FuncBuilder({});
+export const $func = /*#__PURE__*/ new FuncBuilder({});
