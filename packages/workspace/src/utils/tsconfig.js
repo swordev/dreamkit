@@ -98,7 +98,7 @@ export function createTSConfigFiles(options) {
             fileName: "tsconfig.build-cjs.json",
           },
         ),
-        ...resolveTSConfig(options.base ?? {}),
+        ...resolveTSConfig(options.root ?? {}),
       });
     files["tsconfig.build.json"] = defineTSConfig({
       include: [],
