@@ -4,6 +4,5 @@
     "module": "commonjs",
     "moduleResolution": "Node"
   },
-  "extends": ["./tsconfig.build.json"],
-  "references": []
+  "extends": ["./tsconfig.build.json"]
 }

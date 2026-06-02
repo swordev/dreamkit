@@ -1,7 +1,7 @@
 {
+  "compilerOptions": { "composite": true },
   "extends": [
     "@dreamkit/tsconfig/build.json",
     "@dreamkit/tsconfig/publish.json"
-  ],
-  "references": []
+  ]
 }

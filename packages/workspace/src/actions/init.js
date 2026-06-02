@@ -8,7 +8,12 @@ import { createTSConfigFiles, defineConfig } from "@dreamkit/workspace";
 
 export default defineConfig(({ pkg, packages }) => {
   return {
-    files: createTSConfigFiles({ pkg, packages }),
+    files:  createTSConfigFiles({
+      pkg,
+      packages,
+      base: {},
+      build: {},
+    }),
   };
 });
 `;

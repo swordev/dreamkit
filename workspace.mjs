@@ -17,7 +17,15 @@ export default defineConfig(({ pkg, packages }) => {
           (pkg) => !(pkg.manifest.private || pkg.name === "@dreamkit/site"),
         ),
         pkg,
-        extends: ["publish"],
+        base: {
+          extends: ["@dreamkit/tsconfig"],
+        },
+        build: {
+          extends: [
+            "@dreamkit/tsconfig/build.json",
+            "@dreamkit/tsconfig/publish.json",
+          ],
+        },
       }),
       ...(pkg.isRoot && {
         "README.md": renderRootReadme(packages),

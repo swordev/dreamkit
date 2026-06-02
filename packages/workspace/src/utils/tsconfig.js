@@ -19,7 +19,7 @@ export function getTSConfigReferences(pkg, packages, options) {
     ...pkg.manifest.peerDependencies,
   };
   const fileName = options?.fileName ?? "tsconfig.build.json";
-  return Object.entries(deps)
+  const refs = Object.entries(deps)
     .filter(([name, ver]) => ver === "workspace:*")
     .filter(([name]) => !options?.exclude || !options.exclude.includes(name))
     .map(([name]) => {
@@ -36,6 +36,7 @@ export function getTSConfigReferences(pkg, packages, options) {
       return { path };
     })
     .filter((v) => !!v);
+  return refs.length ? refs : undefined;
 }
 
 /**
@@ -44,13 +45,36 @@ export function getTSConfigReferences(pkg, packages, options) {
  */
 export function getRootTSConfigReferences(packages, options) {
   const fileName = options?.fileName ?? "tsconfig.build.json";
-  return packages
+  const refs = packages
     .filter((pkg) => !pkg.isRoot && pkg.isTypeScript)
     .filter(
       (pkg) =>
         !options?.exclude || !options.exclude.includes(pkg.manifest.name ?? ""),
     )
     .map((pkg) => ({ path: `${pkg.dir}/${fileName}` }));
+  return refs.length ? refs : undefined;
+}
+
+/**
+ * @param {import("./../index.js").CustomTsConfig} options
+ * @param {string[]} [inExtends]
+ * @return {import("pkg-types").TSConfig}
+ */
+function resolveTSConfig(options, inExtends) {
+  const { extends: customExtends, ...rest } = options;
+  const outExtends = [
+    ...(Array.isArray(customExtends)
+      ? customExtends.filter((name) => typeof name === "string")
+      : Object.entries(customExtends || {})
+          .filter(([, enabled]) => enabled)
+          .map(([name]) => name)),
+    ...(inExtends || []),
+  ];
+
+  return {
+    extends: outExtends.length ? outExtends : undefined,
+    ...rest,
+  };
 }
 
 /**
@@ -59,21 +83,13 @@ export function getRootTSConfigReferences(packages, options) {
 
 export function createTSConfigFiles(options) {
   const { pkg, packages } = options;
-  const presets = ["base", "build", "publish", "solid", "vite"];
-  const extendsValue = (
-    Array.isArray(options.extends)
-      ? options.extends.filter((name) => typeof name === "string")
-      : Object.entries(options.extends || {})
-          .filter(([, enabled]) => enabled)
-          .map(([name]) => name)
-  ).map((name) =>
-    presets.includes(name) ? `@dreamkit/tsconfig/${name}.json` : name,
-  );
-  const cjs = packages.some((pkg) => pkg.isTypeScript && pkg.manifest.main);
+
+  const cjs = options.cjs ?? packages.some((pkg) => pkg.manifest.main);
+
   /** @type {Record<string, any>} */
   const files = {};
   if (pkg.isRoot) {
-    if (cjs)
+    if (cjs && packages.some((pkg) => pkg.isTypeScript && pkg.manifest.main))
       files["tsconfig.build-cjs.json"] = defineTSConfig({
         include: [],
         references: getRootTSConfigReferences(
@@ -82,26 +98,29 @@ export function createTSConfigFiles(options) {
             fileName: "tsconfig.build-cjs.json",
           },
         ),
-        ...options.base,
+        ...resolveTSConfig(options.base ?? {}),
       });
     files["tsconfig.build.json"] = defineTSConfig({
       include: [],
       references: getRootTSConfigReferences(packages),
-      ...options.base,
+      ...resolveTSConfig(options.root ?? {}),
     });
   } else if (pkg.isTypeScript) {
     files["tsconfig.json"] = defineTSConfig({
-      extends: ["@dreamkit/tsconfig", "./tsconfig.build.json"],
-      ...options.base,
+      ...resolveTSConfig(options.base ?? {}, ["./tsconfig.build.json"]),
     });
+    const build = resolveTSConfig(options.build ?? {});
     files["tsconfig.build.json"] = defineTSConfig({
+      ...build,
       references: getTSConfigReferences(pkg, packages, {
         exclude: ["@dreamkit/tsconfig"],
       }),
-      extends: ["@dreamkit/tsconfig/build.json", ...extendsValue],
-      ...options.build,
+      compilerOptions: {
+        composite: true,
+        ...build.compilerOptions,
+      },
     });
-    if (pkg.manifest.main) {
+    if (cjs && pkg.manifest.main) {
       files["lib-cjs/package.json"] = { type: "commonjs" };
       files["tsconfig.build-cjs.json"] = defineTSConfig({
         compilerOptions: {

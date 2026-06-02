@@ -51,13 +51,18 @@ export declare const getRootTSConfigReferences: (
   },
 ) => { path: string }[];
 export declare const defineConfig: (handler: WorkspaceHandler) => any;
+
+export type CustomTsConfig = Omit<TSConfig, "extends"> & {
+  extends?: Record<string, boolean> | (string | false)[];
+};
+
 export declare const createTSConfigFiles: (options: {
   packages: Package[];
   pkg: Package;
-  extends?: Record<string, boolean> | (string | false)[];
-  root?: TSConfig;
-  base?: TSConfig;
-  build?: TSConfig;
+  cjs?: boolean;
+  root?: CustomTsConfig;
+  base?: CustomTsConfig;
+  build?: CustomTsConfig;
 }) => Record<string, any>;
 
 export declare function gen(): Promise<void>;

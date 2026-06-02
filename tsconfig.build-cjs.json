@@ -1,4 +1,5 @@
 {
+  "extends": ["@dreamkit/tsconfig"],
   "include": [],
   "references": [
     { "path": "./packages/ioc/tsconfig.build-cjs.json" },
