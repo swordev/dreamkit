@@ -1,5 +1,11 @@
 # @dreamkit/workspace
 
+## 0.4.0
+
+### Minor Changes
+
+- [`1724e72`](https://github.com/swordev/dreamkit/commit/1724e72154281766d540a5a4e53c22508efc3d13) Thanks [@juanrgm](https://github.com/juanrgm)! - Add new options.
+
 ## 0.3.1
 
 ### Patch Changes
