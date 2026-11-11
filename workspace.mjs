@@ -21,6 +21,9 @@ export default defineConfig(({ pkg, packages }) => {
           extends: ["@dreamkit/tsconfig"],
         },
         build: {
+          ...(pkg.name === "@dreamkit/node-app"
+            ? { compilerOptions: { types: ["node"] } }
+            : {}),
           extends: [
             "@dreamkit/tsconfig/build.json",
             "@dreamkit/tsconfig/publish.json",
