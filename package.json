@@ -34,8 +34,8 @@
   },
   "prettier": "@dreamkit/prettier-config",
   "devDependencies": {
-    "@changesets/changelog-github": "^0.5.1",
-    "@changesets/cli": "^2.29.7",
+    "@changesets/changelog-github": "^1.0.1",
+    "@changesets/cli": "^3.0.3",
     "@dreamkit/dev": "workspace:*",
     "@dreamkit/prettier-config": "workspace:*",
     "@dreamkit/workspace": "workspace:*",
