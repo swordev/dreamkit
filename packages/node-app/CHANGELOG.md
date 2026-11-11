@@ -1,5 +1,11 @@
 # @dreamkit/node-app
 
+## 0.0.46
+
+### Patch Changes
+
+- [`64b4c16`](https://github.com/swordev/dreamkit/commit/64b4c165cbe095e2eeb8165203cf5e9ccb1fd624) Thanks [@juanrgm](https://github.com/juanrgm)! - Add DK_SETTINGS_SCHEMA env
+
 ## 0.0.45
 
 ### Patch Changes
