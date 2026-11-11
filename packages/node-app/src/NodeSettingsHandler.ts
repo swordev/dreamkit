@@ -43,13 +43,15 @@ export class NodeSettingsHandler extends SettingsHandlerClass({
             prev ? JSON.stringify(prev, null, 2) : undefined,
           )),
       },
-      "settings-schema": {
-        path: schemaPath,
-        changed: await writeFileIfDifferent(
-          schemaPath,
-          JSON.stringify(this.getSettingsSchema(), null, 2),
-        ),
-      },
+      ...((process.env.DK_SETTINGS_SCHEMA ?? "1") === "1" && {
+        "settings-schema": {
+          path: schemaPath,
+          changed: await writeFileIfDifferent(
+            schemaPath,
+            JSON.stringify(this.getSettingsSchema(), null, 2),
+          ),
+        },
+      }),
     };
   }
   protected getSettingsPath() {
