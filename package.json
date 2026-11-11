@@ -7,6 +7,7 @@
     "app/*",
     "templates/*"
   ],
+  "packageManager": "pnpm@12.18.0",
   "scripts": {
     "build": "tsc -b tsconfig.build.json --verbose",
     "build:cjs": "tsc -b tsconfig.build-cjs.json --verbose",
